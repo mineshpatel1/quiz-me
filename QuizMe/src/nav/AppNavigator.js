@@ -1,9 +1,9 @@
 import { Animated, Easing } from 'react-native';
 import { createStackNavigator } from 'react-navigation';
 
-import Home from './screens/Home';
-import Settings from './screens/Settings';
-import { animationDuration } from './constants';
+import Home from '../screens/Home';
+import Settings from '../screens/Settings';
+import { animationDuration } from '../constants';
 
 const customTransition = ({ position, layout, scene, scenes, index }) => {
   return {
@@ -49,8 +49,11 @@ const AppNavigator = createStackNavigator({
   Settings: { screen: Settings, navigationOptions: {title: "Settings"} },
 },
 {
-  initialRouteName: "Home",
+  initialRouteName: "Settings",
   transitionConfig: (nav) => customTransition(nav),
+  defaultNavigationOptions: {
+    header: null,
+  },
 });
 
 export default AppNavigator;
