@@ -29,9 +29,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "2D02E47A1E0B4A5D006451C7"
-               BuildableName = "TriviaQuestions-tvOS.app"
-               BlueprintName = "TriviaQuestions-tvOS"
-               ReferencedContainer = "container:TriviaQuestions.xcodeproj">
+               BuildableName = "QuizMe-tvOS.app"
+               BlueprintName = "QuizMe-tvOS"
+               ReferencedContainer = "container:QuizMe.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -43,9 +43,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "2D02E48F1E0B4A5D006451C7"
-               BuildableName = "TriviaQuestions-tvOSTests.xctest"
-               BlueprintName = "TriviaQuestions-tvOSTests"
-               ReferencedContainer = "container:TriviaQuestions.xcodeproj">
+               BuildableName = "QuizMe-tvOSTests.xctest"
+               BlueprintName = "QuizMe-tvOSTests"
+               ReferencedContainer = "container:QuizMe.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -61,9 +61,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "2D02E48F1E0B4A5D006451C7"
-               BuildableName = "TriviaQuestions-tvOSTests.xctest"
-               BlueprintName = "TriviaQuestions-tvOSTests"
-               ReferencedContainer = "container:TriviaQuestions.xcodeproj">
+               BuildableName = "QuizMe-tvOSTests.xctest"
+               BlueprintName = "QuizMe-tvOSTests"
+               ReferencedContainer = "container:QuizMe.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -71,9 +71,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "2D02E47A1E0B4A5D006451C7"
-            BuildableName = "TriviaQuestions-tvOS.app"
-            BlueprintName = "TriviaQuestions-tvOS"
-            ReferencedContainer = "container:TriviaQuestions.xcodeproj">
+            BuildableName = "QuizMe-tvOS.app"
+            BlueprintName = "QuizMe-tvOS"
+            ReferencedContainer = "container:QuizMe.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -94,9 +94,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "2D02E47A1E0B4A5D006451C7"
-            BuildableName = "TriviaQuestions-tvOS.app"
-            BlueprintName = "TriviaQuestions-tvOS"
-            ReferencedContainer = "container:TriviaQuestions.xcodeproj">
+            BuildableName = "QuizMe-tvOS.app"
+            BlueprintName = "QuizMe-tvOS"
+            ReferencedContainer = "container:QuizMe.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -113,9 +113,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "2D02E47A1E0B4A5D006451C7"
-            BuildableName = "TriviaQuestions-tvOS.app"
-            BlueprintName = "TriviaQuestions-tvOS"
-            ReferencedContainer = "container:TriviaQuestions.xcodeproj">
+            BuildableName = "QuizMe-tvOS.app"
+            BlueprintName = "QuizMe-tvOS"
+            ReferencedContainer = "container:QuizMe.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

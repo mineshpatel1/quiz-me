@@ -45,7 +45,7 @@ const customTransition = ({ position, layout, scene, scenes, index }) => {
 }
 
 const AppNavigator = createStackNavigator({
-  Home: { screen: Home, navigationOptions: {title: "Trivia Questions"} },
+  Home: { screen: Home, navigationOptions: {title: "Quiz Me"} },
   Settings: { screen: Settings, navigationOptions: {title: "Settings"} },
 },
 {

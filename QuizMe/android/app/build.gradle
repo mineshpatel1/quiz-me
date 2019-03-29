@@ -102,7 +102,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.triviaquestions"
+        applicationId "com.quizme"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

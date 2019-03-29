@@ -1,4 +1,4 @@
-package com.triviaquestions;
+package com.quizme;
 
 import android.app.Application;
 
