@@ -34,9 +34,19 @@ export const fonts = StyleSheet.create({
   }
 });
 
-export const core = StyleSheet.create({
+export const style = StyleSheet.create({
+  f1: { flex: 1 },
+  row: { flexDirection: 'row' },
+  col: { flexDirection: 'column' },
+  center: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   bgTheme: {
     backgroundColor: colours.primary,
+  },
+  bgLight: {
+    backgroundColor: colours.lightGrey,
   },
   shadow: {
     elevation: 5,
@@ -44,5 +54,5 @@ export const core = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.8,
     shadowRadius: 2,
-  }
+  },
 });

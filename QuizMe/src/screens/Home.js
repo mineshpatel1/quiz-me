@@ -1,20 +1,16 @@
 import React, { Component } from 'react';
-import { Platform, View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { Platform, View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 
-const instructions = Platform.select({
-  ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
-  android:
-    'Double tap R on your keyboard to reload,\n' +
-    'Shake or press menu button for dev menu',
-});
+import { Icon } from '../components/Core';
+import { style } from '../styles';
 
 export default class Home extends Component {
   render() {
     return (
-      <View style={styles.container}>
-        <Text style={[styles.welcome]}>Welcome to React Native!</Text>
-        <Text style={[styles.instructions, {fontFamily: 'Lato-Bold'}]}>To get started, edit App.js</Text>
-        <Text style={styles.instructions}>{instructions}</Text>
+      <View style={[style.f1, style.center, style.bgTheme ]}>
+        <View style={{width: 400, height: 150}}>
+          <Image style={{width: 400, height: 150}} source={require('../../assets/images/title.png')} />
+        </View>
         <TouchableOpacity onPress={() => {this.props.navigation.navigate('Settings')}}>
           <Text style={{fontFamily: 'Lato-Regular'}}>Navigate</Text>
         </TouchableOpacity>
@@ -22,24 +18,3 @@ export default class Home extends Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-    fontFamily: 'Lobster',
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-    fontFamily: 'Lato-Regular',
-  },
-});
