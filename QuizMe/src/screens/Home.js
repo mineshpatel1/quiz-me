@@ -1,20 +1,23 @@
 import React, { Component } from 'react';
-import { Platform, View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { Platform, View, StyleSheet, TouchableOpacity, Image } from 'react-native';
 
-import { Icon } from '../components/Core';
-import { style } from '../styles';
+import { Text, Icon, Button } from '../components/Core';
+import { colours, style } from '../styles';
 
 export default class Home extends Component {
   render() {
+    let { props } = this;
     return (
       <View style={[style.f1, style.center, style.bgTheme ]}>
-        <View style={{width: 400, height: 150}}>
+        <View style={[style.f1, {justifyContent: 'flex-end', alignItems: 'center'}]}>
           <Image style={{width: 400, height: 150}} source={require('../../assets/images/title.png')} />
         </View>
-        <TouchableOpacity onPress={() => {this.props.navigation.navigate('Settings')}}>
-          <Text style={{fontFamily: 'Lato-Regular'}}>Navigate</Text>
-        </TouchableOpacity>
+
+        <View style={[style.f1, style.center]}>
+          <Button label="Settings" icon="cog" onPress={() => { props.navigation.navigate('Settings') }}/>
+        </View>
       </View>
+
     );
   }
 }

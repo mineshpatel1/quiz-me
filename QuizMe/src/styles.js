@@ -2,13 +2,12 @@ import { StyleSheet } from 'react-native';
 
 export const colours = {
   primary: '#48ABFF',
-  lightBg: '#f4f4f4',
+  light: '#F4F4F4',
   danger: '#D9534F',
-  success: '#5cb85c',
-  disabled: '#b5b5b5',
+  success: '#5CB85C',
+  disabled: '#B5B5B5',
   white: '#FFFFFF',
   black: '#000000',
-  lightGrey: '#AAA'
 };
 
 const fontSize = {
@@ -36,6 +35,7 @@ export const fonts = StyleSheet.create({
 
 export const style = StyleSheet.create({
   f1: { flex: 1 },
+  f2: { flex: 2 },
   row: { flexDirection: 'row' },
   col: { flexDirection: 'column' },
   center: {
