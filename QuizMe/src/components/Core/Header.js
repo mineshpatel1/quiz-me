@@ -20,12 +20,12 @@ export default class Header extends Component {
     return (
       <View style={[{ height: 60, flexDirection: 'row', alignItems: 'center' }, styles.bgTheme, styles.bottomShadow]}>
         <Icon
-          icon="arrow-left" size={20} color={colours.white} style={{paddingLeft: 10}}
+          icon="arrow-left" size={20} color={colours.white} style={{paddingLeft: 15}}
           onPress={() => {
             this.nav(props.route);
           }}
         />
-        <Text style={[{paddingLeft: 15, marginTop: 4}, fonts.display, fonts.light]}>{props.title}</Text>
+        <Text style={[{paddingLeft: 15, marginTop: 5}, fonts.display, fonts.light]}>{props.title}</Text>
       </View>
     )
   }

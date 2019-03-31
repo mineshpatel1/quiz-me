@@ -5,7 +5,7 @@ import { Provider } from 'react-redux';
 import { createAppContainer } from 'react-navigation';
 import { library } from '@fortawesome/fontawesome-svg-core'
 import {
-  faArrowLeft, faCog, faCheck, faTimes,
+  faArrowLeft, faCog, faCheck, faTimes, faQuestion, faClock,
 } from '@fortawesome/free-solid-svg-icons';
 
 import AppNavigator from './src/nav/AppNavigator';
@@ -16,7 +16,7 @@ import { styles, colours } from './src/styles';
 
 const AppContainer = createAppContainer(AppNavigator);
 const store = createStore(reducers);
-library.add(faArrowLeft, faCog, faCheck, faTimes);
+library.add(faArrowLeft, faCog, faCheck, faTimes, faQuestion, faClock);
 
 export default class App extends Component {
   constructor() {

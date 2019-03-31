@@ -97,7 +97,7 @@ export default class Input extends Component {
             onChangeText={(val) => {
               val = this.parseVal(val);
               this.update(val);
-              props.onChange(val);
+              if (props.onChange) props.onChange(val);
             }}
           />
         </View>

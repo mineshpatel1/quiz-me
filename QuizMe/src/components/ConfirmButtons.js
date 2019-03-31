@@ -9,13 +9,14 @@ export default class ConfirmButtons extends Component {
     onSuccess: null,
     onCancel: null,
     width: 120,
+    justify: 'space-evenly',
   }
 
   render() {
     let { props } = this;
 
     return (
-      <View style={[styles.row, {justifyContent: 'space-evenly'}]}>
+      <View style={[styles.row, {height: 50, justifyContent: props.justify}]}>
         <Button
           width={props.width} icon="check" btnColor={colours.success} fontColor={colours.white}
           onPress={props.onSuccess}
