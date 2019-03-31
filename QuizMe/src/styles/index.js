@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 export const colours = {
   primary: '#48ABFF',
   light: '#F4F4F4',
-  danger: '#D9534F',
+  error: '#D9534F',
   success: '#5CB85C',
   disabled: '#B5B5B5',
   white: '#FFFFFF',

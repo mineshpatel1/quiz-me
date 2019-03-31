@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Platform, View, StyleSheet, TouchableOpacity, Image } from 'react-native';
 
-import { Text, Icon, Button } from '../components/Core';
+import { Text, Icon, Button } from '../components';
 import { colours, styles } from '../styles';
 
 export default class Home extends Component {

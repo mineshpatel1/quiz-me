@@ -13,12 +13,14 @@ export default class Input extends Component {
     color: colours.white,
     type: 'default',
     onChange: null,
+    validator: null,
   }
 
   constructor(props) {
     super(props);
     this.state = {
       value: props.value,
+      valid: this.validate(this.parseVal(props.value)),
     }
   }
 
@@ -33,8 +35,16 @@ export default class Input extends Component {
     }
   }
 
+  validate(val) {
+    if (this.props.validator) {
+      return this.props.validator(val);
+    } else {
+      return true;
+    }
+  }
+
   update(newVal) {
-    this.setState({value: newVal});
+    this.setState({ value: newVal, valid: this.validate(newVal) });
   }
 
   render() {
@@ -45,11 +55,15 @@ export default class Input extends Component {
       value = state.value.toString();
     }
 
+    let valid = true;
+    let bg = colours.primary;
+    if (!this.validate(this.parseVal(value))) bg = colours.error;
+
     return (
       <View style={[styles.shadow, styles.row,
         {
           width: props.width, height: props.height, borderRadius: props.borderRadius,
-          backgroundColor: colours.primary, alignItems: 'center',
+          backgroundColor: bg, alignItems: 'center',
         }, props.style,
       ]}>
         <TouchableOpacity
