@@ -10,6 +10,7 @@ export default class ConfirmButtons extends Component {
     onCancel: null,
     width: 120,
     justify: 'space-evenly',
+    disabled: false,
   }
 
   render() {
@@ -19,11 +20,11 @@ export default class ConfirmButtons extends Component {
       <View style={[styles.row, {height: 50, justifyContent: props.justify}]}>
         <Button
           width={props.width} icon="check" btnColor={colours.success} fontColor={colours.white}
-          onPress={props.onSuccess}
+          onPress={props.onSuccess} disabled={props.disabled}
         />
         <Button
           width={props.width} icon="times" btnColor={colours.error} fontColor={colours.white}
-          onPress={props.onCancel}
+          onPress={props.onCancel} disabled={props.disabled}
         />
       </View>
     )

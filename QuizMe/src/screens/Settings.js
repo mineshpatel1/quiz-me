@@ -15,9 +15,12 @@ export default class Settings extends Component {
     let { props, state } = this;
     return (
       <Container>
-        <Header title="Settings" route="Home"/>
+        <Header title="Settings" />
         <View style={[styles.f1, styles.col, {alignItems: 'center'}]}>
-          <SettingsForm style={{flex: 1}}/>
+          <SettingsForm
+            onSave={() => {props.navigation.goBack()}}
+            onCancel={() => {props.navigation.goBack()}}
+          />
         </View>
       </Container>
     )

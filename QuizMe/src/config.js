@@ -1,6 +1,6 @@
 export const animationDuration = 300;
 
-export const settings = {
+export const defaultSettings = {
   'numQuestions': {
     label: "Number of Questions",
     default: 10,

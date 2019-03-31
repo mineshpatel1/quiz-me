@@ -15,17 +15,29 @@ export default class Button extends Component {
     padding: 25,
     btnColor: colours.light,
     fontColor: colours.grey,
+    disabled: false,
     style: null,
+    activeOpacity: 0.7,
   }
 
   render() {
     let { props } = this;
+    let btnColor = props.btnColor;
+    let onPress = props.onPress;
+    let activeOpacity = props.activeOpacity;
+
+    if (props.disabled) {
+      btnColor = colours.disabled;
+      onPress = null;
+      activeOpacity = 1;
+    }
+
     let touchableProps = {
       style: [styles.f1, styles.row, {
         paddingLeft: props.padding, borderRadius: props.borderRadius,
-        backgroundColor: props.btnColor,
+        backgroundColor: btnColor,
       }],
-      activeOpacity: 0.7, onPress: props.onPress,
+      activeOpacity: activeOpacity, onPress: onPress,
     }
 
     return (

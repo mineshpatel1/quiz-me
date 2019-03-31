@@ -37,8 +37,8 @@ export default class Input extends Component {
     }
   }
 
-  update(newVal) {
-    this.setState({ value: newVal, valid: this.validate(newVal) });
+  update(newVal, newValid) {
+    this.setState({ value: newVal, valid: newValid });
   }
 
   getKeyboardType(type) {
@@ -95,9 +95,10 @@ export default class Input extends Component {
             keyboardType={keyboardType}
             value={value} ref={x => this.input = x}
             onChangeText={(val) => {
-              val = this.parseVal(val);
-              this.update(val);
-              if (props.onChange) props.onChange(val);
+              let _val = this.parseVal(val);
+              let _valid = this.validate(_val)
+              this.update(_val, _valid);
+              if (props.onChange) props.onChange(_val, _valid);
             }}
           />
         </View>
