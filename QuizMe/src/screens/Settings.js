@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { Platform, View, StyleSheet, TouchableOpacity } from 'react-native';
+import { View } from 'react-native';
 
-import { Header, Text, Button, Input } from '../components/Core';
-import { styles } from '../styles';
+import ConfirmButtons from '../components/ConfirmButtons';
+import { Container, Header, Text, Button, Input } from '../components/Core';
+import { styles, colours } from '../styles';
 import { utils } from '../utils';
 
 export default class Settings extends Component {
@@ -27,7 +28,7 @@ export default class Settings extends Component {
     let { props, state } = this;
 
     return (
-      <View>
+      <Container>
         <Header title="Settings" route="Home"/>
         <View style={[styles.f1, styles.col, {alignItems: 'center'}]}>
           <Button style={styles.mt15} label="Test" icon="cog" onPress={() => {this.whatIsValue()}}/>
@@ -36,8 +37,15 @@ export default class Settings extends Component {
             type="int" ref={x => {this.input = x}} onChange={(val) => {this.update(val);}}
             validator={(v) => { return (3 <= v && v <= 300)}}
           />
+          <View style={[styles.f1, {width: '100%', justifyContent: 'flex-end', paddingBottom: 20}]}>
+            <ConfirmButtons
+              onSuccess={() => { console.log('Success'); }}
+              onCancel={() => { console.log('Cancel'); }}
+            />
+          </View>
         </View>
-      </View>
+
+      </Container>
     )
   }
 }

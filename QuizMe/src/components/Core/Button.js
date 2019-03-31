@@ -7,27 +7,32 @@ import { styles, colours, fonts } from '../../styles';
 
 export default class Button extends Component {
   static defaultProps = {
+    label: null,
+    icon: null,
     width: 300,
     height: 50,
     borderRadius: 50,
     padding: 25,
+    btnColor: colours.light,
     fontColor: colours.grey,
+    style: null,
   }
 
   render() {
     let { props } = this;
     let touchableProps = {
       style: [styles.f1, styles.row, {
-        paddingLeft: props.padding, borderRadius: props.borderRadius
+        paddingLeft: props.padding, borderRadius: props.borderRadius,
+        backgroundColor: props.btnColor,
       }],
-      onPress: props.onPress,
+      activeOpacity: 0.7, onPress: props.onPress,
     }
 
     return (
       <View style={[styles.shadow,
         {
           width: props.width, height: props.height, borderRadius: props.borderRadius,
-          backgroundColor: colours.light,
+          backgroundColor: colours.white,
         }, props.style
       ]}>
         {
@@ -41,6 +46,14 @@ export default class Button extends Component {
             <View style={[styles.f1, {
               justifyContent: 'center', alignItems: 'flex-end', paddingRight: props.padding,
             }]}>
+              <Icon icon={props.icon} size={20} color={props.fontColor} />
+            </View>
+          </TouchableOpacity>
+        }
+        {
+          props.icon && !props.label &&
+          <TouchableOpacity {...touchableProps}>
+            <View style={[styles.center, {width: props.width - (props.padding * 2)}]}>
               <Icon icon={props.icon} size={20} color={props.fontColor} />
             </View>
           </TouchableOpacity>
