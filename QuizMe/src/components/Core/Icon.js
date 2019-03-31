@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, TouchableOpacity } from 'react-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 
-import { colours } from '../styles';
+import { colours } from '../../styles';
 
 export default class Header extends Component {
   static defaultProps = {

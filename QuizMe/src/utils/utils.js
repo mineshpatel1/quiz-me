@@ -134,6 +134,22 @@ class utils {
   static sequence = (n) => {
     return Array.apply(null, {length: n}).map(Function.call, Number);
   }
+
+  /** Parses a value given an expected type. E.g. Turns a string to a number or vice versa. */
+  static parseValue(val, type) {
+    switch(type) {
+      case 'string':
+        return val.toString();
+      case 'int':
+        val = parseInt(val);
+        if (isNaN(val)) val = null;
+        return val;
+      case 'number':
+        val = Number(val);
+        if (isNaN(val)) val = null;
+        return val;
+    }
+  }
 }
 
 export default utils;

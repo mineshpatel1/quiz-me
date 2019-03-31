@@ -3,7 +3,7 @@ import { createStackNavigator } from 'react-navigation';
 
 import Home from '../screens/Home';
 import Settings from '../screens/Settings';
-import { animationDuration } from '../constants';
+import { animationDuration } from '../config';
 
 const customTransition = ({ position, layout, scene, scenes, index }) => {
   return {

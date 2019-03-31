@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import { Text } from 'react-native';
 
-import { fonts, colours } from '../styles';
+import { fonts, colours } from '../../styles';
 
 export default class _Text extends Component {
   static defaultProps = {
     style: {},
     bold: false,
     color: colours.grey,
+    size: 18,
   }
 
   render() {
@@ -18,7 +19,9 @@ export default class _Text extends Component {
     }
 
     return (
-      <Text style={[font, {color: props.color}, props.style]}>{this.props.children}</Text>
+      <Text style={[
+        font, {color: props.color, fontSize: props.size}, props.style
+      ]}>{this.props.children}</Text>
     )
   }
 }

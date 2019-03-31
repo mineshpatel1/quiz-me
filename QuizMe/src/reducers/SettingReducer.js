@@ -1,8 +1,8 @@
 import { INIT_SETTINGS } from '../types';
 
-const INITIAL_SETTINGS = {};
+const INITIAL_STATE = {};
 
-const settingsReducer = (state = INITIAL_SETTINGS, action) => {
+const settingsReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case INIT_SETTINGS:
       return state;

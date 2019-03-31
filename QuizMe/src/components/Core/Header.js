@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
 
-import NavigationService from '../nav/NavigationService';
 import Text from './Text';
 import Icon from './Icon';
-import { colours, fonts, styles } from '../styles';
+import NavigationService from '../../nav/NavigationService';
+import { colours, fonts, styles } from '../../styles';
 
 export default class Header extends Component {
   nav(route) {

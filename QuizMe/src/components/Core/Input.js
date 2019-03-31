@@ -3,7 +3,8 @@ import { View, TouchableOpacity, TextInput } from 'react-native';
 
 import Icon from './Icon';
 import Text from './Text';
-import { styles, fonts, colours } from '../styles';
+import { styles, fonts, colours } from '../../styles';
+import { utils } from '../../utils';
 
 export default class Input extends Component {
   static defaultProps = {
@@ -24,15 +25,8 @@ export default class Input extends Component {
     }
   }
 
-  parseVal(newVal) {
-    switch(this.props.type) {
-      case 'default':
-        return newVal;
-      case 'numeric':
-        newVal = Number(newVal);
-        if (isNaN(newVal)) newVal = null;
-        return newVal;
-    }
+  parseVal(val) {
+    return utils.parseValue(val, this.props.type);
   }
 
   validate(val) {
@@ -47,6 +41,17 @@ export default class Input extends Component {
     this.setState({ value: newVal, valid: this.validate(newVal) });
   }
 
+  getKeyboardType(type) {
+    switch (type) {
+      case 'int':
+        return 'numeric';
+      case 'number':
+        return 'numeric';
+      default:
+        return 'default';
+    }
+  }
+
   render() {
     let { props, state } = this;
 
@@ -58,6 +63,8 @@ export default class Input extends Component {
     let valid = true;
     let bg = colours.primary;
     if (!this.validate(this.parseVal(value))) bg = colours.error;
+
+    let keyboardType = this.getKeyboardType(props.type);
 
     return (
       <View style={[styles.shadow, styles.row,
@@ -85,7 +92,7 @@ export default class Input extends Component {
         }}>
           <TextInput
             style={[fonts.normal, {marginLeft: 15}]}
-            keyboardType={props.type}
+            keyboardType={keyboardType}
             value={value} ref={x => this.input = x}
             onChangeText={(val) => {
               val = this.parseVal(val);

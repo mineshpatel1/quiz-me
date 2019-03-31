@@ -1,1 +1,0 @@
-const animationDuration = 300;

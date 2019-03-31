@@ -3,7 +3,7 @@ import { View, TouchableOpacity } from 'react-native';
 
 import Text from './Text';
 import Icon from './Icon';
-import { styles, colours, fonts } from '../styles';
+import { styles, colours, fonts } from '../../styles';
 
 export default class Button extends Component {
   static defaultProps = {
