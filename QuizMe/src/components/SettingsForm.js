@@ -14,6 +14,7 @@ class SettingsForm extends Component {
   static defaultProps = {
     onSave: null,
     onCancel: null,
+    save: true,
   }
 
   constructor(props) {
@@ -73,7 +74,7 @@ class SettingsForm extends Component {
         }]}>
           <ConfirmButtons
             onSuccess={() => {
-              props.saveSettings(values);
+              if (props.save) props.saveSettings(values);
               if (props.onSave) props.onSave();
             }}
             onCancel={props.onCancel}
