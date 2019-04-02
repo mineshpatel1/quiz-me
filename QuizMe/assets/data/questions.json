@@ -1,0 +1,844 @@
+{
+    "questions": [
+        {
+            "id": 21,
+            "question": "Which pop duo was the first western band to play in The Peoples Republic of China?",
+            "options": [
+                "Wham",
+                "Simon and Garfunkel",
+                "Chas and Dave",
+                "Right Said Fred"
+            ],
+            "answer": "Wham",
+            "category_id": 1
+        },
+        {
+            "id": 67,
+            "question": "Which of these countries was not a Soviet Republic in USSR?",
+            "options": [
+                "Moldova",
+                "Serbia",
+                "Azerbaijan",
+                "Kyrgyzstan "
+            ],
+            "answer": "Serbia",
+            "category_id": 1
+        },
+        {
+            "id": 19,
+            "question": "The title of which Pink Floyd album is also a chapter in 'The Wind In The Willows'?",
+            "options": [
+                "Wish you were here",
+                "The piper at the gates of dawn",
+                "Meddle",
+                "Animals"
+            ],
+            "answer": "The piper at the gates of dawn",
+            "category_id": 1
+        },
+        {
+            "id": 65,
+            "question": "According to Persian folklore, who is the storyteller of 'One Thousand and One Nights'?",
+            "options": [
+                "Scheherazade",
+                "Kanaan",
+                "Homer",
+                "Hatshepsut "
+            ],
+            "answer": "Scheherazade",
+            "category_id": 1
+        },
+        {
+            "id": 61,
+            "question": "Which US President is most to the left on the Mount Rushmore National Memorial?",
+            "options": [
+                "George Washington",
+                "Thomas Jefferson",
+                "Theodore Roosevelt",
+                "Abraham Lincoln "
+            ],
+            "answer": "George Washington",
+            "category_id": 1
+        },
+        {
+            "id": 58,
+            "question": "Which mammal first reached Earth's orbit alive?",
+            "options": [
+                "Monkey",
+                "Dog",
+                "Cat",
+                "Human "
+            ],
+            "answer": "Dog",
+            "category_id": 1
+        },
+        {
+            "id": 8,
+            "question": "In which book is there an inn called Admiral Benbow?",
+            "options": [
+                "Lord of the Rings",
+                "Gulliver?s Travels",
+                "Treasure Island",
+                "Peter Pan"
+            ],
+            "answer": "Treasure Island",
+            "category_id": 1
+        },
+        {
+            "id": 16,
+            "question": "Fredrick Sanger invented which life saver?",
+            "options": [
+                "Insulin",
+                "Safety Pin",
+                "Inflatable Life Raft",
+                "Aspirin"
+            ],
+            "answer": "Insulin",
+            "category_id": 1
+        },
+        {
+            "id": 18,
+            "question": "Herodotus is known as the father of what?",
+            "options": [
+                "History",
+                "Medicine",
+                "Theatre",
+                "Music"
+            ],
+            "answer": "History",
+            "category_id": 1
+        },
+        {
+            "id": 31,
+            "question": "Who was the only English player to win the European Golden Boot award? ",
+            "options": [
+                "Robbie Fowler",
+                "Michael Owen",
+                "Gary Lineker",
+                "Kevin Phillips"
+            ],
+            "answer": "Kevin Phillips",
+            "category_id": 1
+        },
+        {
+            "id": 66,
+            "question": "What is the name for the Jewish New Year?",
+            "options": [
+                "Yom Kippur",
+                "Rosh Hashanah",
+                "Hanukkah",
+                "Kwanzaa "
+            ],
+            "answer": "Rosh Hashanah",
+            "category_id": 1
+        },
+        {
+            "id": 41,
+            "question": "Which country hosted the Summer Olympics in 2016?",
+            "options": [
+                "China",
+                "Brazil",
+                "Spain",
+                "Greece "
+            ],
+            "answer": "Brazil",
+            "category_id": 1
+        },
+        {
+            "id": 42,
+            "question": "What is the largest planet in our Solar System?",
+            "options": [
+                "Jupiter",
+                "Pluto",
+                "Saturn",
+                "Earth "
+            ],
+            "answer": "Jupiter",
+            "category_id": 1
+        },
+        {
+            "id": 5,
+            "question": "'Goodbye Farewell and Amen' was the final episode of which TV series?",
+            "options": [
+                "MASH",
+                "Dallas",
+                "Friends",
+                "The Muppet Show"
+            ],
+            "answer": "MASH",
+            "category_id": 1
+        },
+        {
+            "id": 9,
+            "question": "Which actor appeared in the Cranberries music video Ridiculous Thought?",
+            "options": [
+                "Bruce Willis",
+                "Donald Sutherland",
+                "George Clooney",
+                "Elijah Wood"
+            ],
+            "answer": "Elijah Wood",
+            "category_id": 1
+        },
+        {
+            "id": 54,
+            "question": "Which of these cities is closest to London, UK?",
+            "options": [
+                "Boston, MA",
+                "New York, NY",
+                "Atlanta, GA",
+                "Miami, FL "
+            ],
+            "answer": "Boston, MA",
+            "category_id": 1
+        },
+        {
+            "id": 13,
+            "question": "A 'Miller' is a move in which sport?",
+            "options": [
+                "Ice Hockey",
+                "Trampolining",
+                "Diving",
+                "Chess"
+            ],
+            "answer": "Trampolining",
+            "category_id": 1
+        },
+        {
+            "id": 34,
+            "question": "Who was the first band to play at the Cavern Club?",
+            "options": [
+                "Swinging Blue Jeans",
+                "The Merseysippi",
+                "The Beatles",
+                "Merseybeats"
+            ],
+            "answer": "The Merseysippi",
+            "category_id": 1
+        },
+        {
+            "id": 43,
+            "question": "What is the largest country, by area, that has only one time zone?",
+            "options": [
+                "Russia",
+                "China",
+                "Turkey",
+                "Australia "
+            ],
+            "answer": "China",
+            "category_id": 1
+        },
+        {
+            "id": 55,
+            "question": "What did Alfred Nobel develop?",
+            "options": [
+                "Atomic bomb",
+                "Dynamite",
+                "Nobelium",
+                "Gunpowder "
+            ],
+            "answer": "Dynamite",
+            "category_id": 1
+        },
+        {
+            "id": 7,
+            "question": "What is the name of the man servant in 'Around the world in 80 days'?",
+            "options": [
+                "Pas Partout",
+                "Cato",
+                "Giles",
+                "Machu Picchu"
+            ],
+            "answer": "Pas Partout",
+            "category_id": 1
+        },
+        {
+            "id": 51,
+            "question": "Which of these chess figures is closely related to 'Bohemian Rhapsody'?",
+            "options": [
+                "King",
+                "Queen",
+                "Bishop",
+                "Pawn "
+            ],
+            "answer": "Queen",
+            "category_id": 1
+        },
+        {
+            "id": 63,
+            "question": "Adele performed the theme song to which James Bond film?",
+            "options": [
+                "Casino Royale",
+                "Quantum of Solace",
+                "Skyfall",
+                "From Russia With Love "
+            ],
+            "answer": "Skyfall",
+            "category_id": 1
+        },
+        {
+            "id": 48,
+            "question": "Which actor does not appear in 'Saving Private Ryan'?",
+            "options": [
+                "Tom Hanks",
+                "Vin Diesel",
+                "Ralph Fiennes",
+                "Giovanni Ribisi "
+            ],
+            "answer": "Ralph Fiennes",
+            "category_id": 1
+        },
+        {
+            "id": 26,
+            "question": "In the book The Last Of The Mohicans what was the name of Chingachgook's only son?",
+            "options": [
+                "Mingo",
+                "Lightfoot",
+                "Magua",
+                "Uncas"
+            ],
+            "answer": "Uncas",
+            "category_id": 1
+        },
+        {
+            "id": 20,
+            "question": "Anemophobia is the fear of what?",
+            "options": [
+                "Spiders",
+                "The Dark",
+                "Fire",
+                "Wind"
+            ],
+            "answer": "Wind",
+            "category_id": 1
+        },
+        {
+            "id": 69,
+            "question": "What is the name of the boxer whose life story is depicted in the 1999 movie 'The Hurricane'?",
+            "options": [
+                "Muhammad Ali",
+                "Jake LaMotta",
+                "Rubin Carter",
+                "Rocky Marciano "
+            ],
+            "answer": "Rubin Carter",
+            "category_id": 1
+        },
+        {
+            "id": 52,
+            "question": "In which language was the book 'War and Peace' originally written?",
+            "options": [
+                "English",
+                "Russian",
+                "French",
+                "German "
+            ],
+            "answer": "Russian",
+            "category_id": 1
+        },
+        {
+            "id": 38,
+            "question": "On what make of motorcycle did Barry Sheene win the 500cc-world title in 1977?",
+            "options": [
+                "Kawasaki",
+                "Suzuki",
+                "Mitsubishi",
+                "Yamaha"
+            ],
+            "answer": "Suzuki",
+            "category_id": 1
+        },
+        {
+            "id": 59,
+            "question": "What funk/soul band was Lionel Richie a member of?",
+            "options": [
+                "Commodores",
+                "Amigas",
+                "Spectrums",
+                "Ataris "
+            ],
+            "answer": "Commodores",
+            "category_id": 1
+        },
+        {
+            "id": 2,
+            "question": "James Bond was searching for what kind of airplane in 'Thunderball'?",
+            "options": [
+                "707",
+                "Piper Cub",
+                "Vulkan",
+                "B-52"
+            ],
+            "answer": "Vulkan",
+            "category_id": 1
+        },
+        {
+            "id": 57,
+            "question": "What religion is the most practiced one in India?",
+            "options": [
+                "Shinto",
+                "Hinduism",
+                "Islam",
+                "Sikhism "
+            ],
+            "answer": "Hinduism",
+            "category_id": 1
+        },
+        {
+            "id": 53,
+            "question": "Other than eggs, what is a primary ingredient in Eggs Florentine?",
+            "options": [
+                "Ham",
+                "Avocado",
+                "Spinach",
+                "Gorgonzola "
+            ],
+            "answer": "Spinach",
+            "category_id": 1
+        },
+        {
+            "id": 12,
+            "question": "What is the more usual name for Roentgen Rays?",
+            "options": [
+                "X Rays",
+                "Gamma Rays",
+                "Ultraviolet Rays",
+                "Magnetic Resonance"
+            ],
+            "answer": "X Rays",
+            "category_id": 1
+        },
+        {
+            "id": 14,
+            "question": "Festfolk was the original name for which group?",
+            "options": [
+                "The Beach Boys",
+                "ABBA",
+                "Motorhead",
+                "Simon and Garfunkel"
+            ],
+            "answer": "ABBA",
+            "category_id": 1
+        },
+        {
+            "id": 44,
+            "question": "Which movie was the first to win 11 Academy Awards?",
+            "options": [
+                "Titanic",
+                "Ben-Hur",
+                "Sound of Music",
+                "LOTR: Return of the King "
+            ],
+            "answer": "Ben-Hur",
+            "category_id": 1
+        },
+        {
+            "id": 10,
+            "question": "How many earths would fit inside the sun?",
+            "options": [
+                "circa 100",
+                "circa 1,000,000",
+                "circa 10,000",
+                "circa 100,000"
+            ],
+            "answer": "circa 1,000,000",
+            "category_id": 1
+        },
+        {
+            "id": 24,
+            "question": "Off the coast of which country did the Amoco Cadiz sink?",
+            "options": [
+                "South Africa",
+                "France",
+                "USA",
+                "Spain"
+            ],
+            "answer": "France",
+            "category_id": 1
+        },
+        {
+            "id": 25,
+            "question": "The song 'An Englishman in New York' was about which man?",
+            "options": [
+                "Quentin Crisp",
+                "Sting",
+                "John Lennon",
+                "Gordon Sumner"
+            ],
+            "answer": "Quentin Crisp",
+            "category_id": 1
+        },
+        {
+            "id": 60,
+            "question": "Which of these NBA franchises has never signed LeBron James?",
+            "options": [
+                "Los Angeles Lakers",
+                "Cleveland Cavaliers",
+                "Boston Celtics",
+                "Miami Heat "
+            ],
+            "answer": "Boston Celtics",
+            "category_id": 1
+        },
+        {
+            "id": 23,
+            "question": "Speed skating originated in which country?",
+            "options": [
+                "Russia",
+                "Netherlands",
+                "Canada",
+                "Norway"
+            ],
+            "answer": "Netherlands",
+            "category_id": 1
+        },
+        {
+            "id": 36,
+            "question": "Which band was not from Liverpool?",
+            "options": [
+                "Searchers",
+                "A Flock of Seagulls",
+                "Stone the crows",
+                "OMD"
+            ],
+            "answer": "Stone the crows",
+            "category_id": 1
+        },
+        {
+            "id": 29,
+            "question": "What are the names of the two main characters in Diana Gabaldon's highland saga novels?",
+            "options": [
+                "Jamie and Claire",
+                "Fergus and Fiona",
+                "Rab and Elizabeth",
+                "Hamish and Maggie"
+            ],
+            "answer": "Jamie and Claire",
+            "category_id": 1
+        },
+        {
+            "id": 1,
+            "question": "Where did The Flowerpot Men want to go in 1967?",
+            "options": [
+                "New York",
+                "San Francisco",
+                "Woodstock",
+                "Memphis"
+            ],
+            "answer": "San Francisco",
+            "category_id": 1
+        },
+        {
+            "id": 68,
+            "question": "What temperature is the same in Celsius and Fahrenheit?",
+            "options": [
+                "+100\u00b0",
+                "+40\u00b0",
+                "-40\u00b0",
+                "0\u00b0 "
+            ],
+            "answer": "-40\u00b0",
+            "category_id": 1
+        },
+        {
+            "id": 37,
+            "question": "Which boxer twice defeated Nigel Benn in 1996?",
+            "options": [
+                "Thulani Malinga",
+                "Steve Collins",
+                "Roy Jones",
+                "Gerald McClellan"
+            ],
+            "answer": "Steve Collins",
+            "category_id": 1
+        },
+        {
+            "id": 22,
+            "question": "Timber selected from how many fully grown oak trees were needed to build a large 3 decker Royal Navy battle ship in the 18th century?",
+            "options": [
+                "50",
+                "500",
+                "1,500",
+                "3,500"
+            ],
+            "answer": "3,500",
+            "category_id": 1
+        },
+        {
+            "id": 15,
+            "question": "Hypermetropic people are what?",
+            "options": [
+                "obese",
+                "underfed",
+                "moody",
+                "far sighted"
+            ],
+            "answer": "far sighted",
+            "category_id": 1
+        },
+        {
+            "id": 40,
+            "question": "For how long is a dog pregnant?",
+            "options": [
+                "9 Weeks",
+                "9 Days",
+                "9 Months",
+                "9 Fortnights"
+            ],
+            "answer": "9 Weeks",
+            "category_id": 1
+        },
+        {
+            "id": 47,
+            "question": "Which truck is produced by the Ford Motor Company?",
+            "options": [
+                "RAV4",
+                "F-150",
+                "Silverado 1500",
+                "CR-V "
+            ],
+            "answer": "F-150",
+            "category_id": 1
+        },
+        {
+            "id": 45,
+            "question": "Which actress plays a major role on the TV show 'The Big Bang Theory'?",
+            "options": [
+                "Emily Deschanel",
+                "Sofia Vergara",
+                "Kaley Cuoco",
+                "Portia de Rossi "
+            ],
+            "answer": "Kaley Cuoco",
+            "category_id": 1
+        },
+        {
+            "id": 3,
+            "question": "Who wrote \"don't count your chickens before they are hatched\"?",
+            "options": [
+                "Aesop",
+                "Shakespeare",
+                "Ben  Franklin",
+                "Chaucer"
+            ],
+            "answer": "Aesop",
+            "category_id": 1
+        },
+        {
+            "id": 50,
+            "question": "Which of these antagonist characters was created by novelist J.K. Rowling?",
+            "options": [
+                "Lord Farqaad",
+                "Darth Vader",
+                "Lord Voldemort",
+                "Professor Moriarty "
+            ],
+            "answer": "Lord Voldemort",
+            "category_id": 1
+        },
+        {
+            "id": 46,
+            "question": "What restaurant franchise advises you to 'Eat Fresh'?",
+            "options": [
+                "Subway",
+                "McDonald's",
+                "KFC",
+                "Taco Bell "
+            ],
+            "answer": "Subway",
+            "category_id": 1
+        },
+        {
+            "id": 62,
+            "question": "Which city's landmarks include: The Pantheon, The Spanish Steps and Trevi Fountain?",
+            "options": [
+                "Rome",
+                "Athens",
+                "Barcelona",
+                "Istanbul "
+            ],
+            "answer": "Rome",
+            "category_id": 1
+        },
+        {
+            "id": 70,
+            "question": "What is the color of Donald Duck's bowtie?",
+            "options": [
+                "Red",
+                "Blue",
+                "Green",
+                "Yellow "
+            ],
+            "answer": "Red",
+            "category_id": 1
+        },
+        {
+            "id": 11,
+            "question": "What does a nidoligist study?",
+            "options": [
+                "Waves",
+                "Clouds",
+                "Bird Nests",
+                "Caves"
+            ],
+            "answer": "Bird Nests",
+            "category_id": 1
+        },
+        {
+            "id": 4,
+            "question": "Which kind of animal did Florence Nightingale often carry around in her pocket?     ",
+            "options": [
+                "Kitten",
+                "Puppy",
+                "Owl",
+                "Snake"
+            ],
+            "answer": "Owl",
+            "category_id": 1
+        },
+        {
+            "id": 27,
+            "question": "In which year did Louis Reard invent the bikini?",
+            "options": [
+                "1906",
+                "1926",
+                "1946",
+                "1966"
+            ],
+            "answer": "1946",
+            "category_id": 1
+        },
+        {
+            "id": 64,
+            "question": "What was the first successful vaccine developed in history?",
+            "options": [
+                "Scarlet Fever",
+                "Rabies",
+                "Cholera",
+                "Smallpox "
+            ],
+            "answer": "Smallpox ",
+            "category_id": 1
+        },
+        {
+            "id": 35,
+            "question": "What are Lanthanides?",
+            "options": [
+                "Elements in the periodic table",
+                "Mountains on Earth",
+                "Mountains on the Moon",
+                "Bacterium"
+            ],
+            "answer": "Elements in the periodic table",
+            "category_id": 1
+        },
+        {
+            "id": 30,
+            "question": "Julius Caesar said \"The die is cast\" after crossing which river?",
+            "options": [
+                "Danube",
+                "Rubicon",
+                "Thames",
+                "Tiber"
+            ],
+            "answer": "Rubicon",
+            "category_id": 1
+        },
+        {
+            "id": 17,
+            "question": "Which NHL hockey team has won the most Stanley Cups?",
+            "options": [
+                "Toronto Maple Leafs",
+                "Boston Bruins",
+                "Montreal Canadiens",
+                "New York Rangers"
+            ],
+            "answer": "Montreal Canadiens",
+            "category_id": 1
+        },
+        {
+            "id": 32,
+            "question": "Doris Day had a sleepy hit with which song?",
+            "options": [
+                "Pillow talk",
+                "Golden slumbers",
+                "The beds too big without you",
+                "Tears on my pillow"
+            ],
+            "answer": "Pillow talk",
+            "category_id": 1
+        },
+        {
+            "id": 56,
+            "question": "How many blue stripes does the United States of America national flag have?",
+            "options": [
+                "0",
+                "6",
+                "7",
+                "13 "
+            ],
+            "answer": "0",
+            "category_id": 1
+        },
+        {
+            "id": 6,
+            "question": "In which film do the words \"I love you\" save the planet earth?",
+            "options": [
+                "The Day After Tomorrow",
+                "The 5th Element",
+                "Mars Attacks",
+                "Independence Day"
+            ],
+            "answer": "The 5th Element",
+            "category_id": 1
+        },
+        {
+            "id": 28,
+            "question": "In which continent did the ostrich originate?",
+            "options": [
+                "Africa",
+                "Australia",
+                "North America",
+                "Asia"
+            ],
+            "answer": "Africa",
+            "category_id": 1
+        },
+        {
+            "id": 49,
+            "question": "How many spaces are on a standard Monopoly board?",
+            "options": [
+                "20",
+                "40",
+                "60",
+                "80 "
+            ],
+            "answer": "40",
+            "category_id": 1
+        },
+        {
+            "id": 39,
+            "question": "What part of the body does a turtle use to breathe?",
+            "options": [
+                "Belly",
+                "Shell",
+                "Mouth",
+                "Anus"
+            ],
+            "answer": "Anus",
+            "category_id": 1
+        },
+        {
+            "id": 33,
+            "question": "Which singer once took a bite out of a Beach Boys record during a press conference?",
+            "options": [
+                "Robbie Williams",
+                "Engelbert Humperdinck",
+                "Shane McGowan",
+                "James Blunt"
+            ],
+            "answer": "Shane McGowan",
+            "category_id": 1
+        }
+    ]
+}
