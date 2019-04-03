@@ -3,6 +3,7 @@ import { createStackNavigator } from 'react-navigation';
 
 import Home from '../screens/Home';
 import NewGame from '../screens/NewGame';
+import Game from '../screens/Game';
 import Settings from '../screens/Settings';
 import { animationDuration } from '../config';
 
@@ -48,6 +49,7 @@ const customTransition = ({ position, layout, scene, scenes, index }) => {
 const AppNavigator = createStackNavigator({
   Home: { screen: Home, navigationOptions: {title: "Quiz Me"} },
   NewGame: { screen: NewGame, navigationOptions: {title: "New Game"} },
+  Game: { screen: Game, navigationOptions: {title: "Game"} },
   Settings: { screen: Settings, navigationOptions: {title: "Settings"} },
 },
 {
