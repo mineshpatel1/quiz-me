@@ -1,6 +1,4 @@
 import { INIT_SETTINGS, SAVE_SETTINGS } from '../types';
-import { utils } from '../utils';
-import { defaultSettings } from '../config';
 
 export const initSettings = settings => ({
   type: INIT_SETTINGS,

@@ -16,3 +16,8 @@ export const defaultSettings = {
     validator: (val) => {return (3 <= val && val <= 60)},
   },
 };
+
+export const defaultTeams = [
+  {'name': 'Red', 'colour': '#ef4747'},
+  {'name': 'Blue', 'colour': '#39afe5'},
+];

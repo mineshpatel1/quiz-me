@@ -16,11 +16,11 @@ export default class Home extends Component {
         <View style={[styles.f1, styles.center]}>
           <Button
             label="New Game" icon="play"
-            onPress={() => { props.navigation.navigate('Settings', {title: 'New Game', save: false}) }}
+            onPress={() => { props.navigation.navigate('NewGame') }}
           />
           <Button
             label="Settings" icon="cog" style={styles.mt15}
-            onPress={() => { props.navigation.navigate('Settings', {title: 'Settings'}) }}
+            onPress={() => { props.navigation.navigate('Settings') }}
           />
         </View>
       </Container>

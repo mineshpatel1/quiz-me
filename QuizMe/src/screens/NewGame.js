@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import { View } from 'react-native';
 
 import SettingsForm from '../components/SettingsForm';
 import { Container, Header, Text, Button, Input } from '../components/Core';
+import { newGame } from '../actions/GameActions';
 import { styles, colours } from '../styles';
 import { utils } from '../utils';
 
-export default class Settings extends Component {
+class NewGame extends Component {
   constructor(props) {
     super(props);
   }
@@ -15,15 +18,27 @@ export default class Settings extends Component {
     let { props, state } = this;
     return (
       <Container>
-        <Header title={'Settings'} />
+        <Header title={'New Game'} />
         <View style={[styles.f1, styles.col, {alignItems: 'center'}]}>
           <SettingsForm
-            onSave={() => { props.navigation.goBack(); }}
+            onSave={(values) => {
+              props.newGame(values);
+            }}
             onCancel={() => { props.navigation.goBack(); }}
-            save={true}
+            save={false}
           />
         </View>
       </Container>
     )
   }
 }
+
+const mapStateToProps = (state) => {
+  return {}
+};
+
+const mapDispatchToProps = dispatch => (
+  bindActionCreators({ newGame }, dispatch)
+);
+
+export default connect(mapStateToProps, mapDispatchToProps)(NewGame);

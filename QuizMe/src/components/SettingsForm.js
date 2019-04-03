@@ -75,7 +75,7 @@ class SettingsForm extends Component {
           <ConfirmButtons
             onSuccess={() => {
               if (props.save) props.saveSettings(values);
-              if (props.onSave) props.onSave();
+              if (props.onSave) props.onSave(values);
             }}
             onCancel={props.onCancel}
             disabled={!valid}
