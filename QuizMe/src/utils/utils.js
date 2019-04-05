@@ -7,10 +7,6 @@ var clone = (_orig) => {
 class utils {
   constructor() {}
 
-  static test() {
-    return "SDKJDSG";
-  }
-
   /**
   Gets the index of an object array based on the value of a given key
   */

@@ -10,7 +10,7 @@ export const defaultSettings = {
   },
   'timeLimit': {
     label: "Time Limit (s)",
-    default: 60,
+    default: 10,
     icon: "clock",
     type: "int",
     validator: (val) => {return (3 <= val && val <= 60)},
