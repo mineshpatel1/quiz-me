@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import { View } from 'react-native';
 
 import { Container, Header, Text, Button, Input } from '../components/Core';
-import { styles, colours } from '../styles';
+import { styles, colours, fonts } from '../styles';
 import { utils } from '../utils';
 
 class Game extends Component {
@@ -14,11 +14,37 @@ class Game extends Component {
 
   render() {
     let { props, state } = this;
+    let turn = 1;
+
     return (
-      <Container>
-        {/* <Header title={'New Game'} /> */}
-        <View style={[styles.f1, styles.col, {alignItems: 'center'}]}>
-          <Text>{props.question.question}</Text>
+      <Container bgColor={colours.black} style={{padding: 30}}>
+        <View style={styles.aCenter}>
+          <Text color={colours.white} size={30} bold={true}>
+            {'QUESTION ' + turn.toString()}
+          </Text>
+        </View>
+        <View style={[styles.f1, styles.row, styles.aCenter]}>
+          <Text color={colours.white} size={30} align={'center'}>
+            {props.question.question}
+          </Text>
+        </View>
+        <View style={[styles.f1, styles.col]} >
+          <View style={[styles.f1, styles.row]}>
+            <View style={[styles.option, {marginBottom: 5, marginRight: 5}]}>
+              <Text size={24} align={'center'}>{props.question.options[0]}</Text>
+            </View>
+            <View style={[styles.option, {marginBottom: 5, marginLeft: 5}]}>
+              <Text size={24} align={'center'}>{props.question.options[1]}</Text>
+            </View>
+          </View>
+          <View style={[styles.f1, styles.row]}>
+            <View style={[styles.option, {marginTop: 5, marginRight: 5}]}>
+              <Text size={24} align={'center'}>{props.question.options[2]}</Text>
+            </View>
+            <View style={[styles.option, {marginTop: 5, marginLeft: 5}]}>
+              <Text size={24} align={'center'}>{props.question.options[3]}</Text>
+            </View>
+          </View>
         </View>
       </Container>
     )

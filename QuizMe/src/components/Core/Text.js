@@ -9,6 +9,7 @@ export default class _Text extends Component {
     bold: false,
     color: colours.grey,
     size: 18,
+    align: 'left',
   }
 
   render() {
@@ -20,7 +21,7 @@ export default class _Text extends Component {
 
     return (
       <Text style={[
-        font, {color: props.color, fontSize: props.size}, props.style
+        font, {color: props.color, fontSize: props.size, textAlign: props.align}, props.style
       ]}>{this.props.children}</Text>
     )
   }

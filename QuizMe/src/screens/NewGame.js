@@ -18,7 +18,7 @@ class NewGame extends Component {
     let { props, state } = this;
     return (
       <Container>
-        <Header title={'New Game'} />
+        <Header title={'New Game'} route={'Home'}/>
         <View style={[styles.f1, styles.col, {alignItems: 'center'}]}>
           <SettingsForm
             onSave={(values) => {

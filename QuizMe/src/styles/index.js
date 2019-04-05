@@ -41,6 +41,8 @@ export const styles = StyleSheet.create({
   mt15: { marginTop: 15 },
   row: { flexDirection: 'row' },
   col: { flexDirection: 'column' },
+  aCenter: { alignItems: 'center' },
+  jCenter: { justifyContent: 'center' },
   center: {
     justifyContent: 'center',
     alignItems: 'center',
@@ -64,5 +66,13 @@ export const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 5 },
     shadowOpacity: 0.8,
     shadowRadius: 5,
+  },
+  option: {
+    flex: 1,
+    backgroundColor: colours.white,
+    borderRadius: 15,
+    padding: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
