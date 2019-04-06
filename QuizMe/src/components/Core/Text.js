@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text } from 'react-native';
+import { Animated, Text } from 'react-native';
 
 import { fonts, colours } from '../../styles';
 
@@ -10,19 +10,26 @@ export default class _Text extends Component {
     color: colours.grey,
     size: 18,
     align: 'left',
+    animated: false,
   }
 
   render() {
     let { props } = this;
     let font = fonts.normal;
-    if (props.bold) {
-      font = fonts.bold;
-    }
+    if (props.bold) font = fonts.bold;
 
-    return (
-      <Text style={[
-        font, {color: props.color, fontSize: props.size, textAlign: props.align}, props.style
-      ]}>{this.props.children}</Text>
-    )
+    if (!props.animated) {
+      return (
+        <Text style={[
+          font, {color: props.color, fontSize: props.size, textAlign: props.align}, props.style
+        ]}>{this.props.children}</Text>
+      )
+    } else {
+      return (
+        <Animated.Text style={[
+          font, {color: props.color, fontSize: props.size, textAlign: props.align}, props.style
+        ]}>{this.props.children}</Animated.Text>
+      )
+    }
   }
 }

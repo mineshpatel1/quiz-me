@@ -69,7 +69,6 @@ export const styles = StyleSheet.create({
   },
   option: {
     flex: 1,
-    backgroundColor: colours.white,
     borderRadius: 15,
     padding: 10,
     justifyContent: 'center',

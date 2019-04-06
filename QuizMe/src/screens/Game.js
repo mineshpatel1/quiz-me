@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Animated, Easing, View } from 'react-native';
+import { Animated, Easing, View, TouchableOpacity } from 'react-native';
 
 import HandleBack from '../components/HandleBack';
 import Timer from '../components/Timer';
+import Option from '../components/Option';
 import { Container, Header, Text, Button, Input } from '../components/Core';
 import { styles, colours, fonts } from '../styles';
 import { utils } from '../utils';
@@ -18,9 +19,12 @@ class Game extends Component {
       inPlay: false,
       preamble: false,
       opacity: new Animated.Value(1),
+      progress: new Animated.Value(0),
     }
   }
 
+  componentDidMount() { this.mounted = true; }
+  componentWillUnmount() { this.mounted = false; }
   onBack = () => { return false; }
 
   startPreamble = () => {
@@ -28,26 +32,44 @@ class Game extends Component {
   }
 
   fade = (val, callback=null) => {
-    Animated.timing(
-      this.state.opacity,
-      {
-        toValue: val,
-        duration: animationDuration,
-        easing: Easing.ease,
-      }
-    ).start(callback);
+    utils.animate(this.state.opacity, val, animationDuration, callback);
+  }
+
+  animateProgress(val, duration, callback=null) {
+    utils.animate(this.state.progress, val, duration, callback, Easing.linear);
   }
 
   startGame = () => {
     this.fade(0, () => {
       this.setState({ preamble: false, inPlay: true });
-      this.fade(1);
+      this.animateProgress(100, 0);
+
+      this.fade(1, () => {
+        this.timer.startTimer();
+        this.animateProgress(0, this.props.game.settings.timeLimit * 1000, this.outOfTime);
+      });
     });
+  }
+
+  outOfTime = () => {
+    if (this.mounted) {
+      console.log("YOU ARE OUT OF TIME BUDDY");
+    }
   }
 
   render() {
     let { props, state } = this;
     let turn = 1;
+    let options = utils.shuffle(props.question.options);
+    let highlights = [];
+
+    for (let opt of options) {
+      if (opt == props.question.answer) {
+        highlights.push(colours.success);
+      } else {
+        highlights.push(colours.error);
+      }
+    }
 
     let preGame = (
       <Animated.View style={[styles.f1, {opacity: state.opacity}]}>
@@ -66,10 +88,12 @@ class Game extends Component {
           }
           {
             state.preamble &&
-            <Timer
-              size={30} color={colours.white} length={3}
-              format={(x) => {return x}} onFinish={this.startGame}
-            />
+            <View style={{height: 50}}>
+              <Timer
+                size={30} color={colours.white} length={1}
+                format={(x) => {return x}} onFinish={this.startGame}
+              />
+            </View>
           }
         </View>
       </Animated.View>
@@ -91,12 +115,19 @@ class Game extends Component {
           <View style={styles.f1}>
             <Timer
               color={colours.white} size={24} bold={true} align="right"
-              length={props.game.settings.timeLimit}
+              length={props.game.settings.timeLimit} auto={false}
+              ref={x => { this.timer = x }}
             >
               {0}
             </Timer>
           </View>
         </View>
+        <Animated.View style={{
+          height: 5, marginTop: 5, marginBottom: 5, backgroundColor: '#fff',
+          width: state.progress.interpolate({
+            inputRange: [0, 100], outputRange: ['0%', '100%'],
+          }),
+        }} />
         <View style={[styles.f1, styles.row, styles.aCenter]}>
           <Text color={colours.white} size={30} align={'center'}>
             {props.question.question}
@@ -104,20 +135,12 @@ class Game extends Component {
         </View>
         <View style={[styles.f1, styles.col]} >
           <View style={[styles.f1, styles.row]}>
-            <View style={[styles.option, {marginBottom: 5, marginRight: 5}]}>
-              <Text size={24} align={'center'}>{props.question.options[0]}</Text>
-            </View>
-            <View style={[styles.option, {marginBottom: 5, marginLeft: 5}]}>
-              <Text size={24} align={'center'}>{props.question.options[1]}</Text>
-            </View>
+            <Option text={options[0]} bgHighlight={highlights[0]} style={[{marginBottom: 5, marginRight: 5}]} />
+            <Option text={options[1]} bgHighlight={highlights[1]} style={[{marginBottom: 5, marginLeft: 5}]} />
           </View>
           <View style={[styles.f1, styles.row]}>
-            <View style={[styles.option, {marginTop: 5, marginRight: 5}]}>
-              <Text size={24} align={'center'}>{props.question.options[2]}</Text>
-            </View>
-            <View style={[styles.option, {marginTop: 5, marginLeft: 5}]}>
-              <Text size={24} align={'center'}>{props.question.options[3]}</Text>
-            </View>
+            <Option text={options[2]} bgHighlight={highlights[2]} style={[{marginTop: 5, marginRight: 5}]} />
+            <Option text={options[3]} bgHighlight={highlights[3]} style={[{marginTop: 5, marginLeft: 5}]} />
           </View>
         </View>
       </Animated.View>

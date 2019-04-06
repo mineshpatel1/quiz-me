@@ -1,4 +1,7 @@
 import AsyncStorage from '@react-native-community/async-storage';
+import { Animated, Easing } from 'react-native';
+
+import { animationDuration } from '../config';
 
 var clone = (_orig) => {
   return Object.assign( Object.create( Object.getPrototypeOf(_orig)), _orig);
@@ -12,6 +15,29 @@ class utils {
   */
   static indexOfArray = (_array, _key, val) => {
     return _array.map((x) => x[_key]).indexOf(val);
+  }
+
+  /**
+  Shuffles an array, randomising the order of elements in an array using
+  the Fisher-Yates method.
+  */
+  static shuffle = (array) => {
+    var currentIndex = array.length, temporaryValue, randomIndex;
+
+    // While there remain elements to shuffle...
+    while (0 !== currentIndex) {
+
+      // Pick a remaining element...
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex -= 1;
+
+      // And swap it with the current element.
+      temporaryValue = array[currentIndex];
+      array[currentIndex] = array[randomIndex];
+      array[randomIndex] = temporaryValue;
+    }
+
+    return array;
   }
 
   /**
@@ -132,7 +158,7 @@ class utils {
   }
 
   /** Parses a value given an expected type. E.g. Turns a string to a number or vice versa. */
-  static parseValue(val, type) {
+  static parseValue = (val, type) => {
     switch(type) {
       case 'string':
         return val.toString();
@@ -145,6 +171,20 @@ class utils {
         if (isNaN(val)) val = null;
         return val;
     }
+  }
+
+  /** Generic animation function. */
+  static animate = (
+    animatedValue, newVal, duration=animationDuration, callback=null, easing=Easing.ease,
+  ) => {
+    Animated.timing(
+      animatedValue,
+      {
+        toValue: newVal,
+        duration: duration,
+        easing: easing,
+      }
+    ).start(callback);
   }
 }
 

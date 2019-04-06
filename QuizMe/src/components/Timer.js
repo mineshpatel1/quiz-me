@@ -10,6 +10,7 @@ export default class Timer extends React.Component {
     format: utils.formatSeconds,
     end: 0,
     increment: 1,
+    auto: true,
   }
 
   componentDidMount() { this.mounted = true; }
@@ -23,6 +24,11 @@ export default class Timer extends React.Component {
       paused: props.paused,
     };
 
+    if (props.auto) this.startTimer();
+  }
+
+  startTimer() {
+    let { props } = this;
     this.state.intervalId = setInterval(() => {
       if (this.mounted) {
         if (this.state.timer > props.end && !this.state.paused) {
@@ -38,6 +44,8 @@ export default class Timer extends React.Component {
             ));
           }
         }
+      } else {
+        this.stopTimer();
       }
     }, 1000);
   }
