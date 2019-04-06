@@ -26,8 +26,8 @@ export default class Option extends Component {
     }
   }
 
-  highlight(colour) {
-    utils.animate(colour, 1, this.props.duration, () => {
+  highlight() {
+    utils.animate(this.state.colour, 1, this.props.duration, () => {
       this.setState({bold: true});
     });
   }
@@ -38,7 +38,7 @@ export default class Option extends Component {
       <TouchableWithoutFeedback
         onPress={() => {
           if (!props.disabled) {
-            this.highlight(state.colour);
+            this.highlight();
             if (props.onPress) props.onPress();
           }
         }}

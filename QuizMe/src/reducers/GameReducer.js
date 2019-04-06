@@ -1,5 +1,5 @@
 import { NEW_GAME } from '../types';
-import { Game } from '../objects';
+import { Game, Question } from '../objects';
 
 const questionLib = require('../../assets/data/questions.json');
 
@@ -14,6 +14,7 @@ const getQuestion = (previous, question) => {
     if (!previous.has(randomQ.id)) question = randomQ;
     i++;
   }
+  question = new Question(question);
   return { question, previous };
 }
 

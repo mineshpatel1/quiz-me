@@ -20,6 +20,7 @@ class Game extends Component {
       preamble: false,
       opacity: new Animated.Value(1),
       progress: new Animated.Value(0),
+      disabled: false,
     }
   }
 
@@ -51,6 +52,14 @@ class Game extends Component {
     });
   }
 
+  chooseAnswer = (opt) => {
+    let answer = this.props.question.answer;
+    if (opt != answer) {
+      this.options[answer].highlight(this.options[opt].state.colour);
+    }
+    this.setState({disabled: true});
+  }
+
   outOfTime = () => {
     if (this.mounted) {
       console.log("YOU ARE OUT OF TIME BUDDY");
@@ -60,15 +69,17 @@ class Game extends Component {
   render() {
     let { props, state } = this;
     let turn = 1;
-    let options = utils.shuffle(props.question.options);
-    let highlights = [];
+    let options = [];
+    this.options = {};
 
-    for (let opt of options) {
-      if (opt == props.question.answer) {
-        highlights.push(colours.success);
-      } else {
-        highlights.push(colours.error);
-      }
+    for (let opt of props.question.options) {
+      let highlight = colours.error;
+      if (opt == props.question.answer) highlight = colours.success;
+      options.push({
+        text: opt, bgHighlight: highlight, disabled: state.disabled,
+        onPress: () => { this.chooseAnswer(opt) },
+        ref: (x) => { this.options[opt] = x },
+      });
     }
 
     let preGame = (
@@ -104,12 +115,12 @@ class Game extends Component {
         <View style={[styles.row]}>
           <View style={styles.f1}>
             <Text color={colours.white} size={24} bold={true} align="left">
-              {0}
+              {props.game.score}
             </Text>
           </View>
           <View style={{flex: 3}}>
             <Text color={colours.white} size={24} bold={true} align="center">
-              {'QUESTION ' + turn.toString()}
+              {'QUESTION ' + (props.game.turn + 1)}
             </Text>
           </View>
           <View style={styles.f1}>
@@ -117,13 +128,11 @@ class Game extends Component {
               color={colours.white} size={24} bold={true} align="right"
               length={props.game.settings.timeLimit} auto={false}
               ref={x => { this.timer = x }}
-            >
-              {0}
-            </Timer>
+            />
           </View>
         </View>
         <Animated.View style={{
-          height: 5, marginTop: 5, marginBottom: 5, backgroundColor: '#fff',
+          height: 5, marginTop: 15, backgroundColor: colours.white,
           width: state.progress.interpolate({
             inputRange: [0, 100], outputRange: ['0%', '100%'],
           }),
@@ -135,12 +144,12 @@ class Game extends Component {
         </View>
         <View style={[styles.f1, styles.col]} >
           <View style={[styles.f1, styles.row]}>
-            <Option text={options[0]} bgHighlight={highlights[0]} style={[{marginBottom: 5, marginRight: 5}]} />
-            <Option text={options[1]} bgHighlight={highlights[1]} style={[{marginBottom: 5, marginLeft: 5}]} />
+            <Option {...options[0]} style={[{marginBottom: 5, marginRight: 5}]} />
+            <Option {...options[1]} style={[{marginBottom: 5, marginLeft: 5}]} />
           </View>
           <View style={[styles.f1, styles.row]}>
-            <Option text={options[2]} bgHighlight={highlights[2]} style={[{marginTop: 5, marginRight: 5}]} />
-            <Option text={options[3]} bgHighlight={highlights[3]} style={[{marginTop: 5, marginLeft: 5}]} />
+            <Option {...options[2]} style={[{marginTop: 5, marginRight: 5}]} />
+            <Option {...options[3]} style={[{marginTop: 5, marginLeft: 5}]} />
           </View>
         </View>
       </Animated.View>
