@@ -6,7 +6,8 @@ import { createAppContainer } from 'react-navigation';
 import AsyncStorage from '@react-native-community/async-storage';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import {
-  faArrowLeft, faCog, faCheck, faTimes, faQuestion, faClock, faPlay,
+  faArrowLeft, faCog, faCheck, faTimes, faQuestion, faClock, faPlay, faHome,
+  faHourglassHalf,
 } from '@fortawesome/free-solid-svg-icons';
 
 import AppNavigator from './src/nav/AppNavigator';
@@ -18,7 +19,10 @@ import { initSettings } from './src/actions/SettingActions';
 
 const AppContainer = createAppContainer(AppNavigator);
 const store = createStore(reducers);
-library.add(faArrowLeft, faCog, faCheck, faTimes, faQuestion, faClock, faPlay);
+library.add(
+  faArrowLeft, faCog, faCheck, faTimes, faQuestion, faClock, faPlay, faHome,
+  faHourglassHalf,
+);
 
 export default class App extends Component {
   constructor() {

@@ -15,6 +15,14 @@ export class Game {
   nextTurn() {
     this.turn += 1;
   }
+
+  lastTurn() {
+    return (this.turn + 1) == this.settings.numQuestions;
+  }
+
+  isOver() {
+    return (this.turn + 1) > this.settings.numQuestions;
+  }
 }
 
 export class Question {

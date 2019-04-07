@@ -1,5 +1,4 @@
 export const animationDuration = 300;
-export const waitTime = 3;
 
 export const defaultSettings = {
   'numQuestions': {
@@ -12,13 +11,15 @@ export const defaultSettings = {
   'timeLimit': {
     label: "Time Limit (s)",
     default: 10,
-    icon: "clock",
+    icon: "hourglass-half",
     type: "int",
     validator: (val) => {return (3 <= val && val <= 60)},
   },
+  'waitTime': {
+    label: "Wait Time (s)",
+    default: 3,
+    icon: "clock",
+    type: "int",
+    validator: (val) => {return (1 <= val && val <= 10)},
+  },
 };
-
-export const defaultTeams = [
-  {'name': 'Red', 'colour': '#ef4747'},
-  {'name': 'Blue', 'colour': '#39afe5'},
-];

@@ -28,7 +28,6 @@ const settingsReducer = (state = INITIAL_STATE, action) => {
         }
       }
       utils.persistStore('settings', _settings);
-      console.log(action.settings);
       return { settings: action.settings };
     default:
       return state;

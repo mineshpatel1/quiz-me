@@ -18,11 +18,13 @@ class Game extends Component {
     super(props);
 
     this.state = {
-      inPlay: false,
+      preGame: true,
+      firstTurn: true,
+      gaveOver: false,
       preamble: false,
       opacity: new Animated.Value(1),
       hudOpacity: new Animated.Value(0),
-      disabled: false,
+      disabled: true,
       chosen: null,
     }
   }
@@ -45,14 +47,15 @@ class Game extends Component {
 
   startGame = () => {
     this.fade(0, () => {
-      this.setState({ preamble: false, inPlay: true });
+      this.setState({ preamble: false, preGame: false });
 
       this.fade(1, () => {
         // Wait to allow the user to read the question
-        utils.sleep(waitTime * 1000, () => {
+        utils.sleep(this.props.game.settings.waitTime * 1000, () => {
           this.fadeHud(1, () => {
             this.timer.start();
             this.progressBar.start();
+            this.setState({firstTurn: false, disabled: false});
           });
         });
       });
@@ -85,34 +88,38 @@ class Game extends Component {
 
   nextQ = () => {
     let { props, state } = this;
-    for (_key in this.options) {
-      this.options[_key].reset();
-    }
 
     this.fade(0, () => {  // Fade out everything
-      props.nextTurn();
-      this.timer.reset();
-      this.progressBar.reset();
+      if (props.game.lastTurn()) {  // End the game otherwise
+        this.setState({gameOver: true}, () => {
+          this.fade(1);
+        });
+      } else {
+        for (_key in this.options) {
+          this.options[_key].reset();
+        }
 
-      this.fadeHud(0, null, 0);  // Hide the HUD
-      this.fade(1, () => {  // Fade question in
-        utils.sleep(waitTime * 1000, () => {  // Let the user read the question
-          this.fadeHud(1, () => {  // Fade in HUD
-            this.timer.start();
-            this.progressBar.start();
-            this.setState({chosen: null, disabled: false});
+        props.nextTurn();
+        this.timer.reset();
+        this.progressBar.reset();
+
+        this.fadeHud(0, null, 0);  // Hide the HUD
+        this.fade(1, () => {  // Fade question in
+          utils.sleep(props.game.settings.waitTime * 1000, () => {  // Let the user read the question
+            this.fadeHud(1, () => {  // Fade in HUD
+              this.timer.start();
+              this.progressBar.start();
+              this.setState({chosen: null, disabled: false});
+            });
           });
         });
-      });
-
-
+      }
     });
 
   }
 
   render() {
     let { props, state } = this;
-    let turn = 1;
     let options = [];
     this.options = {};
 
@@ -145,7 +152,7 @@ class Game extends Component {
             state.preamble &&
             <View style={{height: 50}}>
               <Timer
-                size={30} color={colours.white} length={waitTime}
+                size={30} color={colours.white} length={props.game.settings.waitTime}
                 format={(x) => {return x}} onFinish={this.startGame}
               />
             </View>
@@ -164,13 +171,13 @@ class Game extends Component {
           </View>
           <View style={{flex: 3}}>
             <Text color={colours.white} size={24} bold={true} align="center">
-              {'QUESTION ' + (props.game.turn + 1)}
+              {'Question ' + (props.game.turn + 1)}
             </Text>
           </View>
           {
-            state.disabled &&
+            state.disabled && !state.firstTurn &&
             <Timer
-              size={24} bold={true} color={colours.black} length={waitTime}
+              size={24} bold={true} color={colours.black} length={props.game.settings.waitTime}
               format={(x) => {return x}}  onFinish={this.nextQ} invisible={true}
             />
           }
@@ -206,11 +213,33 @@ class Game extends Component {
       </Animated.View>
     )
 
+    let gameOver = (
+      <Animated.View style={[styles.f1, { opacity: state.opacity }]}>
+        <View style={[styles.f1, {justifyContent: 'center'}]}>
+          <Text bold={true} size={30} color={colours.white} align="center">
+            {'GAME OVER'}
+          </Text>
+        </View>
+        <View style={styles.f1}>
+          <Text color={colours.white} size={30} bold={true} align="center">
+            {'Score: ' + props.game.score + ' / ' + props.game.settings.numQuestions}
+          </Text>
+        </View>
+        <View style={[styles.center, styles.mt15]}>
+          <Button
+            label="Back" icon="home"
+            onPress={() => { props.navigation.navigate('Home') }}
+          />
+        </View>
+      </Animated.View>
+    )
+
     return (
       <HandleBack onBack={this.onBack}>
         <Container bgColor={colours.black} style={{padding: 30}}>
-          {!state.inPlay && preGame}
-          {state.inPlay && inGame}
+          {state.preGame && preGame}
+          {!state.preGame && !state.gameOver && inGame}
+          {state.gameOver && gameOver}
         </Container>
       </HandleBack>
     )
