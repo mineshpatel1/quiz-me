@@ -9,7 +9,7 @@ export default class ProgressBar extends Component {
     colour: colours.white,
     height: 5,
     duration: 1000,
-    onComplete: null,
+    onFinish: null,
   }
 
   constructor(props) {
@@ -25,7 +25,7 @@ export default class ProgressBar extends Component {
   }
 
   start() {
-    this.animateProgress(0, this.props.duration, this.props.onComplete);
+    this.animateProgress(0, this.props.duration, this.props.onFinish);
   }
 
   stop() {

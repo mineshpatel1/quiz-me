@@ -11,6 +11,7 @@ export default class Timer extends React.Component {
     end: 0,
     increment: 1,
     auto: true,
+    invisible: false,
   }
 
   componentDidMount() { this.mounted = true; }
@@ -70,10 +71,16 @@ export default class Timer extends React.Component {
   render() {
     let {props, state} = this;
 
-    return (
-      <Text {...props}>
-        {props.format(state.timer)}
-      </Text>
-    )
+    if (!props.invisible) {
+      return (
+        <Text {...props}>
+          {props.format(state.timer)}
+        </Text>
+      )
+    } else {
+      return (
+        <View {...props} />
+      )
+    }
   }
 }

@@ -21,7 +21,7 @@ class Game extends Component {
       inPlay: false,
       preamble: false,
       opacity: new Animated.Value(1),
-      qOpacity: new Animated.Value(1),
+      hudOpacity: new Animated.Value(0),
       disabled: false,
       chosen: null,
     }
@@ -39,13 +39,22 @@ class Game extends Component {
     utils.animate(this.state.opacity, val, animationDuration, callback);
   }
 
+  fadeHud = (val, callback=null, duration=animationDuration) => {
+    utils.animate(this.state.hudOpacity, val, duration, callback);
+  }
+
   startGame = () => {
     this.fade(0, () => {
       this.setState({ preamble: false, inPlay: true });
 
       this.fade(1, () => {
-        this.timer.start();
-        this.progressBar.start();
+        // Wait to allow the user to read the question
+        utils.sleep(waitTime * 1000, () => {
+          this.fadeHud(1, () => {
+            this.timer.start();
+            this.progressBar.start();
+          });
+        });
       });
     });
   }
@@ -62,7 +71,6 @@ class Game extends Component {
     this.setState({chosen: opt, disabled: true}, () => {
       this.timer.stop();
       this.progressBar.stop();
-      this.nextQ();
     });
   }
 
@@ -70,27 +78,36 @@ class Game extends Component {
     if (this.mounted) {
       if (!this.state.chosen) {
         this.options[this.props.question.answer].highlight();
-        this.setState({chosen: null, disabled: true}, () => {
-          this.nextQ();
-        });
+        this.setState({chosen: null, disabled: true});
       }
     }
   }
 
   nextQ = () => {
     let { props, state } = this;
-    let answer = props.question.answer;
+    for (_key in this.options) {
+      this.options[_key].reset();
+    }
 
-    utils.sleep(waitTime * 1000, () => {
-      for (_key in this.options) {
-        this.options[_key].reset();
-      }
-
+    this.fade(0, () => {  // Fade out everything
       props.nextTurn();
-      this.timer.restart();
-      this.progressBar.restart();
-      this.setState({chosen: null, disabled: false});
+      this.timer.reset();
+      this.progressBar.reset();
+
+      this.fadeHud(0, null, 0);  // Hide the HUD
+      this.fade(1, () => {  // Fade question in
+        utils.sleep(waitTime * 1000, () => {  // Let the user read the question
+          this.fadeHud(1, () => {  // Fade in HUD
+            this.timer.start();
+            this.progressBar.start();
+            this.setState({chosen: null, disabled: false});
+          });
+        });
+      });
+
+
     });
+
   }
 
   render() {
@@ -139,7 +156,7 @@ class Game extends Component {
 
     let inGame = (
       <Animated.View style={[styles.f1, { opacity: state.opacity }]}>
-        <View style={[styles.row]}>
+        <Animated.View style={[styles.row, {opacity: state.hudOpacity}]}>
           <View style={styles.f1}>
             <Text color={colours.white} size={24} bold={true} align="left">
               {props.game.score}
@@ -150,6 +167,13 @@ class Game extends Component {
               {'QUESTION ' + (props.game.turn + 1)}
             </Text>
           </View>
+          {
+            state.disabled &&
+            <Timer
+              size={24} bold={true} color={colours.black} length={waitTime}
+              format={(x) => {return x}}  onFinish={this.nextQ} invisible={true}
+            />
+          }
           <View style={styles.f1}>
             <Timer
               color={colours.white} size={24} bold={true} align="right"
@@ -157,17 +181,19 @@ class Game extends Component {
               ref={x => { this.timer = x }}
             />
           </View>
-        </View>
-        <ProgressBar
-          style={styles.mt15} duration={1000 * props.game.settings.timeLimit}
-          ref={(x) => { this.progressBar = x; }} onComplete={this.outOfTime}
-        />
+        </Animated.View>
+        <Animated.View style={{opacity: state.hudOpacity}}>
+          <ProgressBar
+            style={styles.mt15} duration={1000 * props.game.settings.timeLimit}
+            ref={(x) => { this.progressBar = x; }} onFinish={this.outOfTime}
+          />
+        </Animated.View>
         <View style={[styles.f1, styles.row, styles.aCenter]}>
           <Text color={colours.white} size={30} align={'center'}>
             {props.question.question}
           </Text>
         </View>
-        <View style={[styles.f1, styles.col]} >
+        <Animated.View style={[styles.f1, styles.col, {opacity: state.hudOpacity}]} >
           <View style={[styles.f1, styles.row]}>
             <Option {...options[0]} style={[{marginBottom: 5, marginRight: 5}]} />
             <Option {...options[1]} style={[{marginBottom: 5, marginLeft: 5}]} />
@@ -176,7 +202,7 @@ class Game extends Component {
             <Option {...options[2]} style={[{marginTop: 5, marginRight: 5}]} />
             <Option {...options[3]} style={[{marginTop: 5, marginLeft: 5}]} />
           </View>
-        </View>
+        </Animated.View>
       </Animated.View>
     )
 
