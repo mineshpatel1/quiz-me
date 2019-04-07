@@ -1,4 +1,5 @@
 export const animationDuration = 300;
+export const waitTime = 3;
 
 export const defaultSettings = {
   'numQuestions': {

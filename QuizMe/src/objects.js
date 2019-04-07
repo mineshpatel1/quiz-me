@@ -8,7 +8,11 @@ export class Game {
     this.turn = 0;
   }
 
-  nextTurn(team) {
+  increment() {
+    this.score += 1;
+  }
+
+  nextTurn() {
     this.turn += 1;
   }
 }

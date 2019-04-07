@@ -3,7 +3,11 @@ import { Animated, Easing } from 'react-native';
 
 import { animationDuration } from '../config';
 
-var clone = (_orig) => {
+const _sleep = (ms) => {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+const clone = (_orig) => {
   return Object.assign( Object.create( Object.getPrototypeOf(_orig)), _orig);
 }
 
@@ -173,10 +177,16 @@ class utils {
     }
   }
 
+  /** Async function, sleeps for the given time in ms. */
+  static async sleep(ms, callback) {
+    await _sleep(ms);
+    callback();
+  }
+
   /** Generic animation function. */
-  static animate = (
+  static animate(
     animatedValue, newVal, duration=animationDuration, callback=null, easing=Easing.ease,
-  ) => {
+  ) {
     Animated.timing(
       animatedValue,
       {

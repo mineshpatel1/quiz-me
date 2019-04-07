@@ -6,10 +6,12 @@ import { Animated, Easing, View, TouchableOpacity } from 'react-native';
 import HandleBack from '../components/HandleBack';
 import Timer from '../components/Timer';
 import Option from '../components/Option';
+import ProgressBar from '../components/ProgressBar';
 import { Container, Header, Text, Button, Input } from '../components/Core';
 import { styles, colours, fonts } from '../styles';
 import { utils } from '../utils';
-import { animationDuration } from '../config';
+import { animationDuration, waitTime } from '../config';
+import { nextTurn, increment } from '../actions/GameActions';
 
 class Game extends Component {
   constructor(props) {
@@ -19,8 +21,9 @@ class Game extends Component {
       inPlay: false,
       preamble: false,
       opacity: new Animated.Value(1),
-      progress: new Animated.Value(0),
+      qOpacity: new Animated.Value(1),
       disabled: false,
+      chosen: null,
     }
   }
 
@@ -36,34 +39,58 @@ class Game extends Component {
     utils.animate(this.state.opacity, val, animationDuration, callback);
   }
 
-  animateProgress(val, duration, callback=null) {
-    utils.animate(this.state.progress, val, duration, callback, Easing.linear);
-  }
-
   startGame = () => {
     this.fade(0, () => {
       this.setState({ preamble: false, inPlay: true });
-      this.animateProgress(100, 0);
 
       this.fade(1, () => {
-        this.timer.startTimer();
-        this.animateProgress(0, this.props.game.settings.timeLimit * 1000, this.outOfTime);
+        this.timer.start();
+        this.progressBar.start();
       });
     });
   }
 
   chooseAnswer = (opt) => {
-    let answer = this.props.question.answer;
+    let { props, state } = this;
+    let answer = props.question.answer;
     if (opt != answer) {
-      this.options[answer].highlight(this.options[opt].state.colour);
+      this.options[answer].highlight();
+    } else {
+      props.increment();
     }
-    this.setState({disabled: true});
+
+    this.setState({chosen: opt, disabled: true}, () => {
+      this.timer.stop();
+      this.progressBar.stop();
+      this.nextQ();
+    });
   }
 
   outOfTime = () => {
     if (this.mounted) {
-      console.log("YOU ARE OUT OF TIME BUDDY");
+      if (!this.state.chosen) {
+        this.options[this.props.question.answer].highlight();
+        this.setState({chosen: null, disabled: true}, () => {
+          this.nextQ();
+        });
+      }
     }
+  }
+
+  nextQ = () => {
+    let { props, state } = this;
+    let answer = props.question.answer;
+
+    utils.sleep(waitTime * 1000, () => {
+      for (_key in this.options) {
+        this.options[_key].reset();
+      }
+
+      props.nextTurn();
+      this.timer.restart();
+      this.progressBar.restart();
+      this.setState({chosen: null, disabled: false});
+    });
   }
 
   render() {
@@ -101,7 +128,7 @@ class Game extends Component {
             state.preamble &&
             <View style={{height: 50}}>
               <Timer
-                size={30} color={colours.white} length={1}
+                size={30} color={colours.white} length={waitTime}
                 format={(x) => {return x}} onFinish={this.startGame}
               />
             </View>
@@ -131,12 +158,10 @@ class Game extends Component {
             />
           </View>
         </View>
-        <Animated.View style={{
-          height: 5, marginTop: 15, backgroundColor: colours.white,
-          width: state.progress.interpolate({
-            inputRange: [0, 100], outputRange: ['0%', '100%'],
-          }),
-        }} />
+        <ProgressBar
+          style={styles.mt15} duration={1000 * props.game.settings.timeLimit}
+          ref={(x) => { this.progressBar = x; }} onComplete={this.outOfTime}
+        />
         <View style={[styles.f1, styles.row, styles.aCenter]}>
           <Text color={colours.white} size={30} align={'center'}>
             {props.question.question}
@@ -174,7 +199,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = dispatch => (
-  bindActionCreators({ }, dispatch)
+  bindActionCreators({ nextTurn, increment }, dispatch)
 );
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);

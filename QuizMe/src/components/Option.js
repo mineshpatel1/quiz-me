@@ -26,9 +26,15 @@ export default class Option extends Component {
     }
   }
 
-  highlight() {
+  reset() {
+    this.setState({bold: false});
+    utils.animate(this.state.colour, 0, 0);
+  }
+
+  highlight(callback=null) {
     utils.animate(this.state.colour, 1, this.props.duration, () => {
       this.setState({bold: true});
+      if (callback) callback();
     });
   }
 

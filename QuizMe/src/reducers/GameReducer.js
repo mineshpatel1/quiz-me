@@ -1,5 +1,6 @@
-import { NEW_GAME } from '../types';
+import { NEW_GAME, NEXT_TURN, INCREMENT_SCORE } from '../types';
 import { Game, Question } from '../objects';
+import { utils } from '../utils';
 
 const questionLib = require('../../assets/data/questions.json');
 
@@ -26,14 +27,23 @@ const INITIAL_STATE = {
 
 const gameReducer = (state = INITIAL_STATE, action) => {
   let { currentGame, question, previous } = state;
-  let _newQState;
+  let _newQ;
   let _newGame;
 
   switch (action.type) {
     case NEW_GAME:
-      _newQState = getQuestion(previous, question);
+      _newQ = getQuestion(previous, question);
       _newGame = new Game(action.settings);
-      return { currentGame: _newGame, question: _newQState.question, previous: _newQState.previous };
+      return { currentGame: _newGame, question: _newQ.question, previous: _newQ.previous };
+    case NEXT_TURN:
+      currentGame.nextTurn();
+      _newQ = getQuestion(previous, question);
+      _newGame = utils.clone(currentGame);
+      return { currentGame: _newGame, question: _newQ.question, previous: _newQ.previous }
+    case INCREMENT_SCORE:
+      currentGame.increment();
+      _newGame = utils.clone(currentGame);
+      return { currentGame: _newGame, question: question, previous: previous }
     default:
       return state;
   }
