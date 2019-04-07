@@ -9,6 +9,8 @@ export default class Header extends Component {
     style: {},
     onPress: null,
     color: colours.grey,
+    icon: null,
+    size: 24,
   }
   render() {
     let { props } = this;

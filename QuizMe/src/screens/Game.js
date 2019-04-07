@@ -4,13 +4,14 @@ import { bindActionCreators } from 'redux';
 import { Animated, Easing, View, TouchableOpacity } from 'react-native';
 
 import HandleBack from '../components/HandleBack';
+import Modal from '../components/Modal';
 import Timer from '../components/Timer';
 import Option from '../components/Option';
 import ProgressBar from '../components/ProgressBar';
 import { Container, Header, Text, Button, Input } from '../components/Core';
 import { styles, colours, fonts } from '../styles';
 import { utils } from '../utils';
-import { animationDuration, waitTime } from '../config';
+import { animationDuration } from '../config';
 import { nextTurn, increment } from '../actions/GameActions';
 
 class Game extends Component {
@@ -26,12 +27,13 @@ class Game extends Component {
       hudOpacity: new Animated.Value(0),
       disabled: true,
       chosen: null,
+      paused: false,
     }
   }
 
   componentDidMount() { this.mounted = true; }
   componentWillUnmount() { this.mounted = false; }
-  onBack = () => { return false; }
+  onBack = () => { this.pause(); return true; }
 
   startPreamble = () => {
     this.setState({ preamble: true });
@@ -53,9 +55,11 @@ class Game extends Component {
         // Wait to allow the user to read the question
         utils.sleep(this.props.game.settings.waitTime * 1000, () => {
           this.fadeHud(1, () => {
-            this.timer.start();
-            this.progressBar.start();
-            this.setState({firstTurn: false, disabled: false});
+            if (this.mounted) {
+              this.timer.start();
+              this.progressBar.start();
+              this.setState({firstTurn: false, disabled: false});
+            }
           });
         });
       });
@@ -79,7 +83,7 @@ class Game extends Component {
 
   outOfTime = () => {
     if (this.mounted) {
-      if (!this.state.chosen) {
+      if (!this.state.chosen && !this.state.paused) {
         this.options[this.props.question.answer].highlight();
         this.setState({chosen: null, disabled: true});
       }
@@ -107,15 +111,36 @@ class Game extends Component {
         this.fade(1, () => {  // Fade question in
           utils.sleep(props.game.settings.waitTime * 1000, () => {  // Let the user read the question
             this.fadeHud(1, () => {  // Fade in HUD
-              this.timer.start();
-              this.progressBar.start();
-              this.setState({chosen: null, disabled: false});
+              if (this.mounted) {
+                this.timer.start();
+                this.progressBar.start();
+                this.setState({chosen: null, disabled: false});
+              }
             });
           });
         });
       }
     });
+  }
 
+  pause = () => {
+    let { state } = this;
+
+    if (state.preGame){
+      this.props.navigation.goBack();
+    } else if (state.gameOver) {
+      this.props.navigation.navigate('Home');
+    } else {
+      this.setState({paused: true});
+      this.timer.togglePaused();
+      this.progressBar.stop();
+    }
+  }
+
+  unpause = () => {
+    this.setState({paused: false});
+    this.timer.togglePaused();
+    this.progressBar.resume();
   }
 
   render() {
@@ -237,6 +262,10 @@ class Game extends Component {
     return (
       <HandleBack onBack={this.onBack}>
         <Container bgColor={colours.black} style={{padding: 30}}>
+          <Modal
+            isVisible={this.state.paused} onCancel={this.unpause}
+          >
+          </Modal>
           {state.preGame && preGame}
           {!state.preGame && !state.gameOver && inGame}
           {state.gameOver && gameOver}

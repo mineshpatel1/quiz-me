@@ -16,7 +16,6 @@ export default class ProgressBar extends Component {
     super(props);
     this.state = {
       progress: new Animated.Value(100),
-      currentProgress: null,
     }
   }
 
@@ -32,6 +31,10 @@ export default class ProgressBar extends Component {
     this.state.progress.stopAnimation((val) => {
       this.currentProgress = val;
     });
+  }
+
+  resume() {
+    this.animateProgress(0, (this.currentProgress / 100) *  this.props.duration, this.props.onFinish);
   }
 
   restart() {
