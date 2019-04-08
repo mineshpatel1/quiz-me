@@ -55,7 +55,7 @@ class Game extends Component {
         // Wait to allow the user to read the question
         utils.sleep(this.props.game.settings.waitTime * 1000, () => {
           this.fadeHud(1, () => {
-            if (this.mounted) {
+            if (this.mounted && !this.state.paused) {
               this.timer.start();
               this.progressBar.start();
               this.setState({firstTurn: false, disabled: false});
@@ -111,7 +111,7 @@ class Game extends Component {
         this.fade(1, () => {  // Fade question in
           utils.sleep(props.game.settings.waitTime * 1000, () => {  // Let the user read the question
             this.fadeHud(1, () => {  // Fade in HUD
-              if (this.mounted) {
+              if (this.mounted && !this.state.paused) {
                 this.timer.start();
                 this.progressBar.start();
                 this.setState({chosen: null, disabled: false});
@@ -132,14 +132,14 @@ class Game extends Component {
       this.props.navigation.navigate('Home');
     } else {
       this.setState({paused: true});
-      this.timer.togglePaused();
+      this.timer.stop();
       this.progressBar.stop();
     }
   }
 
   unpause = () => {
     this.setState({paused: false});
-    this.timer.togglePaused();
+    this.timer.start();
     this.progressBar.resume();
   }
 
@@ -203,7 +203,7 @@ class Game extends Component {
             state.disabled && !state.firstTurn &&
             <Timer
               size={24} bold={true} color={colours.black} length={props.game.settings.waitTime}
-              format={(x) => {return x}}  onFinish={this.nextQ} invisible={true}
+              auto={true} onFinish={this.nextQ} invisible={true}
             />
           }
           <View style={styles.f1}>

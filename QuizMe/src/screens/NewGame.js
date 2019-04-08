@@ -25,7 +25,7 @@ class NewGame extends Component {
               props.newGame(values);
               props.navigation.navigate('Game');
             }}
-            onCancel={() => { props.navigation.goBack(); }}
+            onCancel={() => { props.navigation.navigate('Home'); }}
             save={false}
           />
         </View>

@@ -12,55 +12,83 @@ export default class Timer extends React.Component {
     increment: 1,
     auto: true,
     invisible: false,
+    interval: 1000,  // Seconds
+    onFinish: null,
   }
 
-  componentDidMount() { this.mounted = true; }
-  componentWillUnmount() { this.mounted = false; }
+  componentDidMount() {
+    this.mounted = true;
+    if (this.props.auto) this.tick();
+  }
+  componentWillUnmount() {
+    clearInterval(this.state.intervalId);
+    this.mounted = false;
+  }
 
   constructor(props) {
     super(props);
 
     this.state = {
-      timer: props.length,
-      paused: props.paused,
+      timeLeft: props.length * 1000,  // Time in milliseconds
+      timeElapsed: 0,
+      displayTime: props.length,
+      prevTime: null,
+      pauseTime: null,
+      timeoutId: null,
     };
+  }
 
-    if (props.auto) this.start();
+  tick() {
+    let { props, state } = this;
+    const currentTime = Date.now();
+    let prevTime = state.prevTime;
+
+    let diff;
+    if (!state.pauseTime) {
+      diff = state.prevTime ? currentTime - state.prevTime : 0;
+    } else {
+      diff = state.prevTime ? state.pauseTime - state.prevTime: 0;
+    }
+    const timeElapsed = state.timeElapsed + diff;
+    const timeLeft = Math.max(state.timeLeft - diff, 0);
+
+    let timeout = props.interval - (timeElapsed % props.interval)
+    const finished = timeLeft <= 0;
+
+    if (this.mounted) {
+      this.setState({
+        timeoutId: finished ? null : setTimeout(() => {
+          this.tick();
+        }, timeout),
+        prevTime: currentTime,
+        timeLeft: timeLeft,
+        timeElapsed: timeElapsed,
+        displayTime: Math.round(timeLeft / 1000),
+        pauseTime: null,
+      });
+
+      if (finished && props.onFinish) props.onFinish();
+    }
   }
 
   start() {
-    let { props } = this;
-    this.state.intervalId = setInterval(() => {
-      if (this.mounted) {
-        if (this.state.timer > props.end && !this.state.paused) {
-          if ((this.state.timer - props.increment) == props.end) {
-            this.setState(prev => (
-              { timer: prev.timer - props.increment }
-            ));
-            if (props.onFinish) props.onFinish();
-            this.stop();
-          } else {
-            this.setState(prev => (
-              { timer: prev.timer - props.increment }
-            ));
-          }
-        }
-      } else {
-        this.stop();
-      }
-    }, 1000);
+    this.tick();
   }
 
   stop() {
-    clearInterval(this.state.intervalId);
-  }
-
-  togglePaused() {
-    this.setState({ paused: !this.state.paused });
+    clearInterval(this.state.timeoutId);
+    this.setState({ pauseTime: Date.now() });
   }
 
   reset() {
-    this.setState({ timer: this.props.length });
+    let { props } = this;
+    this.setState({
+      timeLeft: props.length * 1000,  // Time in milliseconds
+      timeElapsed: 0,
+      displayTime: props.length,
+      prevTime: null,
+      timeoutId: null,
+    });
   }
 
   restart() {
@@ -74,7 +102,7 @@ export default class Timer extends React.Component {
     if (!props.invisible) {
       return (
         <Text {...props}>
-          {props.format(state.timer)}
+          {props.format(state.displayTime)}
         </Text>
       )
     } else {

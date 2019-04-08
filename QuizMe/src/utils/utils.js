@@ -132,7 +132,8 @@ class utils {
   Formats an integer value of seconds into minutes and seconds with seconds
   zero-padded.
   */
-  static formatSeconds = (s) => {
+  static formatSeconds = (ms) => {
+    let s = ms;
     let mins = Math.floor(s / 60).toString();
     let secs = (s - (mins * 60)).toString();
 
