@@ -9,7 +9,7 @@ import { styles, colours } from '../styles'
 export default class CustomModal extends Component {
   static defaultProps = {
     width: 350,
-    height: 450,
+    height: 350,
     animationIn: 'slideInRight',
     animationOut: 'slideOutRight',
     theme: false,
@@ -61,9 +61,7 @@ export default class CustomModal extends Component {
             paddingLeft: sidePadding, paddingRight: sidePadding,
             paddingBottom: 15, borderRadius: 5,
           }}>
-            <View style={{
-              flex: 1, overflow: 'hidden',
-            }}>
+            <View style={[{ flex: 1, overflow: 'hidden' }, props.style]}>
               {props.children}
             </View>
           </View>

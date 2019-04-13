@@ -16,7 +16,7 @@
     "react-native": "0.59.2",
     "react-native-gesture-handler": "^1.1.0",
     "react-native-modal": "^9.0.0",
-    "react-native-svg": "^9.3.6",
+    "react-native-svg": "^9.3.7",
     "react-navigation": "^3.5.1",
     "react-redux": "^6.0.1",
     "redux": "^4.0.1"

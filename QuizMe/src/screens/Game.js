@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 import { Animated, Easing, View, TouchableOpacity } from 'react-native';
 
 import HandleBack from '../components/HandleBack';
+import ProgressCircle from '../components/ProgressCircle';
 import Modal from '../components/Modal';
 import Timer from '../components/Timer';
 import Option from '../components/Option';
@@ -22,7 +23,6 @@ class Game extends Component {
       preGame: true,
       firstTurn: true,
       gaveOver: false,
-      preamble: false,
       opacity: new Animated.Value(1),
       hudOpacity: new Animated.Value(0),
       disabled: true,
@@ -35,10 +35,6 @@ class Game extends Component {
   componentWillUnmount() { this.mounted = false; }
   onBack = () => { this.pause(); return true; }
 
-  startPreamble = () => {
-    this.setState({ preamble: true });
-  }
-
   fade = (val, callback=null) => {
     utils.animate(this.state.opacity, val, animationDuration, callback);
   }
@@ -49,13 +45,13 @@ class Game extends Component {
 
   startGame = () => {
     this.fade(0, () => {
-      this.setState({ preamble: false, preGame: false });
+      this.setState({ preGame: false });
 
       this.fade(1, () => {
         // Wait to allow the user to read the question
         utils.sleep(this.props.game.settings.waitTime * 1000, () => {
           this.fadeHud(1, () => {
-            if (this.mounted && !this.state.paused) {
+            if (this.mounted) {
               this.timer.start();
               this.progressBar.start();
               this.setState({firstTurn: false, disabled: false});
@@ -83,7 +79,7 @@ class Game extends Component {
 
   outOfTime = () => {
     if (this.mounted) {
-      if (!this.state.chosen && !this.state.paused) {
+      if (!this.state.chosen) {
         this.options[this.props.question.answer].highlight();
         this.setState({chosen: null, disabled: true});
       }
@@ -111,7 +107,7 @@ class Game extends Component {
         this.fade(1, () => {  // Fade question in
           utils.sleep(props.game.settings.waitTime * 1000, () => {  // Let the user read the question
             this.fadeHud(1, () => {  // Fade in HUD
-              if (this.mounted && !this.state.paused) {
+              if (this.mounted) {
                 this.timer.start();
                 this.progressBar.start();
                 this.setState({chosen: null, disabled: false});
@@ -126,21 +122,15 @@ class Game extends Component {
   pause = () => {
     let { state } = this;
 
-    if (state.preGame){
-      this.props.navigation.goBack();
-    } else if (state.gameOver) {
+    if (state.gameOver) {
       this.props.navigation.navigate('Home');
     } else {
       this.setState({paused: true});
-      this.timer.stop();
-      this.progressBar.stop();
     }
   }
 
   unpause = () => {
     this.setState({paused: false});
-    this.timer.start();
-    this.progressBar.resume();
   }
 
   render() {
@@ -165,23 +155,12 @@ class Game extends Component {
             {'Are you Ready?'}
           </Text>
         </View>
+        <ProgressCircle />
         <View style={[styles.center, {marginBottom: 15}]}>
-          {
-            !state.preamble &&
-            <Button
-              icon="play" btnColor={colours.success}
-              fontColor={colours.white} onPress={this.startPreamble}
-            />
-          }
-          {
-            state.preamble &&
-            <View style={{height: 50}}>
-              <Timer
-                size={30} color={colours.white} length={props.game.settings.waitTime}
-                format={(x) => {return x}} onFinish={this.startGame}
-              />
-            </View>
-          }
+          <Button
+            icon="play" btnColor={colours.success}
+            fontColor={colours.white} onPress={this.startGame}
+          />
         </View>
       </Animated.View>
     )
@@ -263,8 +242,23 @@ class Game extends Component {
       <HandleBack onBack={this.onBack}>
         <Container bgColor={colours.black} style={{padding: 30}}>
           <Modal
-            isVisible={this.state.paused} onCancel={this.unpause}
+            theme={true} isVisible={this.state.paused} onCancel={this.unpause}
+            style={[styles.center]}
           >
+            <View>
+              <Button
+                width={220} label="Resume" icon="play" onPress={() => {
+                  this.unpause();
+                }}
+              />
+              <Button
+                style={styles.mt15} width={220} label="Home" icon="home"
+                onPress={() => {
+                  this.unpause();
+                  this.props.navigation.navigate('Home');
+                }}
+              />
+            </View>
           </Modal>
           {state.preGame && preGame}
           {!state.preGame && !state.gameOver && inGame}
