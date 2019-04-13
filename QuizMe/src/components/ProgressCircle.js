@@ -24,10 +24,6 @@ export default class ProgressCircle extends Component {
 
   clampFill = fill => Math.min(100, Math.max(0, fill));
 
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     let { props } = this;
     const {

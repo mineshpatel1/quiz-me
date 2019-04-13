@@ -3,9 +3,11 @@ import { Animated, Easing, View, TouchableOpacity } from 'react-native';
 
 import { Container, Header, Text, Button, Input } from '../components/Core';
 import ProgressCircle from '../components/ProgressCircle';
+import AnimatedProgressCircle from '../components/AnimatedProgressCircle';
 import { styles, colours, fonts } from '../styles';
 
 export default class Test extends Component {
+
   constructor(props) {
     super(props);
     this.state = {
@@ -31,6 +33,21 @@ export default class Test extends Component {
             )
           }
         </ProgressCircle>
+        <AnimatedProgressCircle
+          radius={100}
+          width={5}
+          fill={75}
+          tintColor={'red'}
+          rotation={0}
+        >
+          {
+            (fill) => (
+              <Text size={36}>
+                {parseInt(fill).toString() + '%'}
+              </Text>
+            )
+          }
+        </AnimatedProgressCircle>
       </View>
     )
   }
