@@ -72,6 +72,19 @@ import com.android.build.OutputFile
  * ]
  */
 
+def getPassword(String currentUser, String keyChain) {
+  def stdout = new ByteArrayOutputStream()
+  def stderr = new ByteArrayOutputStream()
+  exec {
+    commandLine 'security', '-q', 'find-generic-password', '-a', currentUser, '-s', keyChain, '-w'
+    standardOutput = stdout
+    errorOutput = stderr
+    ignoreExitValue true
+  }
+  //noinspection GroovyAssignabilityCheck
+  stdout.toString().trim()
+}
+
 project.ext.react = [
     entryFile: "index.js"
 ]
@@ -93,6 +106,8 @@ def enableSeparateBuildPerCPUArchitecture = false
  */
 def enableProguardInReleaseBuilds = false
 
+def pass = getPassword(MAC_ADMIN_USER,RELEASE_MAC_KEYCHAIN)
+
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
 
@@ -108,6 +123,24 @@ android {
         versionCode 1
         versionName "1.0"
     }
+
+    signingConfigs {
+        release {
+            if (project.hasProperty('RELEASE_STORE_FILE')) {
+                storeFile file(RELEASE_STORE_FILE)
+                keyAlias RELEASE_KEY_ALIAS
+
+                if (project.hasProperty('RELEASE_MAC_KEYCHAIN')) {
+                  storePassword pass
+                  keyPassword pass
+                } else {
+                  storePassword RELEASE_STORE_PASSWORD
+                  keyPassword RELEASE_KEY_PASSWORD
+                }
+            }
+        }
+    }
+
     splits {
         abi {
             reset()
@@ -120,6 +153,7 @@ android {
         release {
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            signingConfig signingConfigs.release
         }
     }
     // applicationVariants are e.g. debug, release
