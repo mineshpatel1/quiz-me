@@ -15,6 +15,7 @@ class ProgressCircle extends Component {
     lineCap: 'butt',
     arcSweepAngle: 360,
     textColour: colours.grey,
+    bgColour: colours.grey,
   }
 
   circlePath(x, y, radius, startAngle, endAngle) {
@@ -81,7 +82,7 @@ class ProgressCircle extends Component {
           </G>
         </Svg>
         <View style={childContainerStyle}>
-          <Text size={parseInt(radius / 3)}>
+          <Text size={parseInt(radius / 3)} colour={props.textColour}>
             {parseInt(fill).toString() + '%'}
           </Text>
         </View>

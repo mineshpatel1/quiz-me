@@ -10,6 +10,7 @@ import Timer from '../components/Timer';
 import Option from '../components/Option';
 import ProgressBar from '../components/ProgressBar';
 import { Container, Header, Text, Button, Input } from '../components/Core';
+
 import { styles, colours, fonts } from '../styles';
 import { utils } from '../utils';
 import { animationDuration } from '../config';
@@ -223,12 +224,10 @@ class Game extends Component {
             {'GAME OVER'}
           </Text>
         </View>
-        <View style={styles.f1}>
-          {/* <Text colour={colours.white} size={30} bold={true} align="center">
-            {'Score: ' + props.game.score + ' / ' + props.game.settings.numQuestions}
-          </Text> */}
+        <View style={[styles.center, styles.f3]}>
           <ProgressCircle
-            fill={parseInt(props.game.score / props.game.settings.numQuestions)}
+            fill={parseInt((props.game.score * 100) / props.game.settings.numQuestions)}
+            textColour={colours.white} duration={1000}
           />
         </View>
         <View style={[styles.center, styles.mt15]}>

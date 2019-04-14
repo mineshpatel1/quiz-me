@@ -38,6 +38,7 @@ export const fonts = StyleSheet.create({
 export const styles = StyleSheet.create({
   f1: { flex: 1 },
   f2: { flex: 2 },
+  f3: { flex: 3 },
   mt15: { marginTop: 15 },
   row: { flexDirection: 'row' },
   col: { flexDirection: 'column' },
