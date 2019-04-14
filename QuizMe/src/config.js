@@ -17,7 +17,7 @@ export const defaultSettings = {
   },
   'waitTime': {
     label: "Wait Time (s)",
-    default: 3,
+    default: 2,
     icon: "clock",
     type: "int",
     validator: (val) => {return (1 <= val && val <= 10)},
