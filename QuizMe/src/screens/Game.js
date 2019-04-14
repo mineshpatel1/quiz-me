@@ -151,15 +151,14 @@ class Game extends Component {
     let preGame = (
       <Animated.View style={[styles.f1, {opacity: state.opacity}]}>
         <View style={[styles.f1, styles.center]}>
-          <Text color={colours.white} size={30} bold={true}>
+          <Text colour={colours.white} size={30} bold={true}>
             {'Are you Ready?'}
           </Text>
         </View>
-        <ProgressCircle />
         <View style={[styles.center, {marginBottom: 15}]}>
           <Button
-            icon="play" btnColor={colours.success}
-            fontColor={colours.white} onPress={this.startGame}
+            icon="play" btnColour={colours.success}
+            fontColour={colours.white} onPress={this.startGame}
           />
         </View>
       </Animated.View>
@@ -169,25 +168,25 @@ class Game extends Component {
       <Animated.View style={[styles.f1, { opacity: state.opacity }]}>
         <Animated.View style={[styles.row, {opacity: state.hudOpacity}]}>
           <View style={styles.f1}>
-            <Text color={colours.white} size={24} bold={true} align="left">
+            <Text colour={colours.white} size={24} bold={true} align="left">
               {props.game.score}
             </Text>
           </View>
           <View style={{flex: 3}}>
-            <Text color={colours.white} size={24} bold={true} align="center">
+            <Text colour={colours.white} size={24} bold={true} align="center">
               {'Question ' + (props.game.turn + 1)}
             </Text>
           </View>
           {
             state.disabled && !state.firstTurn &&
             <Timer
-              size={24} bold={true} color={colours.black} length={props.game.settings.waitTime}
+              size={24} bold={true} colour={colours.black} length={props.game.settings.waitTime}
               auto={true} onFinish={this.nextQ} invisible={true}
             />
           }
           <View style={styles.f1}>
             <Timer
-              color={colours.white} size={24} bold={true} align="right"
+              colour={colours.white} size={24} bold={true} align="right"
               length={props.game.settings.timeLimit} auto={false}
               ref={x => { this.timer = x }}
             />
@@ -200,7 +199,7 @@ class Game extends Component {
           />
         </Animated.View>
         <View style={[styles.f1, styles.row, styles.aCenter]}>
-          <Text color={colours.white} size={30} align={'center'}>
+          <Text colour={colours.white} size={30} align={'center'}>
             {props.question.question}
           </Text>
         </View>
@@ -220,14 +219,17 @@ class Game extends Component {
     let gameOver = (
       <Animated.View style={[styles.f1, { opacity: state.opacity }]}>
         <View style={[styles.f1, {justifyContent: 'center'}]}>
-          <Text bold={true} size={30} color={colours.white} align="center">
+          <Text bold={true} size={30} colour={colours.white} align="center">
             {'GAME OVER'}
           </Text>
         </View>
         <View style={styles.f1}>
-          <Text color={colours.white} size={30} bold={true} align="center">
+          {/* <Text colour={colours.white} size={30} bold={true} align="center">
             {'Score: ' + props.game.score + ' / ' + props.game.settings.numQuestions}
-          </Text>
+          </Text> */}
+          <ProgressCircle
+            fill={parseInt(props.game.score / props.game.settings.numQuestions)}
+          />
         </View>
         <View style={[styles.center, styles.mt15]}>
           <Button
@@ -240,7 +242,7 @@ class Game extends Component {
 
     return (
       <HandleBack onBack={this.onBack}>
-        <Container bgColor={colours.black} style={{padding: 30}}>
+        <Container bgColour={colours.black} style={{padding: 30}}>
           <Modal
             theme={true} isVisible={this.state.paused} onCancel={this.unpause}
             style={[styles.center]}

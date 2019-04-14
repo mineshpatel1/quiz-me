@@ -19,11 +19,11 @@ export default class ConfirmButtons extends Component {
     return (
       <View style={[styles.row, {height: 50, justifyContent: props.justify}]}>
         <Button
-          width={props.width} icon="check" btnColor={colours.success} fontColor={colours.white}
+          width={props.width} icon="check" btnColour={colours.success} fontColour={colours.white}
           onPress={props.onSuccess} disabled={props.disabled}
         />
         <Button
-          width={props.width} icon="times" btnColor={colours.error} fontColor={colours.white}
+          width={props.width} icon="times" btnColour={colours.error} fontColour={colours.white}
           onPress={props.onCancel} disabled={props.disabled}
         />
       </View>

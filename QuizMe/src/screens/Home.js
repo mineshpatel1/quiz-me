@@ -8,7 +8,7 @@ export default class Home extends Component {
   render() {
     let { props } = this;
     return (
-      <Container style={[styles.center, styles.bgTheme ]}>
+      <Container bgColour={colours.primary} style={[styles.center]}>
         <View style={[styles.f1, {justifyContent: 'flex-end', alignItems: 'center'}]}>
           <Image style={{width: 400, height: 150}} source={require('../../assets/images/title.png')} />
         </View>

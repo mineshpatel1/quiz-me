@@ -11,7 +11,7 @@ export default class Input extends Component {
     width: 300,
     height: 50,
     borderRadius: 50,
-    color: colours.white,
+    colour: colours.white,
     type: 'default',
     onChange: null,
     validator: null,
@@ -80,10 +80,10 @@ export default class Input extends Component {
           }]}
         >
           <View style={{paddingLeft: 20, width: 55, height: props.height, justifyContent: 'center'}}>
-            <Icon icon={props.icon} name={props.icon} color={props.color} size={20} />
+            <Icon icon={props.icon} name={props.icon} colour={props.colour} size={20} />
           </View>
           <View style={{flex: 1, height: props.height, justifyContent: 'center'}}>
-            <Text bold={true} color={props.color}>{props.label}</Text>
+            <Text bold={true} colour={props.colour}>{props.label}</Text>
           </View>
         </TouchableOpacity>
         <View style={{

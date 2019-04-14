@@ -8,7 +8,7 @@ export default class Header extends Component {
   static defaultProps = {
     style: {},
     onPress: null,
-    color: colours.grey,
+    colour: colours.grey,
     icon: null,
     size: 24,
   }
@@ -18,12 +18,12 @@ export default class Header extends Component {
       <View style={props.style}>
         {
           !props.onPress &&
-          <FontAwesomeIcon icon={props.icon} size={props.size} color={props.color} />
+          <FontAwesomeIcon icon={props.icon} size={props.size} color={props.colour} />
         }
         {
           props.onPress &&
           <TouchableOpacity onPress={props.onPress}>
-            <FontAwesomeIcon icon={props.icon} size={props.size} color={props.color} />
+            <FontAwesomeIcon icon={props.icon} size={props.size} color={props.colour} />
           </TouchableOpacity>
         }
       </View>

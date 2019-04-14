@@ -53,7 +53,7 @@ export default class App extends Component {
     if (!this.state.isReady) {
       return (
         <View style={[styles.f1, styles.center, {backgroundColor: colours.primary}]}>
-          <Text bold={true} size={24} color={colours.white}>Reticulating Splines...</Text>
+          <Text bold={true} size={24} colour={colours.white}>Reticulating Splines...</Text>
         </View>
       );
     }

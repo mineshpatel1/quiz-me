@@ -9,8 +9,8 @@ import { animationDuration } from '../config';
 export default class Option extends Component {
   static defaultProps = {
     text: "",
-    bgColor: colours.white,
-    textColor: colours.black,
+    bgColour: colours.white,
+    textColour: colours.black,
     bgHighlight: colours.black,
     textHighlight: colours.white,
     onPress: null,
@@ -51,13 +51,13 @@ export default class Option extends Component {
       >
         <Animated.View style={[{backgroundColor: state.colour.interpolate({
           inputRange: [0, 1],
-          outputRange: [props.bgColor, props.bgHighlight],
+          outputRange: [props.bgColour, props.bgHighlight],
         })}, styles.option, props.style]}>
           <Text
             animated={true} size={24} align={'center'} bold={state.bold}
-            color={state.colour.interpolate({
+            colour={state.colour.interpolate({
               inputRange: [0, 1],
-              outputRange: [props.textColor, props.textHighlight]
+              outputRange: [props.textColour, props.textHighlight]
             })}
           >
             {props.text}

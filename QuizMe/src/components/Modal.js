@@ -53,7 +53,7 @@ export default class CustomModal extends Component {
             justifyContent: 'flex-end', alignItems: 'center',
           }}>
             <TouchableOpacity onPress={props.onCancel}>
-              <Icon color={crossColour} icon={'times'} />
+              <Icon colour={crossColour} icon={'times'} />
             </TouchableOpacity>
           </View>
           <View style={{

@@ -2,16 +2,19 @@ import React, { Component } from 'react';
 import { Animated, View, Easing, } from 'react-native';
 import { Svg, Path, G } from 'react-native-svg';
 
+import { Text } from './Core';
 import { utils } from '../utils';
 import { styles, colours } from '../styles';
 
-export default class ProgressCircle extends Component {
+class ProgressCircle extends Component {
   static defaultProps = {
     radius: 100,
+    width: 5,
     tintColour: colours.primary,
-    rotation: 90,
+    rotation: 0,
     lineCap: 'butt',
     arcSweepAngle: 360,
+    textColour: colours.grey,
   }
 
   circlePath(x, y, radius, startAngle, endAngle) {
@@ -77,8 +80,64 @@ export default class ProgressCircle extends Component {
             )}
           </G>
         </Svg>
-        {children && <View style={childContainerStyle}>{children(fill)}</View>}
+        <View style={childContainerStyle}>
+          <Text size={parseInt(radius / 3)}>
+            {parseInt(fill).toString() + '%'}
+          </Text>
+        </View>
       </View>
     )
+  }
+}
+
+const AnimatedProgress = Animated.createAnimatedComponent(ProgressCircle);
+export default class AnimatedProgressCircle extends Component {
+
+  static defaultProps = {
+    duration: 500,
+    easing: Easing.quad,
+    minColour: colours.error,
+    maxColour: colours.success,
+  }
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      fill: new Animated.Value(0),
+      colour: new Animated.Value(0),
+    };
+  }
+
+  componentDidMount() {
+    this.animate();
+  }
+
+  animate(toVal, dur, ease) {
+    const toValue = toVal >= 0 ? toVal : this.props.fill;
+    const duration = dur || this.props.duration;
+    const easing = ease || this.props.easing;
+
+    Animated.timing(this.state.fill, {
+      toValue, easing, duration,
+    }).start();
+
+    Animated.timing(this.state.colour, {
+      toValue, easing, duration,
+    }).start();
+  }
+
+  render() {
+    let { state, props } = this;
+    const { fill, ...other } = props;
+
+    return (
+      <AnimatedProgress
+        {...other} fill={state.fill}
+        tintColour={state.colour.interpolate({
+          inputRange: [0, 100],
+          outputRange: [props.minColour, props.maxColour],
+        })}
+      />
+    );
   }
 }

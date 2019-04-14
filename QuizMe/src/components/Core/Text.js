@@ -7,7 +7,7 @@ export default class _Text extends Component {
   static defaultProps = {
     style: {},
     bold: false,
-    color: colours.grey,
+    colour: colours.grey,
     size: 18,
     align: 'left',
     animated: false,
@@ -21,13 +21,13 @@ export default class _Text extends Component {
     if (!props.animated) {
       return (
         <Text style={[
-          font, {color: props.color, fontSize: props.size, textAlign: props.align}, props.style
+          font, {color: props.colour, fontSize: props.size, textAlign: props.align}, props.style
         ]}>{this.props.children}</Text>
       )
     } else {
       return (
         <Animated.Text style={[
-          font, {color: props.color, fontSize: props.size, textAlign: props.align}, props.style
+          font, {color: props.colour, fontSize: props.size, textAlign: props.align}, props.style
         ]}>{this.props.children}</Animated.Text>
       )
     }

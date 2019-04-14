@@ -13,8 +13,8 @@ export default class Button extends Component {
     height: 50,
     borderRadius: 50,
     padding: 25,
-    btnColor: colours.light,
-    fontColor: colours.grey,
+    btnColour: colours.light,
+    fontColour: colours.grey,
     disabled: false,
     style: null,
     activeOpacity: 0.7,
@@ -22,12 +22,12 @@ export default class Button extends Component {
 
   render() {
     let { props } = this;
-    let btnColor = props.btnColor;
+    let btnColour = props.btnColour;
     let onPress = props.onPress;
     let activeOpacity = props.activeOpacity;
 
     if (props.disabled) {
-      btnColor = colours.disabled;
+      btnColour = colours.disabled;
       onPress = null;
       activeOpacity = 1;
     }
@@ -35,7 +35,7 @@ export default class Button extends Component {
     let touchableProps = {
       style: [styles.f1, styles.row, {
         paddingLeft: props.padding, borderRadius: props.borderRadius,
-        backgroundColor: btnColor,
+        backgroundColor: btnColour,
       }],
       activeOpacity: activeOpacity, onPress: onPress,
     }
@@ -53,12 +53,12 @@ export default class Button extends Component {
             <View style={[styles.f2, {
               justifyContent: 'center', alignItems: 'flex-start',
             }]}>
-              <Text bold={true} color={props.fontColor}>{props.label}</Text>
+              <Text bold={true} colour={props.fontColour}>{props.label}</Text>
             </View>
             <View style={[styles.f1, {
               justifyContent: 'center', alignItems: 'flex-end', paddingRight: props.padding,
             }]}>
-              <Icon icon={props.icon} size={20} color={props.fontColor} />
+              <Icon icon={props.icon} size={20} colour={props.fontColour} />
             </View>
           </TouchableOpacity>
         }
@@ -66,7 +66,7 @@ export default class Button extends Component {
           props.icon && !props.label &&
           <TouchableOpacity {...touchableProps}>
             <View style={[styles.center, {width: props.width - (props.padding * 2)}]}>
-              <Icon icon={props.icon} size={20} color={props.fontColor} />
+              <Icon icon={props.icon} size={20} colour={props.fontColour} />
             </View>
           </TouchableOpacity>
         }
