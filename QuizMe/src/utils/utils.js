@@ -187,6 +187,7 @@ class utils {
   /** Generic animation function. */
   static animate(
     animatedValue, newVal, duration=animationDuration, callback=null, easing=Easing.ease,
+    delay=0,
   ) {
     Animated.timing(
       animatedValue,
@@ -194,6 +195,7 @@ class utils {
         toValue: newVal,
         duration: duration,
         easing: easing,
+        delay: delay,
       }
     ).start(callback);
   }

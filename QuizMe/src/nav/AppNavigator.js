@@ -5,6 +5,7 @@ import Home from '../screens/Home';
 import NewGame from '../screens/NewGame';
 import Game from '../screens/Game';
 import Settings from '../screens/Settings';
+import Questions from '../screens/Questions';
 import { animationDuration } from '../config';
 
 const customTransition = ({ position, layout, scene, scenes, index }) => {
@@ -51,6 +52,7 @@ const AppNavigator = createStackNavigator({
   NewGame: { screen: NewGame, navigationOptions: {title: "New Game"} },
   Game: { screen: Game, navigationOptions: {title: "Game"} },
   Settings: { screen: Settings, navigationOptions: {title: "Settings"} },
+  Questions: { screen: Questions, navigationOptions: {title: "Questions"} },
 },
 {
   initialRouteName: "Home",

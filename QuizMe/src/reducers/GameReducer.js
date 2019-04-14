@@ -13,7 +13,9 @@ const getQuestion = (previous, question) => {
   while (!question && i < questions.length) {
     let randomQ = questions[Math.round(Math.random() * questions.length)];
     if (randomQ.hasOwnProperty('id')) {
-      if (!previous.has(randomQ.id)) question = randomQ;
+      if (randomQ.category_id == 1) {
+        if (!previous.has(randomQ.id)) question = randomQ;
+      }
     }
     i++;
   }

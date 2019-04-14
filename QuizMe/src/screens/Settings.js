@@ -7,10 +7,6 @@ import { styles, colours } from '../styles';
 import { utils } from '../utils';
 
 export default class Settings extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     let { props, state } = this;
     return (

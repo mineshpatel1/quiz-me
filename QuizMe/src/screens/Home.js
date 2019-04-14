@@ -19,6 +19,10 @@ export default class Home extends Component {
             onPress={() => { props.navigation.navigate('NewGame') }}
           />
           <Button
+            label="Questions" icon="question" style={styles.mt15}
+            onPress={() => { props.navigation.navigate('Questions') }}
+          />
+          <Button
             label="Settings" icon="cog" style={styles.mt15}
             onPress={() => { props.navigation.navigate('Settings') }}
           />

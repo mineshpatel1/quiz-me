@@ -40,6 +40,7 @@ export const styles = StyleSheet.create({
   f2: { flex: 2 },
   f3: { flex: 3 },
   mt15: { marginTop: 15 },
+  pd15: { padding: 15 },
   row: { flexDirection: 'row' },
   col: { flexDirection: 'column' },
   aCenter: { alignItems: 'center' },
