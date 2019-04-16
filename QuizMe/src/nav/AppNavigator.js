@@ -55,7 +55,7 @@ const AppNavigator = createStackNavigator({
   Questions: { screen: Questions, navigationOptions: {title: "Questions"} },
 },
 {
-  initialRouteName: "NewGame",
+  initialRouteName: "Home",
   transitionConfig: (nav) => customTransition(nav),
   defaultNavigationOptions: {
     header: null,

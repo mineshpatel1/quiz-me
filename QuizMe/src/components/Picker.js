@@ -38,25 +38,16 @@ export default class Picker extends Component {
 
   update(val) {
     this.setState({value: val, modal: false});
+    if (this.props.onChange) this.props.onChange(val);
   }
 
   render() {
     let { state, props } = this;
+    let options = [];
 
-    _options = [
-      'General Knowledge',
-      'Science',
-      'Geography',
-      'History',
-      'Quotes',
-      'Literature',
-    ]
-
-    let options = []
-    _options.forEach((opt, i) => {
+    props.options.forEach((opt, i) => {
       let bbw = 1;
-      console.log(_options.length, i + 1);
-      if (_options.length == (i + 1)) bbw = 0;
+      if (props.options.length == (i + 1)) bbw = 0;
       options.push({
         value: opt,
         bbw: bbw,

@@ -28,7 +28,6 @@ class SettingsForm extends Component {
     };
 
     for (param in defaultSettings) {
-      console.log(param, props.settings[param])
       this.state.settings[param] = props.settings[param];
       this.state.valid[param] = defaultSettings[param].validator(props.settings[param]);
     }
@@ -44,17 +43,44 @@ class SettingsForm extends Component {
 
   render() {
     let { props, state } = this;
-    let _textInputs = [];
+    let _settings = [];
+    let _textInputs2 = [];
     let _pickers = [];
     let values = {};
 
+    textInput = (i, setting) => {
+      return (
+        <Input
+          key={i} style={[{marginBottom: 15}]} icon={setting.icon}
+          value={props.settings[setting.param]} type={setting.type}
+          validator={setting.validator} label={setting.label}
+          onChange={(val, valid) => {this.update(setting.param, val, valid)}}
+        />
+      )
+    }
+
+    picker = (i, setting) => {
+      return (
+        <Picker
+          key={i} style={[{marginBottom: 15}]} icon={setting.icon}
+          value={props.settings[setting.param]} options={setting.options}
+          onChange={(val) => {this.update(setting.param, val, true)}}
+        />
+      )
+    }
+
+    let i = 0;
     for (param in defaultSettings) {
       defaultSettings[param].param = param;
       values[param] = this.state.settings[param];
 
-      if (defaultSettings[param].inputType == 'textInput') {
-        _textInputs.push(defaultSettings[param]);
+      let setting = defaultSettings[param];
+      if (setting.inputType == 'textInput') {
+        _settings.push(textInput(i, setting));
+      } else if (setting.inputType == 'picker') {
+        _settings.push(picker(i, setting));
       }
+      i += 1;
     }
     let valid = Object.values(this.state.valid).every((x) => {return x});
 
@@ -65,19 +91,9 @@ class SettingsForm extends Component {
         ]}>
           <ScrollView contentContainerStyle={{alignItems: 'center', paddingTop: 15}}>
             {
-              _textInputs.map((setting, i) => (
-                <Input
-                  key={i} style={[{marginBottom: 15}]} icon={setting.icon}
-                  value={props.settings[setting.param]} type={setting.type}
-                  validator={setting.validator} label={setting.label}
-                  onChange={(val, valid) => {this.update(setting.param, val, valid)}}
-                />
-              ))
-            }
-            {
-              _pickers.map((setting, i) => (
-                <Picker icon="th" value="General Knowledge" />
-              ))
+              _settings.map((setting, i) => {
+                return setting;
+              })
             }
           </ScrollView>
         </View>
