@@ -67,14 +67,14 @@ export default class Input extends Component {
     let keyboardType = this.getKeyboardType(props.type);
 
     return (
-      <View style={[styles.shadow, styles.row,
+      <View style={[styles.shadow, styles.row, styles.aCenter,
         {
           width: props.width, height: props.height, borderRadius: props.borderRadius,
-          backgroundColor: bg, alignItems: 'center',
+          backgroundColor: bg,
         }, props.style,
       ]}>
         <TouchableOpacity
-          onPress={() => { this.input.focus() }} activeOpacity={0.85}
+          onPress={() => { this.input.focus(); }} activeOpacity={0.85}
           style={[styles.row, {
             flex: 4, borderTopLeftRadius: props.borderRadius, borderBottomLeftRadius: props.borderRadius,
           }]}
@@ -96,7 +96,7 @@ export default class Input extends Component {
             value={value} ref={x => this.input = x}
             onChangeText={(val) => {
               let _val = this.parseVal(val);
-              let _valid = this.validate(_val)
+              let _valid = this.validate(_val);
               this.update(_val, _valid);
               if (props.onChange) props.onChange(_val, _valid);
             }}

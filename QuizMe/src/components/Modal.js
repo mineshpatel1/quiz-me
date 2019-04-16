@@ -13,11 +13,13 @@ export default class CustomModal extends Component {
     animationIn: 'slideInRight',
     animationOut: 'slideOutRight',
     theme: false,
+    sidePadding: 35,
+    paddingBottom: 15,
+    closeBtn: true,
   }
   render() {
     let { props } = this;
 
-    const sidePadding = 35;
     let bgColour = colours.white;
     let crossColour = colours.error;
 
@@ -25,6 +27,9 @@ export default class CustomModal extends Component {
       bgColour = colours.primary;
       crossColour = colours.white;
     }
+
+    let mainHeight = props.height;
+    if (props.closeBtn) mainHeight = props.height - 45;
 
     return (
       <Modal
@@ -47,19 +52,22 @@ export default class CustomModal extends Component {
             backgroundColor: bgColour, borderRadius: 5,
           },
         ]}>
+          {
+            props.closeBtn &&
+            <View style={{
+              height: 45, width: props.width, borderRadius: 0,
+              flexDirection: 'row', paddingRight: 15,
+              justifyContent: 'flex-end', alignItems: 'center',
+            }}>
+              <TouchableOpacity onPress={props.onCancel}>
+                <Icon colour={crossColour} icon={'times'} />
+              </TouchableOpacity>
+            </View>
+          }
           <View style={{
-            height: 45, width: props.width, borderRadius: 0,
-            flexDirection: 'row', paddingRight: 15,
-            justifyContent: 'flex-end', alignItems: 'center',
-          }}>
-            <TouchableOpacity onPress={props.onCancel}>
-              <Icon colour={crossColour} icon={'times'} />
-            </TouchableOpacity>
-          </View>
-          <View style={{
-            width: props.width, height: props.height - 45,
-            paddingLeft: sidePadding, paddingRight: sidePadding,
-            paddingBottom: 15, borderRadius: 5,
+            width: props.width, height: mainHeight,
+            paddingLeft: props.sidePadding, paddingRight: props.sidePadding,
+            paddingBottom: props.paddingBottom, borderRadius: 5,
           }}>
             <View style={[{ flex: 1, overflow: 'hidden' }, props.style]}>
               {props.children}
