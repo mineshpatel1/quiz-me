@@ -71,6 +71,13 @@ class utils {
     return false;
   }
 
+  /** Finds a key of an object from a given value property. */
+  static getKeyFromVal = (_obj, _prop, _val) => {
+    for (key in _obj) {
+      if (_obj[key][_prop] == _val) return key;
+    }
+  }
+
   /** Finds the numeric index of an object within an array. */
   static containsObj = (_obj, _array) => {
     for (let i = 0; i < _array.length; i++) {

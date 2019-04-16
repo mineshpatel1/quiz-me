@@ -1,16 +1,16 @@
 export const animationDuration = 300;
 
 export const categories = {
-  1: {name: 'General Knowledge', icon: 'question'},
-  2: {name: 'Sports', icon: 'futbol'},
-  3: {name: 'Science', icon: 'atom'},
-  4: {name: 'Geography', icon: 'globe-americas'},
-  5: {name: 'History', icon: 'landmark'},
-  6: {name: 'TV & Film', icon: 'film'},
-  7: {name: 'Music', icon: 'music'},
-  8: {name: 'Literature', icon: 'book'},
-  9: {name: 'Quotes', icon: 'quote-right'},
-  10:{name:  'Mythology', icon: 'ankh'},
+  1: {id: 1, name: 'General Knowledge', icon: 'question'},
+  2: {id: 2, name: 'Sports', icon: 'futbol'},
+  3: {id: 3, name: 'Science', icon: 'atom'},
+  4: {id: 4, name: 'Geography', icon: 'globe-americas'},
+  5: {id: 5, name: 'History', icon: 'landmark'},
+  6: {id: 6, name: 'TV & Film', icon: 'film'},
+  7: {id: 7, name: 'Music', icon: 'music'},
+  8: {id: 8, name: 'Literature', icon: 'book'},
+  9: {id: 9, name: 'Quotes', icon: 'quote-right'},
+  10:{id: 10, name:  'Mythology', icon: 'ankh'},
 }
 
 export const defaultSettings = {

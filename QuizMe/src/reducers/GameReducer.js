@@ -1,10 +1,11 @@
 import { NEW_GAME, NEXT_TURN, INCREMENT_SCORE } from '../types';
 import { Game, Question } from '../objects';
 import { utils } from '../utils';
+import { categories } from '../config';
 
 const questionLib = require('../../assets/data/questions.json');
 
-const getQuestion = (previous, question) => {
+const getQuestion = (previous, question, category='General Knowledge') => {
   let questions = questionLib.questions;
   if (question) previous.add(question.id);
 
@@ -13,7 +14,8 @@ const getQuestion = (previous, question) => {
   while (!question && i < questions.length) {
     let randomQ = questions[Math.round(Math.random() * questions.length)];
     if (randomQ.hasOwnProperty('id')) {
-      if (randomQ.category_id == 1) {
+      let category_id = utils.getKeyFromVal(categories, 'name', category);
+      if (randomQ.category_id == category_id) {
         if (!previous.has(randomQ.id)) question = randomQ;
       }
     }
@@ -36,12 +38,12 @@ const gameReducer = (state = INITIAL_STATE, action) => {
 
   switch (action.type) {
     case NEW_GAME:
-      _newQ = getQuestion(previous, question);
+      _newQ = getQuestion(previous, question, action.settings.category);
       _newGame = new Game(action.settings);
       return { currentGame: _newGame, question: _newQ.question, previous: _newQ.previous };
     case NEXT_TURN:
       currentGame.nextTurn();
-      _newQ = getQuestion(previous, question);
+      _newQ = getQuestion(previous, question, currentGame.settings.category);
       _newGame = utils.clone(currentGame);
       return { currentGame: _newGame, question: _newQ.question, previous: _newQ.previous }
     case INCREMENT_SCORE:
