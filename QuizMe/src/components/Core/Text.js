@@ -20,15 +20,19 @@ export default class _Text extends Component {
 
     if (!props.animated) {
       return (
-        <Text style={[
-          font, {color: props.colour, fontSize: props.size, textAlign: props.align}, props.style
-        ]}>{this.props.children}</Text>
+        <Text
+          style={[
+            font, {color: props.colour, fontSize: props.size, textAlign: props.align}, props.style
+          ]}
+        >{this.props.children}</Text>
       )
     } else {
       return (
-        <Animated.Text style={[
-          font, {color: props.colour, fontSize: props.size, textAlign: props.align}, props.style
-        ]}>{this.props.children}</Animated.Text>
+        <Animated.Text
+          style={[
+            font, {color: props.colour, fontSize: props.size, textAlign: props.align}, props.style
+          ]}
+        >{this.props.children}</Animated.Text>
       )
     }
   }

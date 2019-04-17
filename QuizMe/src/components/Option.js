@@ -16,6 +16,7 @@ export default class Option extends Component {
     onPress: null,
     duration: animationDuration,
     disabled: false,
+    textSize: 24,
   }
 
   constructor(props) {
@@ -40,6 +41,8 @@ export default class Option extends Component {
 
   render() {
     let { props, state } = this;
+    console.log(props.text.length);
+
     return (
       <TouchableWithoutFeedback
         onPress={() => {
@@ -49,12 +52,13 @@ export default class Option extends Component {
           }
         }}
       >
-        <Animated.View style={[{backgroundColor: state.colour.interpolate({
-          inputRange: [0, 1],
-          outputRange: [props.bgColour, props.bgHighlight],
-        })}, styles.option, props.style]}>
+        <Animated.View style={[{
+          backgroundColor: state.colour.interpolate({
+            inputRange: [0, 1],
+            outputRange: [props.bgColour, props.bgHighlight],
+          })}, styles.option, props.style]}>
           <Text
-            animated={true} size={24} align={'center'} bold={state.bold}
+            animated={true} size={props.textSize} align={'center'} bold={state.bold}
             colour={state.colour.interpolate({
               inputRange: [0, 1],
               outputRange: [props.textColour, props.textHighlight]

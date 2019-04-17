@@ -9,9 +9,9 @@ import Modal from '../components/Modal';
 import Timer from '../components/Timer';
 import Option from '../components/Option';
 import ProgressBar from '../components/ProgressBar';
-import { Container, Header, Text, Button, Input } from '../components/Core';
+import { Container, Text, Button } from '../components/Core';
 
-import { styles, colours, fonts } from '../styles';
+import { styles, colours } from '../styles';
 import { utils } from '../utils';
 import { animationDuration } from '../config';
 import { nextTurn, increment } from '../actions/GameActions';

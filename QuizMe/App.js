@@ -8,7 +8,8 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import {
   faArrowLeft, faCog, faCheck, faTimes, faQuestion, faClock, faPlay, faHome,
   faHourglassHalf, faFutbol, faAtom, faGlobeAmericas, faLandmark, faFilm,
-  faMusic, faBook, faQuoteRight, faAnkh, faTh, faCaretDown,
+  faMusic, faBook, faQuoteRight, faAnkh, faTh, faCaretDown, faChevronLeft,
+  faChevronRight,
 } from '@fortawesome/free-solid-svg-icons';
 
 import AppNavigator from './src/nav/AppNavigator';
@@ -23,7 +24,8 @@ const store = createStore(reducers);
 library.add(
   faArrowLeft, faCog, faCheck, faTimes, faQuestion, faClock, faPlay, faHome,
   faHourglassHalf, faFutbol, faAtom, faGlobeAmericas, faLandmark, faFilm,
-  faMusic, faBook, faQuoteRight, faAnkh, faTh, faCaretDown,
+  faMusic, faBook, faQuoteRight, faAnkh, faTh, faCaretDown, faChevronLeft,
+  faChevronRight,
 );
 
 export default class App extends Component {
