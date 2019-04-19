@@ -74,6 +74,8 @@ class GameSummary extends Component {
       questions.push(q);
     }
 
+    console.log(questions);
+
     return (
       <Container bgColour={colours.black}>
         <View style={[styles.row]}>
@@ -93,9 +95,12 @@ class GameSummary extends Component {
         </View>
         <View style={[styles.f1, styles.row, {marginBottom: 10}]}>
           <View style={[styles.col, styles.center, {width: '10%'}]}>
-            <TouchableOpacity onPress={() => this.left()}>
-              <Icon icon='chevron-left' colour={colours.white} />
-            </TouchableOpacity>
+            {
+              (state.index > 0) &&
+              <TouchableOpacity onPress={() => this.left()}>
+                <Icon icon='chevron-left' colour={colours.white} />
+              </TouchableOpacity>
+            }
           </View>
           <View style={[{width: '80%', overflow: 'hidden'}]} onLayout={this.onLayout}>
             <View style={[ styles.row, {
@@ -130,9 +135,12 @@ class GameSummary extends Component {
             </View>
           </View>
           <View style={[styles.col, styles.center, {width: '10%'}]}>
-            <TouchableOpacity onPress={() => this.right()}>
-              <Icon icon='chevron-right' colour={colours.white} />
-            </TouchableOpacity>
+            {
+              ((state.index + 1) < questions.length) &&
+              <TouchableOpacity onPress={() => this.right()}>
+                <Icon icon='chevron-right' colour={colours.white} />
+              </TouchableOpacity>
+            }
           </View>
         </View>
         <View style={[styles.row, styles.center]}>

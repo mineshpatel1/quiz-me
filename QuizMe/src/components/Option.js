@@ -43,6 +43,16 @@ export default class Option extends Component {
   render() {
     let { props, state } = this;
 
+    let textSize = props.textSize;
+
+    if (props.text.length > 80) {
+      textSize -= 3;
+    } else if (props.text.length > 65) {
+      textSize -= 2;
+    } else if (props.text.length > 50) {
+      textSize -= 1;
+    }
+
     return (
       <TouchableWithoutFeedback
         onPress={() => {
@@ -58,7 +68,7 @@ export default class Option extends Component {
             outputRange: [props.bgColour, props.bgHighlight],
           })}, styles.option, props.style]}>
           <Text
-            animated={true} size={props.textSize} align={'center'} bold={state.bold}
+            animated={true} size={textSize} align={'center'} bold={state.bold}
             colour={state.colour.interpolate({
               inputRange: [0, 1],
               outputRange: [props.textColour, props.textHighlight]
