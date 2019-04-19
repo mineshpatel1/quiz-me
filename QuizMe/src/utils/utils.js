@@ -193,9 +193,10 @@ class utils {
 
   /** Generic animation function. */
   static animate(
-    animatedValue, newVal, duration=animationDuration, callback=null, easing=Easing.ease,
+    animatedValue, newVal, duration=null, callback=null, easing=Easing.ease,
     delay=0,
   ) {
+    if (!duration && duration != 0) duration = animationDuration;
     Animated.timing(
       animatedValue,
       {

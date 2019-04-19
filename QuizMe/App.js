@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Animated, View } from 'react-native';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import { createAppContainer } from 'react-navigation';
@@ -17,6 +17,7 @@ import NavigationService from './src/nav/NavigationService';
 import reducers from './src/reducers/index';
 import { Text } from './src/components/Core';
 import { styles, colours } from './src/styles';
+import { utils } from './src/utils';
 import { initSettings } from './src/actions/SettingActions';
 
 const AppContainer = createAppContainer(AppNavigator);
@@ -32,7 +33,8 @@ export default class App extends Component {
   constructor() {
     super();
     this.state = {
-      isReady: false
+      isReady: false,
+      opacity: new Animated.Value(1),
     };
   }
 
@@ -50,14 +52,20 @@ export default class App extends Component {
 
   async componentWillMount() {
     await this.retrieveItem('settings', initSettings);
-    this.setState({ isReady: true });
+    utils.animate(this.state.opacity, 0, null, () => {
+      this.setState({ isReady: true });
+    });
   }
 
   render() {
-    if (!this.state.isReady) {
+    let { state } = this;
+
+    if (!state.isReady) {
       return (
-        <View style={[styles.f1, styles.center, {backgroundColor: colours.primary}]}>
-          <Text bold={true} size={24} colour={colours.white}>Reticulating Splines...</Text>
+        <View style={[styles.f1, styles.center, { backgroundColor: colours.primary }]}>
+          <Animated.View style={{opacity: state.opacity}}>
+            <Text bold={true} size={24} colour={colours.white}>Reticulating Splines...</Text>
+          </Animated.View>
         </View>
       );
     }
