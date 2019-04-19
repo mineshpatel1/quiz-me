@@ -237,7 +237,7 @@ class Game extends Component {
             onPress={() => { props.navigation.navigate('GameSummary') }}
           />
           <Button
-            label="Back" icon="home" style={styles.mt15}
+            label="Home" icon="home" style={styles.mt15}
             onPress={() => { props.navigation.navigate('Home') }}
           />
         </View>
