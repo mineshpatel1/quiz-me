@@ -150,6 +150,8 @@ class Game extends Component {
       });
     }
 
+    let qTextSize = utils.scaleText(props.question, 30);
+
     let preGame = (
       <Animated.View style={[styles.f1, {opacity: state.opacity}]}>
         <View style={[styles.f1, styles.center]}>
@@ -201,7 +203,7 @@ class Game extends Component {
           />
         </Animated.View>
         <View style={[styles.f1, styles.row, styles.aCenter]}>
-          <Text colour={colours.white} size={30} align={'center'}>
+          <Text colour={colours.white} size={qTextSize} align={'center'}>
             {props.question.question}
           </Text>
         </View>

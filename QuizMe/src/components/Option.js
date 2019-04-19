@@ -42,16 +42,7 @@ export default class Option extends Component {
 
   render() {
     let { props, state } = this;
-
-    let textSize = props.textSize;
-
-    if (props.text.length > 80) {
-      textSize -= 3;
-    } else if (props.text.length > 65) {
-      textSize -= 2;
-    } else if (props.text.length > 50) {
-      textSize -= 1;
-    }
+    let textSize = utils.scaleText(props.text, props.textSize);
 
     return (
       <TouchableWithoutFeedback

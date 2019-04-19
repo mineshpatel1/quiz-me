@@ -216,6 +216,18 @@ class utils {
       y: centerY + radius * Math.sin(angleInRadians),
     };
   }
+
+  /** Reduces text size for long strings. */
+  static scaleText(text, size) {
+    if (text.length > 80) {
+      size -= 3;
+    } else if (text.length > 65) {
+      size -= 2;
+    } else if (text.length > 50) {
+      size -= 1;
+    }
+    return size;
+  }
 }
 
 export default utils;
