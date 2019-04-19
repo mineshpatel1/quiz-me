@@ -542,7 +542,7 @@
         },
         {
             "id": 155,
-            "question": "What is capital city of Australia?<br/>",
+            "question": "What is capital city of Australia?",
             "options": [
                 "Sydney",
                 "Melbourne",
@@ -590,7 +590,7 @@
         },
         {
             "id": 103,
-            "question": "Countries not speaking Spanish in Latin America?<br/>",
+            "question": "Countries not speaking Spanish in Latin America?",
             "options": [
                 "Brazil",
                 "Argentina",
@@ -770,7 +770,7 @@
         },
         {
             "id": 412,
-            "question": "Which country does not have a desert?<br/>",
+            "question": "Which country does not have a desert?",
             "options": [
                 "Russia",
                 "United States",
@@ -902,7 +902,7 @@
         },
         {
             "id": 161,
-            "question": "Which are true about Rainbow Nation?<a class=\"SetPageTerm-definitionText\" style=\"color: rgb(45, 54, 57);\"><span class=\"TermText notranslate lang-en qDef\"><br/><br/></span></a>",
+            "question": "Which are true about Rainbow Nation?",
             "options": [
                 "It was a term coined by Archbishop Desmond Tutu",
                 "Refers to post-apartheid South Africa, after South Africa's first fully democratic election in 1994",
@@ -1118,7 +1118,7 @@
         },
         {
             "id": 202,
-            "question": "Which countries use french?<br/>",
+            "question": "Which countries use french?",
             "options": [
                 "Portugal",
                 "Belgium",
@@ -3230,7 +3230,7 @@
         },
         {
             "id": 51,
-            "question": "How many language India has officially?<br/>",
+            "question": "How many language India has officially?",
             "options": [
                 "1",
                 "2",
@@ -3962,7 +3962,7 @@
         },
         {
             "id": 459,
-            "question": "\u201cAmerica will never be destroyed from the outside. If we falter and lose our freedoms, it will be because we destroyed ourselves\u201d ",
+            "question": "America will never be destroyed from the outside. If we falter and lose our freedoms, it will be because we destroyed ourselves.",
             "options": [
                 "George Bush",
                 "George Washington",
@@ -3974,7 +3974,7 @@
         },
         {
             "id": 419,
-            "question": "What is a capital city of Canada?<br/>",
+            "question": "What is a capital city of Canada?",
             "options": [
                 "Montreal",
                 "Vanqouver",
@@ -5162,7 +5162,7 @@
         },
         {
             "id": 110,
-            "question": "Which of these are said about Elvis Presley?people say he's alive; supposedly been seen various times in various places<br style=\"color: rgb(45, 54, 57);\"/><br/>",
+            "question": "Which of these are said about Elvis Presley?",
             "options": [
                 "He's alive & been seen various times in various places",
                 "The Presley's Commission had an in-depth analysis of Elvis' death, which was only a death-hoax propaganda",
@@ -5630,7 +5630,7 @@
         },
         {
             "id": 387,
-            "question": "Which language is most spoken in the world?<br/>",
+            "question": "Which language is most spoken in the world?",
             "options": [
                 "English",
                 "Chinese",
@@ -5642,7 +5642,7 @@
         },
         {
             "id": 463,
-            "question": "Which country was not originated from China?<br/>",
+            "question": "Which country was not originated from China?",
             "options": [
                 "Taiwan",
                 "Korea",
