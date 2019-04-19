@@ -233,7 +233,11 @@ class Game extends Component {
         </View>
         <View style={[styles.center, styles.mt15]}>
           <Button
-            label="Back" icon="home"
+            label="Summary" icon="book-open"
+            onPress={() => { props.navigation.navigate('GameSummary') }}
+          />
+          <Button
+            label="Back" icon="home" style={styles.mt15}
             onPress={() => { props.navigation.navigate('Home') }}
           />
         </View>

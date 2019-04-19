@@ -46,7 +46,15 @@ class GameSummary extends Component {
     return (
       <Container bgColour={colours.black}>
         <View style={[styles.row]}>
-          <View style={[styles.f1, styles.row, {justifyContent: 'flex-end', padding: 30}]}>
+          <View style={[styles.row, {marginLeft: 45, paddingTop: 30}]}>
+            <TouchableOpacity onPress={() => {console.log('Back')}}>
+              <Icon icon='chart-pie' colour={colours.white} size={24} />
+            </TouchableOpacity>
+          </View>
+          <View style={[styles.row, styles.center, {flex: 1, padding: 30}]}>
+            <Text size={24} colour={colours.white}>Review</Text>
+          </View>
+          <View style={[styles.row, {marginRight: 45, paddingTop: 30}]}>
             <TouchableOpacity onPress={() => {console.log('Close')}}>
               <Icon icon='home' colour={colours.white} size={24} />
             </TouchableOpacity>

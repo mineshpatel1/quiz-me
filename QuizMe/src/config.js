@@ -1,5 +1,5 @@
 export const animationDuration = 300;
-export const waitTime = 1.5;
+export const waitTime = 0.5;
 
 export const categories = {
   1: {id: 1, name: 'General Knowledge', icon: 'question'},

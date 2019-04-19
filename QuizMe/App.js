@@ -6,10 +6,10 @@ import { createAppContainer } from 'react-navigation';
 import AsyncStorage from '@react-native-community/async-storage';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import {
-  faArrowLeft, faCog, faCheck, faTimes, faQuestion, faClock, faPlay, faHome,
-  faHourglassHalf, faFutbol, faAtom, faGlobeAmericas, faLandmark, faFilm,
-  faMusic, faBook, faQuoteRight, faAnkh, faTh, faCaretDown, faChevronLeft,
-  faChevronRight,
+  faAnkh, faArrowLeft, faAtom, faBook, faBookOpen, faCaretDown, faChartPie, faCheck,
+  faChevronLeft, faChevronRight, faClock, faCog, faFilm, faFutbol, faGlobeAmericas,
+  faHome, faHourglassHalf, faLandmark, faMusic, faPlay, faQuestion, faQuoteRight,
+  faTh, faTimes,
 } from '@fortawesome/free-solid-svg-icons';
 
 import AppNavigator from './src/nav/AppNavigator';
@@ -22,10 +22,10 @@ import { initSettings } from './src/actions/SettingActions';
 const AppContainer = createAppContainer(AppNavigator);
 const store = createStore(reducers);
 library.add(
-  faArrowLeft, faCog, faCheck, faTimes, faQuestion, faClock, faPlay, faHome,
-  faHourglassHalf, faFutbol, faAtom, faGlobeAmericas, faLandmark, faFilm,
-  faMusic, faBook, faQuoteRight, faAnkh, faTh, faCaretDown, faChevronLeft,
-  faChevronRight,
+  faAnkh, faArrowLeft, faAtom, faBook, faBookOpen, faCaretDown, faChartPie, faCheck,
+  faChevronLeft, faChevronRight, faClock, faCog, faFilm, faFutbol, faGlobeAmericas,
+  faHome, faHourglassHalf, faLandmark, faMusic, faPlay, faQuestion, faQuoteRight,
+  faTh, faTimes,
 );
 
 export default class App extends Component {
