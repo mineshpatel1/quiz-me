@@ -25,10 +25,7 @@ class CATEGORIES:
 
 
 class Question:
-    def __init__(self, id, question, options, answer, category=None, category_id=1):
-        if not isinstance(id, int):
-            raise TypeError("id must be an int.")
-
+    def __init__(self, question, options, answer, category=None, category_id=1, id=None):
         if not isinstance(question, str):
             raise TypeError("question must be a string.")
 
@@ -97,6 +94,8 @@ class QuestionSet:
     def add(self, q):
         if not isinstance(q, Question):
             raise TypeError("Can only add objects of type Question to the QuestionSet")
+
+        q.id = self.max_id + 1
         if q not in self.questions:
             self.questions.add(q)
 
@@ -105,8 +104,8 @@ class QuestionSet:
         with open(QUESTION_LIB) as f:
             data = json.load(f)
 
-        for i, q in enumerate(data['questions']):
-            _q = Question(i, q['question'], q['options'], q['answer'], category_id=q['category_id'])
+        for q in data['questions']:
+            _q = Question(q['id'], q['question'], q['options'], q['answer'], category_id=q['category_id'])
             if _q not in self.questions:
                 self.questions.add(_q)
 
@@ -119,8 +118,8 @@ class QuestionSet:
             json.dump(out, f, indent=4)
 
     @property
-    def q_id(self):
-        return len(self.questions) + 1
+    def max_id(self):
+        return max([q.id for q in self.questions])
 
 
 def create_logger(name):
@@ -226,7 +225,7 @@ def questions_from_file(q_set, _dir, category):
                             continue
 
                         new_q = Question(
-                            q_set.q_id, q['question'], q['answers'], q['answer'],
+                            q['question'], q['answers'], q['answer'],
                             category_id=getattr(CATEGORIES, category.upper())['id']
                         )
                         q_set.add(new_q)

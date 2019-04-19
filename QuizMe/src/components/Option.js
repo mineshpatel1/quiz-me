@@ -17,13 +17,14 @@ export default class Option extends Component {
     duration: animationDuration,
     disabled: false,
     textSize: 24,
+    bold: false,
   }
 
   constructor(props) {
     super(props);
     this.state = {
       colour: new Animated.Value(0),
-      bold: false,
+      bold: props.bold,
     }
   }
 

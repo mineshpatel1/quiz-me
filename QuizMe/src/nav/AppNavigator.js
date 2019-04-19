@@ -57,7 +57,7 @@ const AppNavigator = createStackNavigator({
   GameSummary: { screen: GameSummary },
 },
 {
-  initialRouteName: "GameSummary",
+  initialRouteName: "Home",
   transitionConfig: (nav) => customTransition(nav),
   defaultNavigationOptions: {
     header: null,

@@ -13,12 +13,10 @@ const getQuestion = (previous, question, category='General Knowledge') => {
   question = null;
   while (!question && i < questions.length) {
     let randomQ = questions[Math.round(Math.random() * questions.length)];
-    if (randomQ) {
-      if (randomQ.hasOwnProperty('id')) {
-        let category_id = utils.getKeyFromVal(categories, 'name', category);
-        if (randomQ.category_id == category_id) {
-          if (!previous.has(randomQ.id)) question = randomQ;
-        }
+    if (randomQ && randomQ.hasOwnProperty('id')) {
+      let category_id = utils.getKeyFromVal(categories, 'name', category);
+      if (randomQ.category_id == category_id) {
+        if (!previous.has(randomQ.id)) question = randomQ;
       }
     }
     i++;

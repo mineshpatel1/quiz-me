@@ -29,8 +29,8 @@ class GameSummary extends Component {
     utils.animate(this.state.margin, -1 * this.state.width * newIdx);
   }
 
-  right(questions) {
-    if ((this.state.index + 1) < questions.length) this.scroll();
+  right() {
+    if ((this.state.index + 1) < this.props.game.questions.length) this.scroll();
   }
   left() {
     if (this.state.index > 0) this.scroll(-1);
@@ -38,45 +38,47 @@ class GameSummary extends Component {
 
   render() {
     let { props, state } = this;
-    let game = {
-      settings: { category: 'General Knowledge', numQuestions: 3, timeLimit: 3 },
-      score: 1,
-      turn: 2,
-      questions:
-       [
-           { id: 15,
-             question: 'In the book The Last Of The Mohicans what was the name of Chingachgook\'s only son?',
-             options: [ 'Lightfoot', 'Magua', 'Uncas', 'Mingo' ],
-             answer: 'Uncas',
-             category_id: 1,
-             chosen: 'Uncas' },
-           { id: 241,
-             question: 'What are the names of the two main characters in Diana Gabaldon\'s highland saga novels?',
-             options:
-              [ 'Hamish and Maggie',
-                'Fergus and Fiona',
-                'Jamie and Claire',
-                'Rab and Elizabeth' ],
-             answer: 'Jamie and Claire',
-             category_id: 1,
-             chosen: null },
-           { id: 452,
-             question: 'Which of these chess figures is closely related to \'Bohemian Rhapsody\'?',
-             options: [ 'King', 'Pawn ', 'Queen', 'Bishop' ],
-             answer: 'Queen',
-             category_id: 1,
-             chosen: 'Bishop' }
-         ]
-    }
+    let questions = [];
 
-    let questions = game.questions;
-    let currentQ = questions[state.index];
+    for (q of props.game.questions) {
+      let _options = [];
+      q.options.map((opt, i) => {
+        let _opt = {
+          text: q.options[i],
+          disabled: true,
+          textSize: 20,
+        }
+
+        if (i == 0) {
+          _opt.style = {marginBottom: 5, marginRight: 5};
+        } else if (i == 1) {
+          _opt.style = {marginBottom: 5, marginLeft: 5};
+        } else if (i == 2) {
+          _opt.style = {marginTop: 5, marginRight: 5};
+        } else if (i == 3) {
+          _opt.style = {marginTop: 5, marginLeft: 5};
+        }
+
+        if (opt == q.answer) {
+          _opt.bgColour = colours.success;
+          _opt.textColour = colours.white;
+          _opt.bold = true;
+        } else if (!q.chosen || (q.chosen != q.answer && opt == q.chosen)) {
+          _opt.bgColour = colours.error;
+          _opt.textColour = colours.white;
+          _opt.bold = true;
+        }
+        _options.push(_opt);
+      });
+      q._options = _options;
+      questions.push(q);
+    }
 
     return (
       <Container bgColour={colours.black}>
         <View style={[styles.row]}>
           <View style={[styles.row, {marginLeft: 45, paddingTop: 30}]}>
-            <TouchableOpacity onPress={() => {console.log('Back')}}>
+            <TouchableOpacity onPress={() => {props.navigation.goBack()}}>
               <Icon icon='chart-pie' colour={colours.white} size={24} />
             </TouchableOpacity>
           </View>
@@ -84,7 +86,7 @@ class GameSummary extends Component {
             <Text size={24} colour={colours.white}>Review</Text>
           </View>
           <View style={[styles.row, {marginRight: 45, paddingTop: 30}]}>
-            <TouchableOpacity onPress={() => {console.log('Close')}}>
+            <TouchableOpacity onPress={() => {props.navigation.navigate('Home')}}>
               <Icon icon='home' colour={colours.white} size={24} />
             </TouchableOpacity>
           </View>
@@ -113,12 +115,12 @@ class GameSummary extends Component {
                       </View>
                       <View style={[styles.f1, styles.col]} >
                         <View style={[styles.f1, styles.row]}>
-                          <Option text={questions[i].options[0]} disabled={true} textSize={20} style={[{marginBottom: 5, marginRight: 5}]} />
-                          <Option text={questions[i].options[1]} disabled={true} textSize={20} style={[{marginBottom: 5, marginLeft: 5}]} />
+                          <Option {...questions[i]._options[0]} />
+                          <Option {...questions[i]._options[1]} />
                         </View>
                         <View style={[styles.f1, styles.row]}>
-                          <Option text={questions[i].options[2]} disabled={true} textSize={20} style={[{marginTop: 5, marginRight: 5}]} />
-                          <Option text={questions[i].options[3]} disabled={true} textSize={20} style={[{marginTop: 5, marginLeft: 5}]} />
+                          <Option {...questions[i]._options[2]} />
+                          <Option {...questions[i]._options[3]} />
                         </View>
                       </View>
                     </View>
@@ -128,7 +130,7 @@ class GameSummary extends Component {
             </View>
           </View>
           <View style={[styles.col, styles.center, {width: '10%'}]}>
-            <TouchableOpacity onPress={() => this.right(questions)}>
+            <TouchableOpacity onPress={() => this.right()}>
               <Icon icon='chevron-right' colour={colours.white} />
             </TouchableOpacity>
           </View>
