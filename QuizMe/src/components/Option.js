@@ -41,7 +41,6 @@ export default class Option extends Component {
 
   render() {
     let { props, state } = this;
-    console.log(props.text.length);
 
     return (
       <TouchableWithoutFeedback

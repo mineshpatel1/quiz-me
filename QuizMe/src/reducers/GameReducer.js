@@ -1,4 +1,4 @@
-import { NEW_GAME, NEXT_TURN, INCREMENT_SCORE } from '../types';
+import { NEW_GAME, NEXT_TURN, CHOOSE_ANSWER } from '../types';
 import { Game, Question } from '../objects';
 import { utils } from '../utils';
 import { categories } from '../config';
@@ -45,9 +45,10 @@ const gameReducer = (state = INITIAL_STATE, action) => {
       currentGame.nextTurn();
       _newQ = getQuestion(previous, question, currentGame.settings.category);
       _newGame = utils.clone(currentGame);
-      return { currentGame: _newGame, question: _newQ.question, previous: _newQ.previous }
-    case INCREMENT_SCORE:
-      currentGame.increment();
+      return { currentGame: _newGame, question: _newQ.question, previous: _newQ.previous };
+    case CHOOSE_ANSWER:
+      if (action.chosen == question.answer) currentGame.increment();
+      currentGame.saveQuestion(question, action.chosen);
       _newGame = utils.clone(currentGame);
       return { currentGame: _newGame, question: question, previous: previous }
     default:

@@ -6,6 +6,7 @@ export class Game {
     this.settings = settings;
     this.score = 0;
     this.turn = 0;
+    this.questions = [];
   }
 
   increment() {
@@ -14,6 +15,11 @@ export class Game {
 
   nextTurn() {
     this.turn += 1;
+  }
+
+  saveQuestion(question, chosen) {
+    question.chosen = chosen;
+    this.questions.push(question);
   }
 
   lastTurn() {

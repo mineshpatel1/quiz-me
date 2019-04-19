@@ -3,4 +3,4 @@ export const SAVE_SETTINGS = 'SAVE_SETTINGS';
 
 export const NEW_GAME = 'NEW_GAME';
 export const NEXT_TURN = 'NEXT_TURN';
-export const INCREMENT_SCORE = 'INCREMENT_SCORE';
+export const CHOOSE_ANSWER = 'CHOOSE_ANSWER';

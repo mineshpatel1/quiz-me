@@ -46,6 +46,8 @@ class Question:
             raise TypeError("answer must be a string.")
 
         if answer not in options:
+            log.error('Answer: ' + answer)
+            log.error(options)
             raise ValueError("Answer must be one of the available options.")
 
         if category is not None:
@@ -84,6 +86,9 @@ class Question:
     def __eq__(self, other):
         return self.question.lower() == other.question.lower()
 
+    def __str__(self):
+        return self.question
+
 
 class QuestionSet:
     def __init__(self):
@@ -100,8 +105,8 @@ class QuestionSet:
         with open(QUESTION_LIB) as f:
             data = json.load(f)
 
-        for q in data['questions']:
-            _q = Question(q['id'], q['question'], q['options'], q['answer'], category_id=q['category_id'])
+        for i, q in enumerate(data['questions']):
+            _q = Question(i, q['question'], q['options'], q['answer'], category_id=q['category_id'])
             if _q not in self.questions:
                 self.questions.add(_q)
 

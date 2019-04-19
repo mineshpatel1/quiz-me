@@ -1,4 +1,4 @@
-import { NEW_GAME, NEXT_TURN, INCREMENT_SCORE } from '../types';
+import { NEW_GAME, NEXT_TURN, CHOOSE_ANSWER } from '../types';
 
 export const newGame = settings => ({
   type: NEW_GAME,
@@ -9,6 +9,7 @@ export const nextTurn = () => ({
   type: NEXT_TURN,
 });
 
-export const increment = () => ({
-  type: INCREMENT_SCORE,
-})
+export const chooseAnswer = chosen => ({
+  type: CHOOSE_ANSWER,
+  chosen: chosen,
+});

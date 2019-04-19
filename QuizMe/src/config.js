@@ -1,4 +1,5 @@
 export const animationDuration = 300;
+export const waitTime = 1.5;
 
 export const categories = {
   1: {id: 1, name: 'General Knowledge', icon: 'question'},
@@ -40,13 +41,5 @@ export const defaultSettings = {
     type: "int",
     inputType: "textInput",
     validator: (val) => {return (3 <= val && val <= 60)},
-  },
-  'waitTime': {
-    label: "Wait Time (s)",
-    default: 2,
-    icon: "clock",
-    type: "int",
-    inputType: "textInput",
-    validator: (val) => {return (1 <= val && val <= 10)},
   },
 };

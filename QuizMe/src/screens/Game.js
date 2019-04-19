@@ -13,8 +13,8 @@ import { Container, Text, Button } from '../components/Core';
 
 import { styles, colours } from '../styles';
 import { utils } from '../utils';
-import { animationDuration } from '../config';
-import { nextTurn, increment } from '../actions/GameActions';
+import { waitTime, animationDuration } from '../config';
+import { nextTurn, chooseAnswer } from '../actions/GameActions';
 
 class Game extends Component {
   constructor(props) {
@@ -23,7 +23,7 @@ class Game extends Component {
     this.state = {
       preGame: true,
       firstTurn: true,
-      gaveOver: false,
+      gameOver: false,
       opacity: new Animated.Value(1),
       hudOpacity: new Animated.Value(0),
       disabled: true,
@@ -50,7 +50,7 @@ class Game extends Component {
 
       this.fade(1, () => {
         // Wait to allow the user to read the question
-        utils.sleep(this.props.game.settings.waitTime * 1000, () => {
+        utils.sleep(waitTime * 1000, () => {
           this.fadeHud(1, () => {
             if (this.mounted) {
               this.timer.start();
@@ -66,10 +66,10 @@ class Game extends Component {
   chooseAnswer = (opt) => {
     let { props, state } = this;
     let answer = props.question.answer;
+
+    props.chooseAnswer(opt);
     if (opt != answer) {
       this.options[answer].highlight();
-    } else {
-      props.increment();
     }
 
     this.setState({chosen: opt, disabled: true}, () => {
@@ -81,6 +81,7 @@ class Game extends Component {
   outOfTime = () => {
     if (this.mounted) {
       if (!this.state.chosen) {
+        this.props.chooseAnswer(null);
         this.options[this.props.question.answer].highlight();
         this.setState({chosen: null, disabled: true});
       }
@@ -100,13 +101,13 @@ class Game extends Component {
           this.options[_key].reset();
         }
 
-        props.nextTurn();
+        props.nextTurn(state.chosen);
         this.timer.reset();
         this.progressBar.reset();
 
         this.fadeHud(0, null, 0);  // Hide the HUD
         this.fade(1, () => {  // Fade question in
-          utils.sleep(props.game.settings.waitTime * 1000, () => {  // Let the user read the question
+          utils.sleep(waitTime * 1000, () => {  // Let the user read the question
             this.fadeHud(1, () => {  // Fade in HUD
               if (this.mounted) {
                 this.timer.start();
@@ -181,7 +182,7 @@ class Game extends Component {
           {
             state.disabled && !state.firstTurn &&
             <Timer
-              size={24} bold={true} colour={colours.black} length={props.game.settings.waitTime}
+              size={24} bold={true} colour={colours.black} length={waitTime}
               auto={true} onFinish={this.nextQ} invisible={true}
             />
           }
@@ -278,7 +279,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = dispatch => (
-  bindActionCreators({ nextTurn, increment }, dispatch)
+  bindActionCreators({ nextTurn, chooseAnswer }, dispatch)
 );
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);
