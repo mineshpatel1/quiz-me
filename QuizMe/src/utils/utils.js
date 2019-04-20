@@ -217,13 +217,27 @@ class utils {
     };
   }
 
-  /** Reduces text size for long strings. */
+  /** Reduces text size for long strings. Crude and empirically derived. */
   static scaleText(text, size) {
-    if (text.length > 80) {
-      size -= 3;
+    if (text.length > 100) {
+      size -= 8;
+    } else if (text.length > 85) {
+      size -= 7;
+    } else if (text.length > 80) {
+      size -= 7;
+    } else if (text.length > 75) {
+      size -= 7;
+    } else if (text.length > 70) {
+      size -= 6;
     } else if (text.length > 65) {
-      size -= 2;
+      size -= 5;
+    } else if (text.length > 60) {
+      size -= 4;
+    } else if (text.length > 55) {
+      size -= 3;
     } else if (text.length > 50) {
+      size -= 2;
+    } else if (text.length > 45) {
       size -= 1;
     }
     return size;

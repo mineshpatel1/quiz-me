@@ -9,5 +9,5 @@ export const Container = _Container;
 export const Header = _Header;
 export const Button = _Button;
 export const Input = _Input;
-export const Icon = _Icon;
 export const Text = _Text;
+export const Icon = _Icon;

@@ -9,7 +9,7 @@ import Questions from '../screens/Questions';
 import GameSummary from '../screens/GameSummary';
 import { animationDuration } from '../config';
 
-const customTransition = ({ position, layout, scene, scenes, index }) => {
+const slideFromRight = ({ position, layout, scene, scenes, index }) => {
   return {
     transitionSpec: {
       duration: animationDuration,
@@ -58,7 +58,7 @@ const AppNavigator = createStackNavigator({
 },
 {
   initialRouteName: "Home",
-  transitionConfig: (nav) => customTransition(nav),
+  transitionConfig: (nav) => slideFromRight(nav),
   defaultNavigationOptions: {
     header: null,
   },
