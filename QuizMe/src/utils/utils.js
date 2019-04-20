@@ -218,26 +218,40 @@ class utils {
   }
 
   /** Reduces text size for long strings. Crude and empirically derived. */
-  static scaleText(text, size) {
-    if (text.length > 100) {
+  static scaleOptText(text, size) {
+    if (text.length >= 100) {
       size -= 8;
-    } else if (text.length > 85) {
+    } else if (text.length >= 85) {
       size -= 7;
-    } else if (text.length > 80) {
+    } else if (text.length >= 80) {
       size -= 7;
-    } else if (text.length > 75) {
+    } else if (text.length >= 75) {
       size -= 7;
-    } else if (text.length > 70) {
+    } else if (text.length >= 70) {
       size -= 6;
-    } else if (text.length > 65) {
+    } else if (text.length >= 65) {
       size -= 5;
-    } else if (text.length > 60) {
+    } else if (text.length >= 60) {
       size -= 4;
-    } else if (text.length > 55) {
+    } else if (text.length >= 55) {
       size -= 3;
-    } else if (text.length > 50) {
+    } else if (text.length >= 50) {
       size -= 2;
-    } else if (text.length > 45) {
+    } else if (text.length >= 45) {
+      size -= 1;
+    }
+
+    return size;
+  }
+
+  static scaleQText(text, size) {
+    if (text.length >= 200) {
+      size -= 4;
+    } else if (text.length >= 180) {
+      size -= 3;
+    } else if (text.length >= 170) {
+      size -= 2;
+    } else if (text.length >= 160) {
       size -= 1;
     }
     return size;

@@ -148,7 +148,7 @@ class Game extends Component {
       });
     }
 
-    let qTextSize = utils.scaleText(props.question, 30);
+    let qTextSize = utils.scaleQText(props.question.question, 30);
     let optionStyle = options.length == 2 ? { height: 125 } : styles.f1;
 
     let preGame = (

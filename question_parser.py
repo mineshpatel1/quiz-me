@@ -17,10 +17,11 @@ class CATEGORIES:
     FILM = {'id': 6, 'name': 'Film'}
     MUSIC = {'id': 7, 'name': 'Music'}
     LITERATURE = {'id': 8, 'name': 'Literature'}
-    QUOTES = {'id': 9, 'name': 'Quotes'}
-    MYTHS = {'id': 10, 'name': 'Mythology'}
+    PEOPLE = {'id': 9, 'name': 'People & Quotes'}
+    MYTHS = {'id': 10, 'name': 'Faith & Mythology'}
     TV = {'id': 11, 'name': 'TV'}
     ANIMALS = {'id': 12, 'name': 'Animals'}
+    BRAIN = {'id': 13, 'name': 'Puzzles & Riddles'}
 
 
 class Question:

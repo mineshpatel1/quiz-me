@@ -60,7 +60,7 @@ class GameSummary extends Component {
       });
       q._options = _options;
       q.optionStyle = _options.length == 2 ? { height: 125 } : styles.f1;
-      q.textSize = utils.scaleText(q.question, 26);
+      q.textSize = utils.scaleQText(q.question, 26);
       questions.push(q);
     }
 
@@ -104,7 +104,10 @@ class GameSummary extends Component {
                 questions.map((q, i) => (
                   <View key={i} style={[styles.f1, { padding: 15 }]}>
                     <View style={[styles.f1, styles.row, styles.aCenter]}>
-                      <Text colour={colours.white} size={26} align={'center'}>
+                      <Text
+                        colour={colours.white} size={questions[i].textSize}
+                        align={'center'}
+                      >
                         {questions[i].question}
                       </Text>
                     </View>

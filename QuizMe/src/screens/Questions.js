@@ -15,6 +15,7 @@ export default class Questions extends Component {
       bar: {},
       num: {},
       total: new Animated.Value(0),
+      totalQs: 0,
     }
     for (id in categories) {
       this.state.bar[id] = new Animated.Value(0);
@@ -22,12 +23,14 @@ export default class Questions extends Component {
     }
 
     let biggestCategory = 0;
+    let totalQs = 0;
     summary = [];
     for (id in categories) {
       let catQs = questionLib.questions.filter((q) => {
         return q.category_id == id;
       });
       if (catQs.length > 0) {
+        totalQs += catQs.length;
         summary.push({
           id: id,
           name: categories[id].name,
@@ -41,6 +44,7 @@ export default class Questions extends Component {
     }
     this.state.summary = utils.sortByKey(summary, 'numQ', asc=false);
     this.state.biggestCategory = biggestCategory;
+    this.state.totalQs = totalQs;
 
     let duration = 500;
     this.state.summary.forEach((cat, i) => {
@@ -97,7 +101,7 @@ export default class Questions extends Component {
         </View>
         <View style={[styles.f1, styles.center]}>
           <Text animated={true} bold={true} size={30} style={{opacity: state.total}}>
-            {'Total: ' + questionLib.questions.length.toString()}
+            {'Total: ' + state.totalQs.toString()}
           </Text>
         </View>
       </Container>

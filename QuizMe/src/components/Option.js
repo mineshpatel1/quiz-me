@@ -42,7 +42,7 @@ export default class Option extends Component {
 
   render() {
     let { props, state } = this;
-    let textSize = utils.scaleText(props.text, props.textSize);
+    let textSize = utils.scaleOptText(props.text, props.textSize);
 
     return (
       <TouchableWithoutFeedback
