@@ -86,8 +86,10 @@ class Question:
 
 
 class QuestionSet:
-    def __init__(self):
+    def __init__(self, load=False):
         self.questions = set()
+        if load:
+            self.load()
 
     def add(self, q):
         if not isinstance(q, Question):
@@ -227,6 +229,28 @@ def batch(_func):
         q.join()  # Wait for all operations to complete
 
     return batch_wrap
+
+
+def read_from_opentriviaqa(category_id, fpath):
+    q_set = QuestionSet(load=True)
+
+    with open(fpath, 'r') as f:
+        for line in f:
+            if len(line.strip()) == 0:
+                continue
+            elif line.startswith('#Q'):
+                question = line[2:].strip()
+                options = []
+            elif line.startswith('^'):
+                answer = line[1:].strip()
+            elif line.startswith(('A', 'B', 'C', 'D')):
+                options.append(line[1:].strip())
+
+            if len(options) == 4 and answer in options:
+                q_set.add(Question(question, options, answer, category_id=category_id))
+
+    log.info(len(q_set.questions))
+    q_set.save()
 
 
 def main():
