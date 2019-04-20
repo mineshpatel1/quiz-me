@@ -59,6 +59,7 @@ class GameSummary extends Component {
         _options.push(_opt);
       });
       q._options = _options;
+      q.optionStyle = _options.length == 2 ? { height: 125 } : styles.f1;
       q.textSize = utils.scaleText(q.question, 26);
       questions.push(q);
     }
@@ -107,15 +108,18 @@ class GameSummary extends Component {
                         {questions[i].question}
                       </Text>
                     </View>
-                    <View style={[styles.f1, styles.col]} >
-                      <View style={[styles.f1, styles.row]}>
+                    <View style={[styles.f1, styles.col, styles.center]} >
+                      <View style={[styles.row, questions[i].optionStyle]}>
                         <Option {...questions[i]._options[0]} />
                         <Option {...questions[i]._options[1]} />
                       </View>
-                      <View style={[styles.f1, styles.row]}>
-                        <Option {...questions[i]._options[2]} />
-                        <Option {...questions[i]._options[3]} />
-                      </View>
+                      {
+                        questions[i]._options.length == 4 &&
+                        <View style={[styles.f1, styles.row]}>
+                          <Option {...questions[i]._options[2]} />
+                          <Option {...questions[i]._options[3]} />
+                        </View>
+                      }
                     </View>
                   </View>
                 ))

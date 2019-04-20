@@ -149,6 +149,7 @@ class Game extends Component {
     }
 
     let qTextSize = utils.scaleText(props.question, 30);
+    let optionStyle = options.length == 2 ? { height: 125 } : styles.f1;
 
     let preGame = (
       <Animated.View style={[styles.f1, {opacity: state.opacity}]}>
@@ -205,15 +206,18 @@ class Game extends Component {
             {props.question.question}
           </Text>
         </View>
-        <Animated.View style={[styles.f1, styles.col, {opacity: state.hudOpacity}]} >
-          <View style={[styles.f1, styles.row]}>
+        <Animated.View style={[styles.f1, styles.col, styles.center, {opacity: state.hudOpacity}]} >
+          <View style={[styles.row, optionStyle]}>
             <Option {...options[0]} style={[{marginBottom: 5, marginRight: 5}]} />
             <Option {...options[1]} style={[{marginBottom: 5, marginLeft: 5}]} />
           </View>
-          <View style={[styles.f1, styles.row]}>
-            <Option {...options[2]} style={[{marginTop: 5, marginRight: 5}]} />
-            <Option {...options[3]} style={[{marginTop: 5, marginLeft: 5}]} />
-          </View>
+          {
+            options.length == 4 &&
+            <View style={[styles.f1, styles.row]}>
+              <Option {...options[2]} style={[{marginTop: 5, marginRight: 5}]} />
+              <Option {...options[3]} style={[{marginTop: 5, marginLeft: 5}]} />
+            </View>
+          }
         </Animated.View>
       </Animated.View>
     )

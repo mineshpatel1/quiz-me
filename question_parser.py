@@ -20,6 +20,7 @@ class CATEGORIES:
     QUOTES = {'id': 9, 'name': 'Quotes'}
     MYTHS = {'id': 10, 'name': 'Mythology'}
     TV = {'id': 11, 'name': 'TV'}
+    ANIMALS = {'id': 12, 'name': 'Animals'}
 
 
 class Question:
@@ -30,8 +31,8 @@ class Question:
         if not hasattr(options, '__iter__'):
             raise TypeError("options must be an iterable of strings.")
 
-        if not len(options) == 4:
-            raise ValueError("Question must have only 4 options.")
+        if not (len(options) == 4 or len(options) == 2):
+            raise ValueError("Question must have either 2 or 4 options.")
 
         for w in options:
             if not isinstance(w, str):
@@ -234,22 +235,49 @@ def batch(_func):
 def read_from_opentriviaqa(category_id, fpath):
     q_set = QuestionSet(load=True)
 
+    question = None
+    question_flg = False
+    answer_flg = False
+    options = []
+
+    i = 0
     with open(fpath, 'r') as f:
         for line in f:
             if len(line.strip()) == 0:
                 continue
-            elif line.startswith('#Q'):
-                question = line[2:].strip()
-                options = []
-            elif line.startswith('^'):
-                answer = line[1:].strip()
-            elif line.startswith(('A', 'B', 'C', 'D')):
+
+            if line.startswith('#Q'):
+                if question is not None:
+                    if (len(options) == 4 or len(options) == 2) and answer in options:
+                        q_set.add(Question(question.strip(), options, answer, category_id=category_id))
+                        i += 1
+
+                question_flg = True
+                answer_flg = False
+                question = None
+
+            if line.startswith('^'):
+                question_flg = False
+                answer_flg = True
+
+            if (not question_flg) and line.startswith(('A', 'B', 'C', 'D')):
                 options.append(line[1:].strip())
 
-            if len(options) == 4 and answer in options:
-                q_set.add(Question(question, options, answer, category_id=category_id))
+            if question_flg:
+                if line.startswith('#Q'):
+                    question = line[2:].strip()
+                else:
+                    question += ' ' + line
+                options = []
+            elif answer_flg:
+                answer = line[1:].strip()
 
-    log.info(len(q_set.questions))
+    # Add last question
+    if question is not None:
+        q_set.add(Question(question.strip(), options, answer, category_id=category_id))
+        i += 1
+
+    log.info('Parsed {} questions from {}'.format(i, fpath))
     q_set.save()
 
 
