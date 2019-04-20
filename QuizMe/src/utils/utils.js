@@ -245,7 +245,15 @@ class utils {
   }
 
   static scaleQText(text, size) {
-    if (text.length >= 200) {
+    if (text.length >= 400) {
+      size -= 8;
+    } else if (text.length >= 350) {
+      size -= 7;
+    } else if (text.length >= 300) {
+      size -= 6;
+    } else if (text.length >= 250) {
+      size -= 5;
+    } else if (text.length >= 200) {
       size -= 4;
     } else if (text.length >= 180) {
       size -= 3;
