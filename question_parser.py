@@ -242,7 +242,7 @@ def read_from_opentriviaqa(category_id, fpath):
     options = []
 
     i = 0
-    with open(fpath, 'r') as f:
+    with open(fpath, 'r', encoding='utf-8', errors='ignore') as f:
         for line in f:
             if len(line.strip()) == 0:
                 continue
