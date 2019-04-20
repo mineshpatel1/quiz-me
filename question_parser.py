@@ -6,9 +6,6 @@ import logging
 import threading
 
 QUESTION_LIB = 'QuizMe/assets/data/questions.json'
-EXCLUDE = [
-    'What was the First Console CREATED? 2 Answers for this!!!!1',
-]
 
 
 class CATEGORIES:
@@ -17,11 +14,12 @@ class CATEGORIES:
     SCIENCE = {'id': 3, 'name': 'Science'}
     GEOGRAPHY = {'id': 4, 'name': 'Geography'}
     HISTORY = {'id': 5, 'name': 'History'}
-    TV_FILM = {'id': 6, 'name': 'TV and Film'}
+    FILM = {'id': 6, 'name': 'Film'}
     MUSIC = {'id': 7, 'name': 'Music'}
     LITERATURE = {'id': 8, 'name': 'Literature'}
     QUOTES = {'id': 9, 'name': 'Quotes'}
     MYTHS = {'id': 10, 'name': 'Mythology'}
+    TV = {'id': 11, 'name': 'TV'}
 
 
 class Question:
@@ -105,21 +103,47 @@ class QuestionSet:
             data = json.load(f)
 
         for q in data['questions']:
-            _q = Question(q['id'], q['question'], q['options'], q['answer'], category_id=q['category_id'])
+            _q = Question(
+                q['question'], q['options'], q['answer'], category_id=q['category_id'], id=q['id'],
+            )
             if _q not in self.questions:
                 self.questions.add(_q)
 
     def save(self):
         log.info('Saving word sets to {}...'.format(QUESTION_LIB))
+        questions = [q.dict for q in self.questions]
+        questions.sort(key=lambda x: x['id'])
+
         out = {
-            'questions': [q.dict for q in self.questions]
+            'questions': questions
         }
         with open(QUESTION_LIB, 'w') as f:
             json.dump(out, f, indent=4)
 
+    def reset_ids(self):
+        log.info('Resetting IDs of question set.')
+        _questions = list(self.questions)
+        self.questions = set()
+        for q in _questions:
+            self.add(q)
+
     @property
     def max_id(self):
-        return max([q.id for q in self.questions])
+        ids = [q.id for q in self.questions]
+        if len(ids) == 0:
+            return 0
+        else:
+            return max(ids)
+
+    @property
+    def continuous_ids(self):
+        ids = [q.id for q in self.questions]
+        ids = sorted(ids)
+
+        for i, id in enumerate(ids):
+            if (i + 1) != id:
+                return False
+        return True
 
 
 def create_logger(name):
@@ -203,32 +227,6 @@ def batch(_func):
         q.join()  # Wait for all operations to complete
 
     return batch_wrap
-
-
-def questions_from_file(q_set, _dir, category):
-    if not hasattr(CATEGORIES, category.upper()):
-        raise ValueError("category must be one of CATEGORIES")
-
-    for filename in os.listdir(_dir):
-        if filename.startswith(category):
-            with open(os.path.join(_dir, filename), 'r') as f:
-                x = json.load(f)
-                for q in x:
-
-                    if not q['question'].startswith('<') and q['question'] not in EXCLUDE:
-                        if len(q['answers']) > 4:
-                            new_answers = [a for a in q['answers'] if a != q['answer']][:3]
-                            new_answers.append(q['answer'])
-                            q['answers'] = new_answers
-
-                        if len(q['answers']) != 4:
-                            continue
-
-                        new_q = Question(
-                            q['question'], q['answers'], q['answer'],
-                            category_id=getattr(CATEGORIES, category.upper())['id']
-                        )
-                        q_set.add(new_q)
 
 
 def main():

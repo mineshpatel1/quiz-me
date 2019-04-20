@@ -9,7 +9,7 @@ import {
   faAnkh, faArrowLeft, faAtom, faBook, faBookOpen, faCaretDown, faChartPie, faCheck,
   faChevronLeft, faChevronRight, faClock, faCog, faFilm, faFutbol, faGlobeAmericas,
   faHome, faHourglassHalf, faLandmark, faMusic, faPlay, faQuestion, faQuoteRight,
-  faTh, faTimes,
+  faTh, faTimes, faTv,
 } from '@fortawesome/free-solid-svg-icons';
 
 import AppNavigator from './src/nav/AppNavigator';
@@ -26,7 +26,7 @@ library.add(
   faAnkh, faArrowLeft, faAtom, faBook, faBookOpen, faCaretDown, faChartPie, faCheck,
   faChevronLeft, faChevronRight, faClock, faCog, faFilm, faFutbol, faGlobeAmericas,
   faHome, faHourglassHalf, faLandmark, faMusic, faPlay, faQuestion, faQuoteRight,
-  faTh, faTimes,
+  faTh, faTimes, faTv,
 );
 
 export default class App extends Component {
