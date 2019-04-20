@@ -238,10 +238,10 @@ def read_from_opentriviaqa(category_id, fpath):
 
     question = None
     question_flg = False
-    answer_flg = False
     options = []
 
     i = 0
+    log.info('Parsing questions from {}...'.format(fpath))
     with open(fpath, 'r', encoding='utf-8', errors='ignore') as f:
         for line in f:
             if len(line.strip()) == 0:
@@ -254,24 +254,21 @@ def read_from_opentriviaqa(category_id, fpath):
                         i += 1
 
                 question_flg = True
-                answer_flg = False
-                question = None
+                question = line[2:].strip()
+                answer = None
+                options = []
 
             if line.startswith('^'):
                 question_flg = False
-                answer_flg = True
+                answer = line[1:].strip()
 
             if (not question_flg) and line.startswith(('A', 'B', 'C', 'D')):
                 options.append(line[1:].strip())
 
             if question_flg:
-                if line.startswith('#Q'):
-                    question = line[2:].strip()
-                else:
+                if not line.startswith('#Q'):
                     question += ' ' + line
-                options = []
-            elif answer_flg:
-                answer = line[1:].strip()
+
 
     # Add last question
     if question is not None:
@@ -280,6 +277,7 @@ def read_from_opentriviaqa(category_id, fpath):
 
     log.info('Parsed {} questions from {}'.format(i, fpath))
     q_set.save()
+    return q_set
 
 
 def main():
