@@ -7,6 +7,10 @@ import NavigationService from '../../nav/NavigationService';
 import { colours, fonts, styles } from '../../styles';
 
 export default class Header extends Component {
+  static defaultProps = {
+    height: 60,
+  }
+
   nav(route) {
     if (route) {
       NavigationService.navigate(route);
@@ -18,14 +22,14 @@ export default class Header extends Component {
   render() {
     let { props } = this;
     return (
-      <View style={[{ height: 60, flexDirection: 'row', alignItems: 'center' }, styles.bgTheme, styles.bottomShadow]}>
+      <View style={[styles.row, styles.aCenter, { height: props.height }, styles.bgTheme, styles.bottomShadow]}>
         <Icon
           icon="arrow-left" size={20} colour={colours.white} style={{paddingLeft: 15}}
           onPress={() => {
             this.nav(props.route);
           }}
         />
-        <Text style={[{paddingLeft: 15, marginTop: 5}, fonts.display, fonts.light]}>{props.title}</Text>
+        <Text style={[{paddingLeft: 15, marginTop: 5}, fonts.light]} display={true} size={24}>{props.title}</Text>
       </View>
     )
   }

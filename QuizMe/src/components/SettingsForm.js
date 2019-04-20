@@ -4,8 +4,7 @@ import { bindActionCreators } from 'redux';
 import { View, ScrollView } from 'react-native';
 
 import ConfirmButtons from '../components/ConfirmButtons';
-import Picker from '../components/Picker';
-import { Button, Input } from '../components/Core';
+import { Button, Input, Picker } from '../components/Core';
 import { saveSettings } from '../actions/SettingActions';
 import { utils } from '../utils';
 import { styles, colours } from '../styles';

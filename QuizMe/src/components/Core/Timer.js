@@ -1,9 +1,9 @@
 import React from 'react';
 import { Animated, View } from 'react-native';
 
-import { Text } from './Core';
-import { utils } from '../utils';
-import { style } from '../styles';
+import Text from './Text';
+import { utils } from '../../utils';
+import { style } from '../../styles';
 
 export default class Timer extends React.Component {
   static defaultProps = {

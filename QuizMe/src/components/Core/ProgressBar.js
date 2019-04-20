@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Animated, View, Easing, } from 'react-native';
 
-import { utils } from '../utils';
-import { styles, colours } from '../styles';
+import { utils } from '../../utils';
+import { styles, colours } from '../../styles';
 
 export default class ProgressBar extends Component {
   static defaultProps = {

@@ -4,8 +4,7 @@ import { bindActionCreators } from 'redux';
 import { View } from 'react-native';
 
 import SettingsForm from '../components/SettingsForm';
-import Picker from '../components/Picker';
-import { Container, Header, Text, Button, Input } from '../components/Core';
+import { Container, Header, Text, Button, Input, Picker } from '../components/Core';
 import { newGame } from '../actions/GameActions';
 import { styles, colours } from '../styles';
 import { utils } from '../utils';

@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { Animated, View, Easing, } from 'react-native';
+import { Animated, View, Easing } from 'react-native';
 import { Svg, Path, G } from 'react-native-svg';
 
-import { Text } from './Core';
-import { utils } from '../utils';
-import { styles, colours } from '../styles';
+import Text from './Text';
+import { utils } from '../../utils';
+import { styles, colours } from '../../styles';
 
 class ProgressCircle extends Component {
   static defaultProps = {

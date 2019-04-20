@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 
 import { colours } from '../../styles';
 
-export default class Header extends Component {
+export default class Icon extends Component {
   static defaultProps = {
     style: {},
     onPress: null,

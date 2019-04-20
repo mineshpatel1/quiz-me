@@ -29,7 +29,6 @@ export const fonts = StyleSheet.create({
   },
   display: {
     fontFamily: 'Lobster',
-    fontSize: fontSize.large,
   },
   light: {
     color: colours.white,

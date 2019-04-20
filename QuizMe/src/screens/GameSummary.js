@@ -4,8 +4,8 @@ import { Animated, View, ScrollView, TouchableOpacity } from 'react-native';
 import Swiper from 'react-native-swiper';
 
 import Option from '../components/Option';
-import { Container, Text, Icon, Button } from '../components/Core';
-import { styles, colours } from '../styles';
+import { Container, Text, Icon, Button, IconButton } from '../components/Core';
+import { styles, colours, fonts } from '../styles';
 import { utils } from '../utils';
 
 class GameSummary extends Component {
@@ -71,27 +71,23 @@ class GameSummary extends Component {
     return (
       <Container bgColour={colours.black}>
         <View style={[styles.row]}>
-          <View style={[styles.row, {marginLeft: 45, paddingTop: 30}]}>
-            <TouchableOpacity onPress={() => {props.navigation.goBack()}}>
-              <Icon icon='chart-pie' colour={colours.white} size={24} />
-            </TouchableOpacity>
-          </View>
+          <IconButton
+            icon='chart-pie' onPress={() => {props.navigation.goBack()}}
+            style={[{marginLeft: 45, paddingTop: 30}]}
+          />
           <View style={[styles.row, styles.center, {flex: 1, padding: 30}]}>
-            <Text size={24} colour={colours.white}>Quiz Review</Text>
+            <Text size={24} colour={colours.white} display={true}>Quiz Review</Text>
           </View>
-          <View style={[styles.row, {marginRight: 45, paddingTop: 30}]}>
-            <TouchableOpacity onPress={() => {props.navigation.navigate('Home')}}>
-              <Icon icon='home' colour={colours.white} size={24} />
-            </TouchableOpacity>
-          </View>
+          <IconButton
+            icon='home' onPress={() => {props.navigation.navigate('Home')}}
+            style={[styles.row, {marginRight: 45, paddingTop: 30}]}
+          />
         </View>
         <View style={[styles.f1, styles.row]}>
           <View style={[styles.center, {width: 45}]}>
             {
               state.index > 0 &&
-              <TouchableOpacity onPress={() => { this.left() }}>
-                <Icon icon='chevron-left' colour={colours.white} />
-              </TouchableOpacity>
+              <IconButton icon='chevron-left' onPress={() => { this.left() }} />
             }
           </View>
           <View style={[styles.f1, {
@@ -129,9 +125,7 @@ class GameSummary extends Component {
           <View style={[styles.center, {width: 45}]}>
             {
               (state.index + 1) < questions.length &&
-              <TouchableOpacity onPress={() => { this.right() }}>
-                <Icon icon='chevron-right' colour={colours.white} />
-              </TouchableOpacity>
+              <IconButton icon='chevron-right' onPress={() => { this.right() }} />
             }
           </View>
         </View>

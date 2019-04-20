@@ -4,14 +4,12 @@ import { bindActionCreators } from 'redux';
 import { Animated, Easing, View, TouchableOpacity } from 'react-native';
 
 import HandleBack from '../components/HandleBack';
-import ProgressCircle from '../components/ProgressCircle';
-import Modal from '../components/Modal';
-import Timer from '../components/Timer';
 import Option from '../components/Option';
-import ProgressBar from '../components/ProgressBar';
-import { Container, Text, Button } from '../components/Core';
+import {
+  Container, Text, Button, Modal, Timer, ProgressBar, ProgressCircle,
+} from '../components/Core';
 
-import { styles, colours } from '../styles';
+import { styles, colours, fonts } from '../styles';
 import { utils } from '../utils';
 import { waitTime, animationDuration } from '../config';
 import { nextTurn, chooseAnswer } from '../actions/GameActions';
@@ -155,7 +153,7 @@ class Game extends Component {
     let preGame = (
       <Animated.View style={[styles.f1, {opacity: state.opacity}]}>
         <View style={[styles.f1, styles.center]}>
-          <Text colour={colours.white} size={30} bold={true}>
+          <Text colour={colours.white} size={38} display={true}>
             {'Are you Ready?'}
           </Text>
         </View>
@@ -177,7 +175,7 @@ class Game extends Component {
             </Text>
           </View>
           <View style={{flex: 3}}>
-            <Text colour={colours.white} size={24} bold={true} align="center">
+            <Text colour={colours.white} size={24} align="center" display={true}>
               {'Question ' + (props.game.turn + 1)}
             </Text>
           </View>
@@ -223,8 +221,8 @@ class Game extends Component {
     let gameOver = (
       <Animated.View style={[styles.f1, { opacity: state.opacity }]}>
         <View style={[styles.f1, {justifyContent: 'center'}]}>
-          <Text bold={true} size={30} colour={colours.white} align="center">
-            {'GAME OVER'}
+          <Text display={true} size={32} colour={colours.white} align="center">
+            {'Game Over'}
           </Text>
         </View>
         <View style={[styles.center, styles.f3]}>
@@ -235,7 +233,7 @@ class Game extends Component {
         </View>
         <View style={[styles.center, styles.mt15]}>
           <Button
-            label="Summary" icon="book-open"
+            label="Review" icon="book-open"
             onPress={() => { props.navigation.navigate('GameSummary') }}
           />
           <Button

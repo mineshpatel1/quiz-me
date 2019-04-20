@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { View, TouchableOpacity } from 'react-native';
 import Modal from "react-native-modal";
 
-import { Icon } from './Core';
-import { animationDuration } from '../config';
-import { styles, colours } from '../styles'
+import Icon from './Icon';
+import { animationDuration } from '../../config';
+import { styles, colours } from '../../styles'
 
 export default class CustomModal extends Component {
   static defaultProps = {
