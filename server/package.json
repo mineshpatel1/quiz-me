@@ -1,0 +1,22 @@
+{
+  "name": "quiz-me-server",
+  "version": "1.0.0",
+  "description": "Server for Quiz app for Chinnu and Honeyblossom",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mineshpatel1/quiz-me.git"
+  },
+  "author": "Nesh Patel",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mineshpatel1/quiz-me/issues"
+  },
+  "homepage": "https://github.com/mineshpatel1/quiz-me#readme",
+  "dependencies": {
+    "express": "^4.16.4"
+  }
+}
