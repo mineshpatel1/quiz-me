@@ -37,4 +37,20 @@ git clone https://github.com/mineshpatel1/quiz-me.git
 
 cd quiz-me/server
 npm install
+
+# Set up keys/auth.json
+
+{
+    "pg": {
+        "domain": "quizme",
+        "db": "quizme",
+        "port": 5432,
+        "user": "pg user",
+        "password": "pg password"
+    },
+    "session_secret": "some random string"
+}
+
+# Create tables in PostgreSQL
+psql quizme < schema/tables.sql
 ```

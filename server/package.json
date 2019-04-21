@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/mineshpatel1/quiz-me#readme",
   "dependencies": {
-    "express": "^4.16.4"
+    "express": "^4.16.4",
+    "express-session": "^1.16.1"
   }
 }
