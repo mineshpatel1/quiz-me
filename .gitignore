@@ -29,6 +29,8 @@ build/
 .gradle
 local.properties
 *.iml
+quizme.code-workspace
+.vscode
 
 # node.js
 #

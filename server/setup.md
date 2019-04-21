@@ -18,13 +18,6 @@ ssh-keygen -y -f quizme.pem
 touch .ssh/authorized_keys
 chmod 600 .ssh/authorized_keys
 
-# Install Git
-sudo yum install git
-cd /opt
-sudo mkdir quiz-me
-sudo chown chinnu:chinnu quiz-me
-git clone https://github.com/mineshpatel1/quiz-me.git
-
 # Install Node
 curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.32.0/install.sh | bash
 . ~/.nvm/nvm.sh
@@ -34,4 +27,14 @@ nvm install 10.15.3
 sudo yum install python3
 curl -O https://bootstrap.pypa.io/get-pip.py
 python3 get-pip.py --user
+
+# Install Git and clone repo
+sudo yum install git
+cd /opt
+sudo mkdir quiz-me
+sudo chown chinnu:chinnu quiz-me
+git clone https://github.com/mineshpatel1/quiz-me.git
+
+cd quiz-me/server
+npm install
 ```
