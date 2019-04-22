@@ -57,4 +57,4 @@ gradle.properties
 
 # Bundle artifact
 *.jsbundle
-keys
+.config

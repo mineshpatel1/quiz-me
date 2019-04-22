@@ -13,3 +13,4 @@ CREATE TABLE IF NOT EXISTS users (
  	email VARCHAR NOT NULL UNIQUE,
 	name VARCHAR
 );
+CREATE INDEX users_id_idx ON users (id);

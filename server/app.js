@@ -23,11 +23,6 @@ app.get('/', function (req, res) {
   // if (!req.session.user) {
   //   req.session.user = Math.random();
   // }
-
-  // pg.query("SELECT * FROM sessions", null, (err, result) => {
-  //   console.log(err);
-  //   console.log(result.rows);
-  // });
   res.send('Hello World');
 })
 
