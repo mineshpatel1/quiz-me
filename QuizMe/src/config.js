@@ -37,7 +37,7 @@ export const defaultSettings = {
     default: 10,
     icon: "question",
     type: "int",
-    inputType: "textInput",
+    inputType: "text",
     validator: (val) => {return (3 <= val && val <= 50)},
   },
   timeLimit: {
@@ -45,7 +45,7 @@ export const defaultSettings = {
     default: 10,
     icon: "hourglass-half",
     type: "int",
-    inputType: "textInput",
+    inputType: "text",
     validator: (val) => {return (3 <= val && val <= 60)},
   },
 };

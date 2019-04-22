@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { Animated, View, Image } from 'react-native';
+import NetInfo from "@react-native-community/netinfo";
 
-import { Container, Text, Icon, Button } from '../components/Core';
+import { Container, Button } from '../components/Core';
 import { colours, styles } from '../styles';
 import { utils } from '../utils';
 
@@ -10,11 +11,23 @@ export default class Home extends Component {
     super(props);
     this.state = {
       opacity: new Animated.Value(0),
+      online: false,
     }
   }
 
-  async componentWillMount() {
+  componentWillMount() {
     utils.animate(this.state.opacity, 1);
+    NetInfo.addEventListener('connectionChange', (info) => {this.onConnectionChange(info, this)});
+  }
+
+  componentWillUnmount() {
+    NetInfo.removeEventListener('connectionChange', (info) => {this.onConnectionChange(info, this)});
+  }
+
+  onConnectionChange(connectionInfo, self) {
+    self.setState({
+      online: ['none', 'unknown'].indexOf(connectionInfo.type) == -1,
+    });
   }
 
   render() {
@@ -28,16 +41,16 @@ export default class Home extends Component {
 
           <View style={[styles.f1, styles.center]}>
             <Button
-              label="New Game" icon="play"
+              label="Single Player" icon="play"
               onPress={() => { props.navigation.navigate('NewGame') }}
-            />
-            <Button
-              label="Questions" icon="question" style={styles.mt15}
-              onPress={() => { props.navigation.navigate('Questions') }}
             />
             <Button
               label="Settings" icon="cog" style={styles.mt15}
               onPress={() => { props.navigation.navigate('Settings') }}
+            />
+            <Button
+              label="Sign Up" icon="user-plus" style={styles.mt15} disabled={!state.online}
+              onPress={() => { props.navigation.navigate('EditUser', {create: true}) }}
             />
           </View>
         </Animated.View>

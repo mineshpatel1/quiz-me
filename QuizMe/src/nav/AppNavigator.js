@@ -7,6 +7,7 @@ import Game from '../screens/Game';
 import Settings from '../screens/Settings';
 import Questions from '../screens/Questions';
 import GameSummary from '../screens/GameSummary';
+import EditUser from '../screens/EditUser';
 import { animationDuration } from '../config';
 
 const slideFromRight = ({ position, layout, scene, scenes, index }) => {
@@ -55,9 +56,10 @@ const AppNavigator = createStackNavigator({
   Settings: { screen: Settings },
   Questions: { screen: Questions },
   GameSummary: { screen: GameSummary },
+  EditUser: { screen: EditUser },
 },
 {
-  initialRouteName: "Home",
+  initialRouteName: "Settings",
   transitionConfig: (nav) => slideFromRight(nav),
   defaultNavigationOptions: {
     header: null,

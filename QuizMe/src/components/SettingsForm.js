@@ -4,9 +4,8 @@ import { bindActionCreators } from 'redux';
 import { Platform, View, ScrollView } from 'react-native';
 
 import ConfirmButtons from '../components/ConfirmButtons';
-import { Button, Input, Picker } from '../components/Core';
+import { Input, Picker } from '../components/Core';
 import { saveSettings } from '../actions/SettingActions';
-import { utils } from '../utils';
 import { styles, colours } from '../styles';
 import { defaultSettings } from '../config';
 
@@ -20,7 +19,6 @@ class SettingsForm extends Component {
 
   constructor(props) {
     super();
-    this.input = {};
     this.state = {
       settings: {},
       valid: {},
@@ -43,8 +41,6 @@ class SettingsForm extends Component {
   render() {
     let { props, state } = this;
     let _settings = [];
-    let _textInputs2 = [];
-    let _pickers = [];
     let values = {};
 
     let iosAdjust = 0;
@@ -77,7 +73,7 @@ class SettingsForm extends Component {
       values[param] = this.state.settings[param];
 
       let setting = defaultSettings[param];
-      if (setting.inputType == 'textInput') {
+      if (setting.inputType == 'text') {
         _settings.push(textInput(i, setting));
       } else if (setting.inputType == 'picker') {
         _settings.push(picker(i, setting));

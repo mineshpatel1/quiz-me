@@ -1,4 +1,5 @@
 import AsyncStorage from '@react-native-community/async-storage';
+import NetInfo from "@react-native-community/netinfo";
 import { Animated, Easing } from 'react-native';
 
 import { animationDuration } from '../config';
@@ -263,6 +264,19 @@ class utils {
       size -= 1;
     }
     return size;
+  }
+
+  static async getConnectionInfo() {
+    let connectionInfo = await NetInfo.getConnectionInfo();
+    return connectionInfo;
+  }
+
+  static onConnectionChange(fn) {
+    NetInfo.addEventListener('connectionChange', handleFirstConnectivityChange);
+  }
+
+  static clearConnectionChange() {
+    
   }
 }
 

@@ -89,9 +89,8 @@ export default class Input extends Component {
       inputColour = colours.lightGrey;
     }
 
-    let valid = true;
-    let bg = colours.primary;
-    if (!this.validate(this.parseVal(value))) bg = colours.error;
+    let valid = this.validate(this.parseVal(state.value));
+    let bg = valid ? colours.primary: colours.error;
 
     return (
       <View style={[styles.shadow, styles.row, styles.aCenter,

@@ -12,7 +12,7 @@ export default class Settings extends Component {
     return (
       <Container>
         <Header title={'Default Settings'} route={'Home'} />
-        <View style={[styles.f1, styles.col, {alignItems: 'center'}]}>
+        <View style={[styles.f1, styles.col, styles.aCenter]}>
           <SettingsForm
             onSave={() => { props.navigation.goBack(); }}
             onCancel={() => { props.navigation.goBack(); }}
