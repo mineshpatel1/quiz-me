@@ -10,6 +10,8 @@ export default class Form extends Component {
   static defaultProps = {
     values: null,
     fields: null,
+    onSuccess: null,
+    onCancel: null,
   }
 
   constructor(props) {
@@ -22,7 +24,6 @@ export default class Form extends Component {
     for (param in props.fields) {
       this.state.values[param] = props.values[param];  // Current values
       this.state.valid[param] = props.fields[param].validator(props.values[param]);
-      console.log(param, props.values[param], props.fields[param].validator(props.values[param]));
     }
   }
 
@@ -93,7 +94,7 @@ export default class Form extends Component {
         }]}>
           <ConfirmButtons
             onSuccess={() => {
-              if (props.onSuccess) props.onSave(state.values);
+              if (props.onSuccess) props.onSuccess(state.values);
             }}
             onCancel={() => { 
               if (props.onCancel) props.onCancel();
