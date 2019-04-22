@@ -59,7 +59,7 @@ const AppNavigator = createStackNavigator({
   EditUser: { screen: EditUser },
 },
 {
-  initialRouteName: "Home",
+  initialRouteName: "EditUser",
   transitionConfig: (nav) => slideFromRight(nav),
   defaultNavigationOptions: {
     header: null,

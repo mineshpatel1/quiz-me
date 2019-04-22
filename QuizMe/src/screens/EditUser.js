@@ -10,6 +10,31 @@ export default class EditUser extends Component {
     super(props);
   }
 
+  post(values) {
+    console.log(values);
+    fetch('http://10.0.2.2:3000/user/new', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email: 'x@gmail.com',
+      }),
+    })
+    .then((res) => res.json())
+    .then((res) => {
+      if (res.hasOwnProperty('error')) {
+        console.log('Error', res);
+      } else {
+        console.log('Done', res);
+      }
+    })
+    .catch((error) => {
+      console.log('Error', error);
+    });
+  }
+
   render() {
     let { props, state } = this;
     let create = props.navigation.getParam('create', false);
@@ -83,7 +108,11 @@ export default class EditUser extends Component {
       <Container>
         <Header title={title} route={'Home'} />
         <View style={[styles.f1, styles.col, styles.aCenter]}>
-          <Form fields={fields} values={values} />
+          <Form 
+            fields={fields} values={values}
+            onCancel={() => { this.navigation.goBack() }}
+            onSuccess={values => {this.post(values)}}
+          />
         </View>
       </Container>
     )
