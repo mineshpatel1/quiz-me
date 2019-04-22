@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { View } from 'react-native';
+import { Platform, View } from 'react-native';
 import Swiper from 'react-native-swiper';
 
 import Option from '../components/Option';
@@ -26,7 +26,6 @@ class GameSummary extends Component {
 
   render() {
     let { props, state } = this;
-
     let questions = [];
     for (q of props.game.questions) {
       let _options = [];
@@ -65,13 +64,20 @@ class GameSummary extends Component {
     }
 
     let borderColour = colours.error;
-    if (questions[state.index].chosen == questions[state.index].answer) {
-      borderColour = colours.success;
+    if (questions.length != 0) {
+      if (questions[state.index].chosen == questions[state.index].answer) {
+        borderColour = colours.success;
+      }
+    }
+    
+    let iosAdjust = { top: 0, bottom: 0, swiper: styles.f1, clipped: true };
+    if (Platform.OS == 'ios') {
+      iosAdjust = { top: 10, bottom: 15, swiper: {}, clipped: false };
     }
 
     return (
       <Container bgColour={colours.black}>
-        <View style={[styles.row]}>
+        <View style={[styles.row, {marginTop: iosAdjust.top}]}>
           <IconButton
             icon='chart-pie' onPress={() => {props.navigation.goBack()}}
             style={[{marginLeft: 45, paddingTop: 30}]}
@@ -95,10 +101,10 @@ class GameSummary extends Component {
             overflow: 'hidden', borderRadius: 10, borderColor: borderColour, borderWidth: 2,
           }]}>
             <Swiper
-              autoplay={false} showsPagination={false}
-              loop={false} style={styles.f1}
-              ref={(x) => { this.content = x; }}
+              ref={(x) => { this.content = x; }} loop={false}
               onIndexChanged={(idx) => { this.setState({index: idx}); }}
+              showsPagination={false} autoplay={false}
+              style={iosAdjust.swiper} removeClippedSubviews={iosAdjust.clipped}
             >
               {
                 questions.map((q, i) => (
@@ -136,7 +142,7 @@ class GameSummary extends Component {
             }
           </View>
         </View>
-        <View style={[styles.center, {padding: 10}]}>
+        <View style={[styles.center, {padding: 10, marginBottom: iosAdjust.bottom}]}>
           <Text colour={colours.white}>{(state.index + 1) + '/' + questions.length}</Text>
         </View>
       </Container>

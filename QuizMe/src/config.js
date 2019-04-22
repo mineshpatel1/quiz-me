@@ -35,7 +35,7 @@ export const defaultSettings = {
     icon: "question",
     type: "int",
     inputType: "textInput",
-    validator: (val) => {return (3 <= val && val <= 20)},
+    validator: (val) => {return (3 <= val && val <= 50)},
   },
   'timeLimit': {
     label: "Time Limit (s)",
