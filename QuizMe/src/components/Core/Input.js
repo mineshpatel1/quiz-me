@@ -86,10 +86,10 @@ export default class Input extends Component {
             <Text bold={true} colour={props.colour}>{props.label}</Text>
           </View>
         </TouchableOpacity>
-        <View style={{
+        <View style={[styles.jCenter, {
           flex: 1, backgroundColor: colours.light, height: props.height,
           borderTopRightRadius: props.borderRadius, borderBottomRightRadius: props.borderRadius,
-        }}>
+        }]}>
           <TextInput
             style={[fonts.normal, {marginLeft: 15}]}
             keyboardType={keyboardType}

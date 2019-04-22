@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { Platform, View } from 'react-native';
 
 import Text from './Text';
 import Icon from './Icon';
@@ -21,8 +21,15 @@ export default class Header extends Component {
 
   render() {
     let { props } = this;
+  
+    let iosAdjust = 0;
+    if (Platform.OS == 'ios') iosAdjust = 25;
+
     return (
-      <View style={[styles.row, styles.aCenter, { height: props.height }, styles.bgTheme, styles.bottomShadow]}>
+      <View style={[
+        styles.row, styles.aCenter, styles.bgTheme, styles.bottomShadow,
+        { height: props.height + iosAdjust, paddingTop: iosAdjust },
+      ]}>
         <Icon
           icon="arrow-left" size={20} colour={colours.white} style={{paddingLeft: 15}}
           onPress={() => {

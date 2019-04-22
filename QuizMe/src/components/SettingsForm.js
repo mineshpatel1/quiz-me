@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { View, ScrollView } from 'react-native';
+import { Platform, View, ScrollView } from 'react-native';
 
 import ConfirmButtons from '../components/ConfirmButtons';
 import { Button, Input, Picker } from '../components/Core';
@@ -47,6 +47,9 @@ class SettingsForm extends Component {
     let _pickers = [];
     let values = {};
 
+    let iosAdjust = 0;
+    if (Platform.OS == 'ios') iosAdjust = 15;
+
     textInput = (i, setting) => {
       return (
         <Input
@@ -86,7 +89,7 @@ class SettingsForm extends Component {
     return (
       <View style={[styles.f1, {width: '100%'}]}>
         <View style={[
-          styles.f1, {backgroundColor: colours.white, borderBottomWidth: 2, borderColor: colours.light}
+          styles.f1, {borderBottomWidth: 2, borderColor: colours.light}
         ]}>
           <ScrollView contentContainerStyle={{alignItems: 'center', paddingTop: 15}}>
             {
@@ -97,7 +100,7 @@ class SettingsForm extends Component {
           </ScrollView>
         </View>
         <View style={[{
-          justifyContent: 'flex-end', paddingTop: 15, paddingBottom: 15,
+          justifyContent: 'flex-end', paddingTop: 15, paddingBottom: 15 + iosAdjust,
         }]}>
           <ConfirmButtons
             onSuccess={() => {

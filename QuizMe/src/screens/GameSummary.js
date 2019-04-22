@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Animated, View, ScrollView, TouchableOpacity } from 'react-native';
+import { View } from 'react-native';
 import Swiper from 'react-native-swiper';
 
 import Option from '../components/Option';
-import { Container, Text, Icon, Button, IconButton } from '../components/Core';
-import { styles, colours, fonts } from '../styles';
+import { Container, Text, IconButton } from '../components/Core';
+import { styles, colours } from '../styles';
 import { utils } from '../utils';
 
 class GameSummary extends Component {

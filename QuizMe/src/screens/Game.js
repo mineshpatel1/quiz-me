@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Animated, Easing, View, TouchableOpacity } from 'react-native';
+import { Platform, Animated, View } from 'react-native';
 
 import HandleBack from '../components/HandleBack';
 import Option from '../components/Option';
@@ -9,7 +9,7 @@ import {
   Container, Text, Button, Modal, Timer, ProgressBar, ProgressCircle,
 } from '../components/Core';
 
-import { styles, colours, fonts } from '../styles';
+import { styles, colours } from '../styles';
 import { utils } from '../utils';
 import { waitTime, animationDuration } from '../config';
 import { nextTurn, chooseAnswer } from '../actions/GameActions';
@@ -151,6 +151,9 @@ class Game extends Component {
     let qTextSize = utils.scaleQText(props.question.question, 30);
     let optionStyle = options.length == 2 ? { height: 125 } : styles.f1;
 
+    let iosAdjust = 0;
+    if (Platform.OS == 'ios') iosAdjust = 10;
+
     let preGame = (
       <Animated.View style={[styles.f1, {opacity: state.opacity}]}>
         <View style={[styles.f1, styles.center]}>
@@ -168,7 +171,7 @@ class Game extends Component {
     )
 
     let inGame = (
-      <Animated.View style={[styles.f1, { opacity: state.opacity }]}>
+      <Animated.View style={[styles.f1, { opacity: state.opacity, marginTop: iosAdjust }]}>
         <Animated.View style={[styles.row, {opacity: state.hudOpacity}]}>
           <View style={styles.f1}>
             <Text colour={colours.white} size={24} bold={true} align="left">
