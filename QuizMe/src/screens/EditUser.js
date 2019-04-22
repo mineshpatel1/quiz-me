@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
+// import Toast from 'react-native-easy-toast';
 
-import { Container, Header, Button, Form } from '../components/Core';
+import { Container, Header, Text, Button, Form, Toast } from '../components/Core';
 import { colours, styles } from '../styles';
 import { utils, validators } from '../utils';
 
@@ -11,28 +12,29 @@ export default class EditUser extends Component {
   }
 
   post(values) {
-    console.log(values);
-    fetch('http://10.0.2.2:3000/user/new', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        email: 'x@gmail.com',
-      }),
-    })
-    .then((res) => res.json())
-    .then((res) => {
-      if (res.hasOwnProperty('error')) {
-        console.log('Error', res);
-      } else {
-        console.log('Done', res);
-      }
-    })
-    .catch((error) => {
-      console.log('Error', error);
-    });
+    this.refs.toast.show('Hello World');
+
+    // fetch('http://10.0.2.2:3000/user/new', {
+    //   method: 'POST',
+    //   headers: {
+    //     Accept: 'application/json',
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: JSON.stringify({
+    //     email: 'x@gmail.com',
+    //   }),
+    // })
+    // .then((res) => res.json())
+    // .then((res) => {
+    //   if (res.hasOwnProperty('error')) {
+    //     console.log('Error', res);
+    //   } else {
+    //     console.log('Done', res);
+    //   }
+    // })
+    // .catch((error) => {
+    //   console.log('Error', error);
+    // });
   }
 
   render() {
@@ -114,6 +116,7 @@ export default class EditUser extends Component {
             onSuccess={values => {this.post(values)}}
           />
         </View>
+        <Toast colour={colours.error} ref="toast" />
       </Container>
     )
   }
