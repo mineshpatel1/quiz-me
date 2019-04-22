@@ -22,10 +22,23 @@ export default class Input extends Component {
     this.state = {
       value: props.value,
       valid: this.validate(this.parseVal(props.value)),
+      pristine: true,
     }
   }
 
+  onFocus() {
+    this.setState({ pristine: false });
+  }
+
+  onChange(val) {
+    let _val = this.parseVal(val);
+    let _valid = this.validate(_val);
+    this.update(_val, _valid);
+    if (this.props.onChange) this.props.onChange(_val, _valid);
+  }
+
   parseVal(val) {
+    if (!val) return null;
     return utils.parseValue(val, this.props.type);
   }
 
@@ -38,7 +51,7 @@ export default class Input extends Component {
   }
 
   update(newVal, newValid) {
-    this.setState({ value: newVal, valid: newValid });
+    this.setState({ value: newVal, valid: newValid, pristine: false });
   }
 
   getKeyboardType(type) {
@@ -55,16 +68,30 @@ export default class Input extends Component {
   render() {
     let { props, state } = this;
 
+    let keyboardType = this.getKeyboardType(props.type);
+    let labelWidth = 1;
+    let inputWidth = 4;
+
+    if (keyboardType == 'numeric') {
+      labelWidth = 4;
+      inputWidth = 1;
+    }
+
     let value = null;
+    let showLabel = false;
+    let inputColour = colours.grey;
+
     if (state.value) {  // Even numeric inputs need strings
       value = state.value.toString();
+    } else if (keyboardType == 'default' && state.pristine) {
+      showLabel = true;
+      value = props.label;
+      inputColour = colours.lightGrey;
     }
 
     let valid = true;
     let bg = colours.primary;
     if (!this.validate(this.parseVal(value))) bg = colours.error;
-
-    let keyboardType = this.getKeyboardType(props.type);
 
     return (
       <View style={[styles.shadow, styles.row, styles.aCenter,
@@ -76,30 +103,29 @@ export default class Input extends Component {
         <TouchableOpacity
           onPress={() => { this.input.focus(); }} activeOpacity={0.85}
           style={[styles.row, {
-            flex: 4, borderTopLeftRadius: props.borderRadius, borderBottomLeftRadius: props.borderRadius,
+            flex: labelWidth, borderTopLeftRadius: props.borderRadius, borderBottomLeftRadius: props.borderRadius,
           }]}
         >
           <View style={{paddingLeft: 20, width: 55, height: props.height, justifyContent: 'center'}}>
             <Icon icon={props.icon} name={props.icon} colour={props.colour} size={20} />
           </View>
-          <View style={{flex: 1, height: props.height, justifyContent: 'center'}}>
-            <Text bold={true} colour={props.colour}>{props.label}</Text>
-          </View>
+          {
+            keyboardType == 'numeric' &&
+            <View style={{flex: 1, height: props.height, justifyContent: 'center'}}>
+              <Text bold={true} colour={props.colour}>{props.label}</Text>
+            </View>
+          }
         </TouchableOpacity>
         <View style={[styles.jCenter, {
-          flex: 1, backgroundColor: colours.light, height: props.height,
+          flex: inputWidth, backgroundColor: colours.light, height: props.height,
           borderTopRightRadius: props.borderRadius, borderBottomRightRadius: props.borderRadius,
         }]}>
           <TextInput
-            style={[fonts.normal, {marginLeft: 15}]}
+            style={[fonts.normal, {marginLeft: 15, color: inputColour}]}
             keyboardType={keyboardType}
             value={value} ref={x => this.input = x}
-            onChangeText={(val) => {
-              let _val = this.parseVal(val);
-              let _valid = this.validate(_val);
-              this.update(_val, _valid);
-              if (props.onChange) props.onChange(_val, _valid);
-            }}
+            onChangeText={(val) => this.onChange(val)}
+            onFocus={() => { if (showLabel) this.onFocus() }}
           />
         </View>
       </View>

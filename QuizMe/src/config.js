@@ -1,3 +1,5 @@
+import { validators } from './utils';
+
 export const server = { host: "10.0.2.2", port: 3000, https: false }
 export const animationDuration = 300;
 export const waitTime = 0.5;
@@ -19,7 +21,7 @@ export const categories = {
 }
 
 export const defaultSettings = {
-  'category': {
+  category: {
     label: "Category",
     default: 'General Knowledge',
     icon: "th",
@@ -30,7 +32,7 @@ export const defaultSettings = {
       return Object.values(categories).map((c) => {return c.name}).indexOf(val) > -1;
     },
   },
-  'numQuestions': {
+  numQuestions: {
     label: "Number of Questions",
     default: 10,
     icon: "question",
@@ -38,7 +40,7 @@ export const defaultSettings = {
     inputType: "textInput",
     validator: (val) => {return (3 <= val && val <= 50)},
   },
-  'timeLimit': {
+  timeLimit: {
     label: "Time Limit (s)",
     default: 10,
     icon: "hourglass-half",

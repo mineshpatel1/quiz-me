@@ -11,6 +11,7 @@ export const colours = {
   black: '#000000',
   grey: '#333333',
   midGrey: '#555555',
+  lightGrey: '#AAAAAA',
 };
 
 const fontSize = {
