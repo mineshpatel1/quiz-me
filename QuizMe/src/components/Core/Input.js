@@ -14,7 +14,9 @@ export default class Input extends Component {
     colour: colours.white,
     type: 'default',
     onChange: null,
+    format: null,
     validator: null,
+    secure: false,
   }
 
   constructor(props) {
@@ -29,6 +31,10 @@ export default class Input extends Component {
   onFocus() {
     this.setState({ pristine: false });
   }
+  
+  offFocus() {
+    this.setState({ pristine: true });
+  }
 
   onChange(val) {
     let _val = this.parseVal(val);
@@ -39,7 +45,9 @@ export default class Input extends Component {
 
   parseVal(val) {
     if (!val) return null;
-    return utils.parseValue(val, this.props.type);
+    val = utils.parseValue(val, this.props.type);
+    if (this.props.format) val = this.props.format(val);
+    return val;
   }
 
   validate(val) {
@@ -89,6 +97,7 @@ export default class Input extends Component {
       inputColour = colours.lightGrey;
     }
 
+    let secure = showLabel ? false : props.secure;
     let valid = this.validate(this.parseVal(state.value));
     let bg = valid ? colours.primary: colours.error;
 
@@ -125,6 +134,8 @@ export default class Input extends Component {
             value={value} ref={x => this.input = x}
             onChangeText={(val) => this.onChange(val)}
             onFocus={() => { if (showLabel) this.onFocus() }}
+            secureTextEntry={secure}
+            onEndEditing={() => { this.offFocus() }}
           />
         </View>
       </View>

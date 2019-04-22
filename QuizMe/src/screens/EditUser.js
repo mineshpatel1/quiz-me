@@ -34,32 +34,42 @@ export default class EditUser extends Component {
     }
 
     let fields = {
-      category: {
-        label: "Category",
-        default: 'General Knowledge',
-        icon: "th",
+      email: {
+        label: "Email",
+        icon: "envelope",
         type: "string",
-        inputType: "picker",
-        options: Object.values(categories).map((c) => {return c.name}),
+        inputType: "text",
+        validator: (val) => {return val && validators.isEmail(val)},
+        format: (val) => { return val.toLowerCase() },
+      },
+      password: {
+        label: "Password",
+        icon: "lock",
+        type: "string",
+        inputType: "text",
+        secure: true,
         validator: (val) => {
-          return Object.values(categories).map((c) => {return c.name}).indexOf(val) > -1;
+          if (!val) return false;
+          return (
+            validators.hasLower(val) && validators.hasUpper(val) &&
+            validators.hasNumeric(val) && !validators.hasSpace(val)
+          )
         },
       },
-      numQuestions: {
-        label: "Number of Questions",
-        default: 10,
-        icon: "question",
-        type: "int",
+      confirmPassword: {
+        label: "Confirm Password",
+        icon: "lock",
+        type: "string",
         inputType: "text",
-        validator: (val) => {return (3 <= val && val <= 50)},
+        secure: true,
+        validator: (val, formVals) => {return val && val == formVals.password},
       },
-      username: {
-        label: "Username",
-        default: null,
+      nickname: {
+        label: "Nickname",
         icon: "user",
         type: "string",
         inputType: "text",
-        validator: (val) => {return val && validators.isAlphaNumeric(val)},
+        validator: (val) => { return validators.isAlphaNumeric(val)},
       }
     }
 

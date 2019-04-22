@@ -47,8 +47,11 @@ export default class Form extends Component {
         <Input
           key={i} style={[{marginBottom: 15}]} icon={field.icon}
           value={this.state.values[field.param]} type={field.type}
-          validator={field.validator} label={field.label}
+          validator={(val) => {
+            return field.validator(val, this.state.values);
+          }} label={field.label} secure={field.secure}
           onChange={(val, valid) => {this.update(field.param, val, valid)}}
+          format={field.format}
         />
       )
     }
@@ -59,6 +62,7 @@ export default class Form extends Component {
           key={i} style={[{marginBottom: 15}]} icon={field.icon}
           value={this.state.values[field.param]} options={field.options}
           onChange={(val) => {this.update(field.param, val, true)}}
+          format={field.format}
         />
       )
     }

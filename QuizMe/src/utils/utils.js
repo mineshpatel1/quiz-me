@@ -8,7 +8,7 @@ const _sleep = (ms) => {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-const clone = (_orig) => {
+const _clone = (_orig) => {
   return Object.assign( Object.create( Object.getPrototypeOf(_orig)), _orig);
 }
 
@@ -118,7 +118,7 @@ class utils {
   }
 
   /** Clones an instance of a class. */
-  static clone = clone;
+  static clone = _clone;
 
   /** Sorts an array of objects by the value of a specific key. */
   static sortByKey = (_array, _key, asc=true) => {
@@ -126,7 +126,7 @@ class utils {
     let multiplier = asc ? 1 : -1;
 
     for (let _obj of _array) {
-      new_array.push(clone(_obj));
+      new_array.push(_clone(_obj));
     }
 
     return new_array.sort(function(a, b){
