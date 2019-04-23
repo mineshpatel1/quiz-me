@@ -1,6 +1,6 @@
 import { validators } from './utils';
 
-export const server = { host: "10.0.2.2", port: 3000, https: false }
+export const server = { host: "10.0.2.2", port: 3000, secure: false }
 export const animationDuration = 300;
 export const waitTime = 0.5;
 

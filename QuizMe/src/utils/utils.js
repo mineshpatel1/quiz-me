@@ -2,7 +2,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import NetInfo from "@react-native-community/netinfo";
 import { Animated, Easing } from 'react-native';
 
-import { animationDuration } from '../config';
+import { animationDuration, server } from '../config';
 
 const _sleep = (ms) => {
   return new Promise(resolve => setTimeout(resolve, ms));
@@ -266,17 +266,25 @@ class utils {
     return size;
   }
 
+  /** Standard POST method for contacting the server. */
+  static post(path, data) {
+    let http = server.secure ? 'https' : 'http';
+    let url = http + '://' + server.host + ':' + server.port + '/' + path;
+
+    return fetch(url, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    }).then((res) => res.json());
+  }
+
+  /** Gets network connectivity info from the phone. */
   static async getConnectionInfo() {
     let connectionInfo = await NetInfo.getConnectionInfo();
     return connectionInfo;
-  }
-
-  static onConnectionChange(fn) {
-    NetInfo.addEventListener('connectionChange', handleFirstConnectivityChange);
-  }
-
-  static clearConnectionChange() {
-    
   }
 }
 

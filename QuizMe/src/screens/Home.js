@@ -16,24 +16,16 @@ export default class Home extends Component {
   }
 
   componentWillMount() {
-    utils.animate(this.state.opacity, 1);
-    NetInfo.addEventListener('connectionChange', (info) => {this.onConnectionChange(info, this)});
-  }
-
-  componentWillUnmount() {
-    NetInfo.removeEventListener('connectionChange', (info) => {this.onConnectionChange(info, this)});
-  }
-
-  onConnectionChange(connectionInfo, self) {
-    self.setState({
-      online: ['none', 'unknown'].indexOf(connectionInfo.type) == -1,
-    });
+    utils.animate(this.state.opacity, 1);  // Fade in
   }
 
   render() {
     let { props, state } = this;
     return (
-      <Container bgColour={colours.primary} style={[styles.center]}>
+      <Container 
+        bgColour={colours.primary} style={[styles.center]}
+        onConnectionChange={(info, online) => {this.setState({ online: online })}}
+      >
         <Animated.View style={{opacity: state.opacity}}>
           <View style={[styles.f1, {justifyContent: 'flex-end', alignItems: 'center'}]}>
             <Image style={{width: 400, height: 150}} source={require('../../assets/images/title.png')} />

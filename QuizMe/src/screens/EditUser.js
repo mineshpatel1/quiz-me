@@ -1,40 +1,34 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
 
-import { Container, Header, Text, Button, Form, SnackBar } from '../components/Core';
-import { colours, styles } from '../styles';
+import { Container, Header, Form, SnackBar } from '../components/Core';
+import { styles } from '../styles';
 import { utils, validators } from '../utils';
 
 export default class EditUser extends Component {
   constructor(props) {
     super(props);
-    this.state = { loading: false };
+    this.state = { 
+      loading: false,
+      offline: false,
+    };
   }
 
   post(values) {
     this.setState({ loading: true }, () => {
-      fetch('http://10.0.2.2:3000/user/new', {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email: 'x@gmail.com',
-        }),
-      })
-      .then((res) => res.json())
-      .then((res) => {
-        if (res.hasOwnProperty('error')) {
-          this.showError(res.error);
-        } else {
-          this.setState({ loading: false });
-          console.log('Done', res);
-        }
-      })
-      .catch((error) => {
-        this.showError(error.toString());
-      });
+      utils.post('user/new', {
+        email: 'x@gmail.com',
+      }).then((res) => {
+          if (res.hasOwnProperty('error')) {
+            this.showError(res.error);
+          } else {
+            this.setState({ loading: false });
+            console.log('Done', res);
+          }
+        })
+        .catch((error) => {
+          this.showError(error.toString());
+        });
     });
   }
 
@@ -97,14 +91,17 @@ export default class EditUser extends Component {
     }
 
     return (
-      <Container spinner={state.loading}>
+      <Container 
+        spinner={state.loading}
+        onConnectionChange={(info, online) => {this.setState({ offline: !online, loading: false })}}
+      >
         <Header title={title} route={'Home'} />
         <View style={[styles.f1, styles.col, styles.aCenter]}>
           <Form 
             fields={fields} values={values}
             onCancel={() => { this.props.navigation.goBack() }}
             onSuccess={values => {this.post(values)}}
-            disabled={state.loading}
+            disabled={state.loading || state.offline}
           />
         </View>
         <SnackBar ref="error" error={true} onAction={() => {
