@@ -8,12 +8,11 @@ import { utils, validators } from '../utils';
 export default class EditUser extends Component {
   constructor(props) {
     super(props);
-    this.state = { disabled: false };
+    this.state = { loading: false };
   }
 
   post(values) {
-    this.setState({ disabled: true }, () => {
-      
+    this.setState({ loading: true }, () => {
       fetch('http://10.0.2.2:3000/user/new', {
         method: 'POST',
         headers: {
@@ -29,6 +28,7 @@ export default class EditUser extends Component {
         if (res.hasOwnProperty('error')) {
           this.showError(res.error);
         } else {
+          this.setState({ loading: false });
           console.log('Done', res);
         }
       })
@@ -39,6 +39,7 @@ export default class EditUser extends Component {
   }
 
   showError(err) {
+    this.setState({ loading: false });
     this.refs.error.show(err, 0);
   }
 
@@ -96,18 +97,18 @@ export default class EditUser extends Component {
     }
 
     return (
-      <Container>
+      <Container spinner={state.loading}>
         <Header title={title} route={'Home'} />
         <View style={[styles.f1, styles.col, styles.aCenter]}>
           <Form 
             fields={fields} values={values}
             onCancel={() => { this.props.navigation.goBack() }}
             onSuccess={values => {this.post(values)}}
-            disabled={state.disabled}
+            disabled={state.loading}
           />
         </View>
         <SnackBar ref="error" error={true} onAction={() => {
-          this.setState({disabled: false})
+          this.setState({loading: false})
         }} />
       </Container>
     )

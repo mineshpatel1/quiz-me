@@ -80,7 +80,6 @@ export default class Form extends Component {
       i += 1;
     }
     let valid = Object.values(this.state.valid).every((x) => {return x});
-    valid = true;
 
     return (
       <View style={[styles.f1, {width: '100%'}]}>
