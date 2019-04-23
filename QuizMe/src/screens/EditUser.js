@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
-// import Toast from 'react-native-easy-toast';
 
-import { Container, Header, Text, Button, Form, Toast } from '../components/Core';
+import { Container, Header, Text, Button, Form } from '../components/Core';
 import { colours, styles } from '../styles';
 import { utils, validators } from '../utils';
 
@@ -12,8 +11,6 @@ export default class EditUser extends Component {
   }
 
   post(values) {
-    this.refs.toast.show('Hello World');
-
     // fetch('http://10.0.2.2:3000/user/new', {
     //   method: 'POST',
     //   headers: {
@@ -112,11 +109,10 @@ export default class EditUser extends Component {
         <View style={[styles.f1, styles.col, styles.aCenter]}>
           <Form 
             fields={fields} values={values}
-            onCancel={() => { this.navigation.goBack() }}
+            onCancel={() => { this.props.navigation.goBack() }}
             onSuccess={values => {this.post(values)}}
           />
         </View>
-        <Toast colour={colours.error} ref="toast" />
       </Container>
     )
   }

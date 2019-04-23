@@ -11,7 +11,6 @@ import _IconButton from './IconButton';
 import _ProgressBar from './ProgressBar';
 import _ProgressCircle from './ProgressCircle';
 import _Form from './Form';
-import _Toast from './Toast';
 
 export const Container = _Container;
 export const Header = _Header;
@@ -26,4 +25,3 @@ export const IconButton = _IconButton;
 export const ProgressBar = _ProgressBar;
 export const ProgressCircle = _ProgressCircle;
 export const Form = _Form;
-export const Toast = _Toast;
