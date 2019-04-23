@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
 
-import Button from './Core/Button';
-import { styles, colours } from '../styles';
+import Button from './Button';
+import { styles, colours } from '../../styles';
 
 export default class ConfirmButtons extends Component {
   static defaultProps = {

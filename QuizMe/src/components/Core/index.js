@@ -11,6 +11,8 @@ import _IconButton from './IconButton';
 import _ProgressBar from './ProgressBar';
 import _ProgressCircle from './ProgressCircle';
 import _Form from './Form';
+import _SnackBar from './SnackBar';
+import _ConfirmButtons from './ConfirmButtons';
 
 export const Container = _Container;
 export const Header = _Header;
@@ -24,4 +26,6 @@ export const Timer = _Timer;
 export const IconButton = _IconButton;
 export const ProgressBar = _ProgressBar;
 export const ProgressCircle = _ProgressCircle;
+export const ConfirmButtons = _ConfirmButtons;
 export const Form = _Form;
+export const SnackBar = _SnackBar;

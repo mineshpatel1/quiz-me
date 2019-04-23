@@ -1,37 +1,45 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
 
-import { Container, Header, Text, Button, Form } from '../components/Core';
+import { Container, Header, Text, Button, Form, SnackBar } from '../components/Core';
 import { colours, styles } from '../styles';
 import { utils, validators } from '../utils';
 
 export default class EditUser extends Component {
   constructor(props) {
     super(props);
+    this.state = { disabled: false };
   }
 
   post(values) {
-    // fetch('http://10.0.2.2:3000/user/new', {
-    //   method: 'POST',
-    //   headers: {
-    //     Accept: 'application/json',
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify({
-    //     email: 'x@gmail.com',
-    //   }),
-    // })
-    // .then((res) => res.json())
-    // .then((res) => {
-    //   if (res.hasOwnProperty('error')) {
-    //     console.log('Error', res);
-    //   } else {
-    //     console.log('Done', res);
-    //   }
-    // })
-    // .catch((error) => {
-    //   console.log('Error', error);
-    // });
+    this.setState({ disabled: true }, () => {
+      
+      fetch('http://10.0.2.2:3000/user/new', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: 'x@gmail.com',
+        }),
+      })
+      .then((res) => res.json())
+      .then((res) => {
+        if (res.hasOwnProperty('error')) {
+          this.showError(res.error);
+        } else {
+          console.log('Done', res);
+        }
+      })
+      .catch((error) => {
+        this.showError(error.toString());
+      });
+    });
+  }
+
+  showError(err) {
+    this.refs.error.show(err, 0);
   }
 
   render() {
@@ -40,22 +48,6 @@ export default class EditUser extends Component {
 
     let title = 'Edit Profile';
     if (create) title = 'Sign Up';
-
-    const categories = {
-      1:  {id: 1,  name: 'General Knowledge', icon: 'question'},
-      2:  {id: 2,  name: 'Sports', icon: 'futbol'},
-      3:  {id: 3,  name: 'Science', icon: 'atom'},
-      4:  {id: 4,  name: 'Geography', icon: 'globe-americas'},
-      5:  {id: 5,  name: 'History', icon: 'landmark'},
-      6:  {id: 6,  name: 'Film', icon: 'film'},
-      7:  {id: 7,  name: 'Music', icon: 'music'},
-      8:  {id: 8,  name: 'Literature', icon: 'book'},
-      // 9:  {id: 9,  name: 'Quotes', icon: 'quote-right'},
-      // 10: {id: 10, name: 'Mythology', icon: 'ankh'},
-      11: {id: 11, name: 'TV', icon: 'tv'},
-      12: {id: 12, name: 'Animals', icon: 'paw'},
-      13: {id: 13, name: 'Puzzles & Riddles', icon: 'brain'},
-    }
 
     let fields = {
       email: {
@@ -111,8 +103,12 @@ export default class EditUser extends Component {
             fields={fields} values={values}
             onCancel={() => { this.props.navigation.goBack() }}
             onSuccess={values => {this.post(values)}}
+            disabled={state.disabled}
           />
         </View>
+        <SnackBar ref="error" error={true} onAction={() => {
+          this.setState({disabled: false})
+        }} />
       </Container>
     )
   }

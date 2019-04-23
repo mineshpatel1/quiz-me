@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Platform, View, ScrollView } from 'react-native';
 
-import ConfirmButtons from '../components/ConfirmButtons';
+import ConfirmButtons from './Core/ConfirmButtons';
 import { Input, Picker, Form } from '../components/Core';
 import { saveSettings } from '../actions/SettingActions';
 import { styles, colours } from '../styles';

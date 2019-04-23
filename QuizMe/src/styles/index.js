@@ -79,4 +79,21 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  snackBarContainer: {
+    elevation: 40,
+    position: 'absolute',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    left: 0,
+    bottom: 0,
+    right: 0,
+    paddingLeft: 10,
+    paddingRight: 55
+  },
+  snackAction: {
+    paddingLeft: 15, 
+    paddingTop: 15, 
+    paddingBottom: 15,
+  },
 });

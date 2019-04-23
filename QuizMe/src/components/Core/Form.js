@@ -1,7 +1,7 @@
 import React, { Component } from 'react';;
 import { Platform, View, ScrollView } from 'react-native';
 
-import ConfirmButtons from '../../components/ConfirmButtons';
+import ConfirmButtons from './ConfirmButtons';
 import Input from './Input';
 import Picker from './Picker';
 import { styles, colours } from '../../styles';
@@ -12,6 +12,7 @@ export default class Form extends Component {
     fields: null,
     onSuccess: null,
     onCancel: null,
+    disabled: false,
   }
 
   constructor(props) {
@@ -104,7 +105,7 @@ export default class Form extends Component {
             onCancel={() => { 
               if (props.onCancel) props.onCancel();
             }}
-            disabled={!valid}
+            disabled={!valid || props.disabled}
           />
         </View>
       </View>
