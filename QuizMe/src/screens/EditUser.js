@@ -16,14 +16,13 @@ export default class EditUser extends Component {
 
   post(values) {
     this.setState({ loading: true }, () => {
-      utils.post('user/new', {
-        email: 'x@gmail.com',
-      }).then((res) => {
+      utils.post('user/new', values)
+        .then((res) => {
+          console.log(res);
           if (res.hasOwnProperty('error')) {
             this.showError(res.error);
-          } else {
-            this.setState({ loading: false });
-            console.log('Done', res);
+          } else if (res.success) {
+            this.showSuccess("Signed Up Successfully.")
           }
         })
         .catch((error) => {
@@ -35,6 +34,11 @@ export default class EditUser extends Component {
   showError(err) {
     this.setState({ loading: false });
     this.refs.error.show(err, 0);
+  }
+
+  showSuccess(msg) {
+    this.setState({ loading: false });
+    this.refs.success.show(msg, 1000);
   }
 
   render() {
@@ -75,19 +79,13 @@ export default class EditUser extends Component {
         secure: true,
         validator: (val, formVals) => {return val && val == formVals.password},
       },
-      nickname: {
+      name: {
         label: "Nickname",
         icon: "user",
         type: "string",
         inputType: "text",
         validator: (val) => { return validators.isAlphaNumeric(val)},
       }
-    }
-
-    let values = {
-      category: 'Science',
-      numQuestions: 5,
-      username: null,
     }
 
     return (
@@ -98,7 +96,7 @@ export default class EditUser extends Component {
         <Header title={title} route={'Home'} />
         <View style={[styles.f1, styles.col, styles.aCenter]}>
           <Form 
-            fields={fields} values={values}
+            fields={fields}
             onCancel={() => { this.props.navigation.goBack() }}
             onSuccess={values => {this.post(values)}}
             disabled={state.loading || state.offline}
@@ -107,6 +105,11 @@ export default class EditUser extends Component {
         <SnackBar ref="error" error={true} onAction={() => {
           this.setState({loading: false})
         }} />
+        <SnackBar 
+          ref="success" success={true} 
+          onAction={() => this.props.navigation.navigate('Home')}
+          onAutoHide={() => this.props.navigation.navigate('Home')}
+        />
       </Container>
     )
   }

@@ -17,6 +17,8 @@ export default class SnackBar extends Component {
     height: 80,
     onAction: null,
     error: false,
+    success: false,
+    onAutoHide: null,
   }
 
   constructor(props) {
@@ -52,6 +54,7 @@ export default class SnackBar extends Component {
             this.hidden = true;
             this.shown = false;
             clearTimeout(this.timer);
+            if (this.props.onAutoHide) this.props.onAutoHide();
           });
         }
       }, duration);
@@ -75,11 +78,13 @@ export default class SnackBar extends Component {
     let colour = props.colour;
     let textColour = props.textColour;
     let actionColour = props.actionColour;
-    if (props.error) {
-      colour = colours.error;
+    if (props.error || props.success) {
       textColour = colours.white;
       actionColour = colours.white;
     }
+    
+    if (props.error) colour = colours.error;
+    if (props.success) colour = colours.success;
 
     return (
       <Animated.View style = {[

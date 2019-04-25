@@ -8,7 +8,7 @@ import { styles, colours } from '../../styles';
 
 export default class Form extends Component {
   static defaultProps = {
-    values: null,
+    values: {},
     fields: null,
     onSuccess: null,
     onCancel: null,

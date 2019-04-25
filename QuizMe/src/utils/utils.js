@@ -267,7 +267,7 @@ class utils {
   }
 
   /** Standard POST method for contacting the server. */
-  static post(path, data) {
+  static async post(path, data) {
     let http = server.secure ? 'https' : 'http';
     let url = http + '://' + server.host + ':' + server.port + '/' + path;
 
@@ -278,7 +278,10 @@ class utils {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(data),
-    }).then((res) => res.json());
+    }).then(res => {
+      if (!res.ok) throw "Server Error: " + res.status.toString();
+      return res.json();
+    })
   }
 
   /** Gets network connectivity info from the phone. */

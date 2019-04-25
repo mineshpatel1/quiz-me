@@ -24,9 +24,6 @@ app.use(session({
 }));
 
 app.get('/', function (req, res) {
-  // if (!req.session.user) {
-  //   req.session.user = Math.random();
-  // }
   res.send('Hello World');
 });
 
@@ -59,16 +56,30 @@ app.get('/user', function(req, res) {
 
 app.post('/user/new', function(req, res) {
   let data = req.body;
+  if (!data.email) return utils.error(res, "Email is required.");
+  if (!data.password) return utils.error(res, "Password is required.");
+
+  console.log('Creating new user ' + data.email + '...');
+  let newUser = new users.User(data.email, data.name);
+
   users.get(data.email)
     .then(user => {
-      if (user) return res.status(500).send({ error: "User with this email already exists." });
-      return res.send({ dummy: "Test" });
+      if (user) return utils.error(res, "User with this email already exists.");
+      users.new(newUser, data.password)
+        .then(() => { 
+          console.log('Successfully created user ' + data.email);
+          return res.send({ success: true }) 
+        })
+        .catch(err => { 
+          console.error('Error creating user:');
+          return utils.error(res, err) 
+        });
     })
     .catch(err => {
-      return res.status(500).send({ error: err.toString() });
+      return res.send({ error: err.toString() });
     });
 });
 
 app.listen(global.config.server.port, function(){
-  console.log('Node js Express js Tutorial');
+  console.log('QuizMe Server Started');
 });
