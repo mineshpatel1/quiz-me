@@ -1,9 +1,11 @@
+global.config = require(__dirname + '/../.config/config.json');
+
 const express = require('express');
 const session = require('express-session');
 const bodyParser = require('body-parser');
 
-global.config = require(__dirname + '/../.config/config.json');
 const utils = require(__dirname + '/api/utils.js');
+const email = require(__dirname + '/api/email.js');
 const pg = require(__dirname + '/api/pg.js');
 const users = require(__dirname + '/models/users.js');
 
@@ -54,6 +56,17 @@ app.get('/user', function(req, res) {
   return res.send('User Page');
 });
 
+app.get('/email', function(req, res) {
+  email.send('nesh.patel1@gmail.com', 'Test Email', 'This is some text')
+    .then(data => {
+      console.log('Success', data);
+      return res.send("Email succeeded");
+    }).catch(err => {
+      console.log('Error', err);
+      return res.send("Email failed");
+    });
+});
+
 app.post('/user/new', function(req, res) {
   let data = req.body;
   if (!data.email) return utils.error(res, "Email is required.");
@@ -68,6 +81,7 @@ app.post('/user/new', function(req, res) {
       users.new(newUser, data.password)
         .then(() => { 
           console.log('Successfully created user ' + data.email);
+          req.session.user = newUser;
           return res.send({ success: true }) 
         })
         .catch(err => { 
