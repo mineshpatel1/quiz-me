@@ -16,11 +16,15 @@ exports.get = (email) => {
       if (result.length > 1) return reject("More than 1 user found for a single email.");
       return resolve(result[0]);
     })
-    .catch(err => reject(err));
+    .catch(err => {
+      console.log('GetErr', err);
+      reject(err)
+    });
   });
 }
 
 exports.new = (user, password) => {
+  console.log('Creating new user ' + user.email + '...');
   return new Promise((resolve, reject) => {
     pg.query(
       `INSERT INTO users(email, name) VALUES ($1::text, $2::text);`, 

@@ -12,6 +12,11 @@ const _clone = (_orig) => {
   return Object.assign( Object.create( Object.getPrototypeOf(_orig)), _orig);
 }
 
+const _serverUrl = (path) => {
+  let http = server.secure ? 'https' : 'http';
+  return http + '://' + server.host + ':' + server.port + '/' + path;
+}
+
 class utils {
   constructor() {}
 
@@ -266,10 +271,19 @@ class utils {
     return size;
   }
 
+  /** Standard GET method for contacting the server. */
+  static async get(path) {
+    let url = _serverUrl(path);
+    return fetch(url, { method: 'GET' })
+      .then(res => {
+        if (!res.ok) throw "Server Error: " + res.status.toString();
+        return res.json();
+      });
+  }
+
   /** Standard POST method for contacting the server. */
   static async post(path, data) {
-    let http = server.secure ? 'https' : 'http';
-    let url = http + '://' + server.host + ':' + server.port + '/' + path;
+    let url = _serverUrl(path);
 
     return fetch(url, {
       method: 'POST',
@@ -281,7 +295,7 @@ class utils {
     }).then(res => {
       if (!res.ok) throw "Server Error: " + res.status.toString();
       return res.json();
-    })
+    });
   }
 
   /** Gets network connectivity info from the phone. */

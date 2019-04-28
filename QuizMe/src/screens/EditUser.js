@@ -18,7 +18,6 @@ export default class EditUser extends Component {
     this.setState({ loading: true }, () => {
       utils.post('user/new', values)
         .then((res) => {
-          console.log(res);
           if (res.hasOwnProperty('error')) {
             this.showError(res.error);
           } else if (res.success) {

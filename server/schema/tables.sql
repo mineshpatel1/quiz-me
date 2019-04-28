@@ -1,14 +1,14 @@
 CREATE EXTENSION pgcrypto;
 
 -- Express cookie sessionisation
-DROP TABLE IF EXISTS session;
-CREATE TABLE "session" (
+DROP TABLE IF EXISTS sessions;
+CREATE TABLE "sessions" (
     "sid" varchar NOT NULL COLLATE "default",
     "sess" json NOT NULL,
     "expire" timestamp(6) NOT NULL
 )
 WITH (OIDS=FALSE);
-ALTER TABLE "session" ADD CONSTRAINT "session_pkey" PRIMARY KEY ("sid") NOT DEFERRABLE INITIALLY IMMEDIATE;
+ALTER TABLE "sessions" ADD CONSTRAINT "session_pkey" PRIMARY KEY ("sid") NOT DEFERRABLE INITIALLY IMMEDIATE;
 
 -- Users
 DROP TABLE IF EXISTS users;

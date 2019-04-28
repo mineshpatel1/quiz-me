@@ -29,6 +29,10 @@ app.get('/', function (req, res) {
   res.send('Hello World');
 });
 
+app.get('/session', function (req, res) {
+  res.send({ session: req.session.user });
+});
+
 app.get('/user', function(req, res) {
   pg.query("SELECT * FROM users")
     .then(result => {
@@ -72,9 +76,7 @@ app.post('/user/new', function(req, res) {
   if (!data.email) return utils.error(res, "Email is required.");
   if (!data.password) return utils.error(res, "Password is required.");
 
-  console.log('Creating new user ' + data.email + '...');
   let newUser = new users.User(data.email, data.name);
-
   users.get(data.email)
     .then(user => {
       if (user) return utils.error(res, "User with this email already exists.");
@@ -90,7 +92,7 @@ app.post('/user/new', function(req, res) {
         });
     })
     .catch(err => {
-      return res.send({ error: err.toString() });
+      return utils.error(res, err);
     });
 });
 
