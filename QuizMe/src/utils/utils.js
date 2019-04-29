@@ -274,7 +274,7 @@ class utils {
   /** Standard GET method for contacting the server. */
   static async get(path) {
     let url = _serverUrl(path);
-    return fetch(url, { method: 'GET' })
+    return fetch(url, { method: 'GET', credentials: 'include' })
       .then(res => {
         if (!res.ok) throw "Server Error: " + res.status.toString();
         return res.json();
@@ -287,6 +287,7 @@ class utils {
 
     return fetch(url, {
       method: 'POST',
+      credentials: 'include',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',

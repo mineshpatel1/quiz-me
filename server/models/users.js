@@ -16,10 +16,24 @@ exports.get = (email) => {
       if (result.length > 1) return reject("More than 1 user found for a single email.");
       return resolve(result[0]);
     })
-    .catch(err => {
-      console.log('GetErr', err);
-      reject(err)
-    });
+    .catch(reject);
+  });
+}
+
+exports.auth = (email, password) => {
+  return new Promise((resolve, reject) => {
+    pg.query(
+      `SELECT email FROM
+        user_auth 
+      WHERE
+        email = $1::text
+        AND password = crypt($2::text, password)`,
+      [email, password],
+    ).then(result => {      
+      if (result.length == 1) return resolve(true);
+      if (result.length == 0) return reject("Invalid password."); 
+      reject("Unexpected failure during password retrieval.");
+    }).catch(reject);
   });
 }
 
@@ -27,17 +41,16 @@ exports.new = (user, password) => {
   console.log('Creating new user ' + user.email + '...');
   return new Promise((resolve, reject) => {
     pg.query(
-      `INSERT INTO users(email, name) VALUES ($1::text, $2::text);`, 
+      `INSERT INTO users(email, name) VALUES ($1::text, $2::text)`, 
       [user.email, user.name],
     ).then(() => {
       pg.query(
-        `INSERT INTO user_auth (id, password) VALUES (
-          (SELECT id FROM users WHERE email = $1::text),
-          crypt($2::text, gen_salt('bf'))
-        );`, [user.email, password],
+        `INSERT INTO user_auth (email, password) VALUES (
+          $1::text, crypt($2::text, gen_salt('bf'))
+        )`, [user.email, password],
       )
       .then(resolve)
-      .catch(err => reject(err));
-    }).catch(err => { reject(err)});
+      .catch(reject);
+    }).catch(reject);
   });
 }

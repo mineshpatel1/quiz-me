@@ -9,7 +9,8 @@ import {
   faAnkh, faArrowLeft, faAtom, faBook, faBookOpen, faBrain, faCaretDown, faChartPie,
   faCheck, faChevronLeft, faChevronRight, faClock, faCog, faEnvelope, faFilm, faFutbol,
   faGlobeAmericas, faHome, faHourglassHalf, faLandmark, faLock, faMusic, faPaw, faPlay,
-  faQuestion, faQuoteRight, faSignInAlt, faTh, faTimes, faTv, faUser, faUserPlus,
+  faQuestion, faQuoteRight, faSignInAlt, faSignOutAlt, faTh, faTimes, faTv, faUser, 
+  faUserFriends, faUserPlus,
 } from '@fortawesome/free-solid-svg-icons';
 
 import AppNavigator from './src/nav/AppNavigator';
@@ -26,7 +27,8 @@ library.add(
   faAnkh, faArrowLeft, faAtom, faBook, faBookOpen, faBrain, faCaretDown, faChartPie,
   faCheck, faChevronLeft, faChevronRight, faClock, faCog, faEnvelope, faFilm, faFutbol,
   faGlobeAmericas, faHome, faHourglassHalf, faLandmark, faLock, faMusic, faPaw, faPlay,
-  faQuestion, faQuoteRight, faSignInAlt, faTh, faTimes, faTv, faUser, faUserPlus
+  faQuestion, faQuoteRight, faSignInAlt, faSignOutAlt, faTh, faTimes, faTv, faUser, 
+  faUserFriends, faUserPlus,
 );
 
 export default class App extends Component {

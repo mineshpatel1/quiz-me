@@ -23,7 +23,7 @@ CREATE INDEX users_email_idx ON users (email);
 -- User Authentication
 DROP TABLE IF EXISTS user_auth;
 CREATE TABLE IF NOT EXISTS user_auth (
-    id INTEGER PRIMARY KEY,
+    email VARCHAR PRIMARY KEY,
     password TEXT NOT NULL
 );
-CREATE INDEX user_auth_id_idx ON user_auth (id);
+CREATE INDEX user_auth_email_idx ON user_auth (email);

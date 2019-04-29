@@ -3,7 +3,7 @@ import { View } from 'react-native';
 
 import { Container, Header, Form, SnackBar } from '../components/Core';
 import { styles } from '../styles';
-import { utils, validators } from '../utils';
+import { utils, validators, api } from '../utils';
 
 export default class EditUser extends Component {
   constructor(props) {
@@ -16,17 +16,9 @@ export default class EditUser extends Component {
 
   post(values) {
     this.setState({ loading: true }, () => {
-      utils.post('user/new', values)
-        .then((res) => {
-          if (res.hasOwnProperty('error')) {
-            this.showError(res.error);
-          } else if (res.success) {
-            this.showSuccess("Signed Up Successfully.")
-          }
-        })
-        .catch((error) => {
-          this.showError(error.toString());
-        });
+      api.newUser(values)
+        .then(() => this.showSuccess("Signed Up Successfully."))
+        .catch(err => this.showError(err.toString()))
     });
   }
 
@@ -92,7 +84,7 @@ export default class EditUser extends Component {
         spinner={state.loading}
         onConnectionChange={(info, online) => {this.setState({ offline: !online, loading: false })}}
       >
-        <Header title={title} route={'Home'} />
+        <Header title={title} />
         <View style={[styles.f1, styles.col, styles.aCenter]}>
           <Form 
             fields={fields}

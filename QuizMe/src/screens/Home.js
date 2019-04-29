@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import { Animated, View, Image } from 'react-native';
-import NetInfo from "@react-native-community/netinfo";
+import { Animated, TouchableOpacity, View, Image } from 'react-native';
 
-import { Container, Button, Modal, SnackBar } from '../components/Core';
+import { Container, Text, Button, Icon, Modal, SnackBar } from '../components/Core';
 import { colours, styles } from '../styles';
-import { utils } from '../utils';
+import { utils, api } from '../utils';
 
 export default class Home extends Component {
   constructor(props) {
@@ -12,16 +11,26 @@ export default class Home extends Component {
     this.state = {
       opacity: new Animated.Value(0),
       online: false,
+      loggedIn: false,
       modal: false,
     }
   }
 
   componentWillMount() {
+    console.log('Mounting');
+    api.checkSession()
+      .then(status => this.setState({ loggedIn: status }))
+      .catch(err => console.error(err));
     utils.animate(this.state.opacity, 1);  // Fade in
+  }
+
+  componentDidUpdate() {
+    console.log('Updated');
   }
 
   render() {
     let { props, state } = this;
+
     return (
       <Container 
         bgColour={colours.primary} style={[styles.center]}
@@ -33,46 +42,59 @@ export default class Home extends Component {
         >
           <View>
             <Button
-              width={220} label="Sign Up" icon="user-plus" onPress={() => {
-                this.setState({ modal: false });
-                this.props.navigation.navigate('EditUser', {create: true});
-              }}
-            />
-            <Button
-              style={styles.mt15} width={220} label="Sign In" icon="sign-in-alt"
+              width={240} label="Settings" icon="cog" style={styles.mt15}
               onPress={() => {
-               console.log('Sign In');
+                this.setState({ modal: false });
+                props.navigation.navigate('Settings');
               }}
-            />
+            />            
+            {
+              state.loggedIn && 
+              <Button
+                width={240} label="Edit Profile" icon="user" style={styles.mt15}
+                onPress={() => {
+                  console.log('Edit Profile');
+                }}
+              />
+            }
+            {
+              state.loggedIn &&
+              <Button
+                width={240} label="Sign Out" icon="sign-out-alt" style={styles.mt15}
+                onPress={() => {
+                  console.log('Sign Out');
+                }}
+              />
+            }
           </View>
         </Modal>
         <Animated.View style={{opacity: state.opacity}}>
+          <View style={[styles.row, {height: 35, justifyContent: 'flex-end', paddingRight: 10}]}>
+            <TouchableOpacity 
+              style={[{width: 26, paddingTop: 15}]} activeOpacity={0.75} 
+              onPress={() => this.setState({ modal: true })}
+            >
+              <Icon size={26} icon="cog" colour={colours.white}/>
+            </TouchableOpacity>
+          </View>
           <View style={[styles.f1, {justifyContent: 'flex-end', alignItems: 'center'}]}>
             <Image style={{width: 400, height: 150}} source={require('../../assets/images/title.png')} />
           </View>
 
           <View style={[styles.f1, styles.center]}>
             <Button
-              label="Single Player" icon="play"
+              label="Single Player" icon="user"
               onPress={() => { props.navigation.navigate('NewGame') }}
             />
             <Button
-              label="Head to Head" icon="play" style={styles.mt15} disabled={!state.online}
+              label="Head to Head" icon="user-friends" style={styles.mt15} disabled={!state.online}
               onPress={() => {
-                utils.get('session')
-                  .then(out => {
-                    if (!out.hasOwnProperty('session')) {
-                      this.setState({ modal :true });
-                    }
-                  })
-                  .catch(err => {
-                    this.refs.error.show(err.toString(), 0);
-                  })
+                if (state.loggedIn) {
+                  console.log("I am logged in!!!!");
+                } else {
+                  props.navigation.navigate('SignIn');
+                }
               }}
-            />
-            <Button
-              label="Settings" icon="cog" style={styles.mt15}
-              onPress={() => { props.navigation.navigate('Settings') }}
             />
           </View>
         </Animated.View>

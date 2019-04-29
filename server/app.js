@@ -26,7 +26,7 @@ app.use(session({
 }));
 
 app.get('/', function (req, res) {
-  res.send('Hello World');
+  res.send({test: 'Hello World'});
 });
 
 app.get('/session', function (req, res) {
@@ -91,9 +91,25 @@ app.post('/user/new', function(req, res) {
           return utils.error(res, err) 
         });
     })
-    .catch(err => {
-      return utils.error(res, err);
-    });
+    .catch(err => { return utils.error(res, err) });
+});
+
+app.post('/user/auth', function(req, res) {
+  let data = req.body;
+  if (!data.email) return utils.error(res, "Email is required.");
+  if (!data.password) return utils.error(res, "Password is required.");
+
+  users.get(data.email)
+    .then(user => {
+      if (!user) return utils.error(res, "No user with email " + data.email + " exists.");
+      users.auth(data.email, data.password)
+        .then(result => { 
+          req.session.user = user;
+          return res.send({ success: result });
+        })
+        .catch(err => { return utils.error(res, err) })
+    })
+    .catch(err => { return utils.error(res, err) })
 });
 
 app.listen(global.config.server.port, function(){

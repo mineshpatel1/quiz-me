@@ -8,6 +8,7 @@ import Settings from '../screens/Settings';
 import Questions from '../screens/Questions';
 import GameSummary from '../screens/GameSummary';
 import EditUser from '../screens/EditUser';
+import SignIn from '../screens/SignIn';
 import { animationDuration } from '../config';
 
 const slideFromRight = ({ position, layout, scene, scenes, index }) => {
@@ -57,6 +58,7 @@ const AppNavigator = createStackNavigator({
   Questions: { screen: Questions },
   GameSummary: { screen: GameSummary },
   EditUser: { screen: EditUser },
+  SignIn: { screen: SignIn },
 },
 {
   initialRouteName: "Home",
