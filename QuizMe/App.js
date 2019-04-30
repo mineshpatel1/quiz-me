@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import { Animated, View } from 'react-native';
-import { createStore } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
+import thunk from 'redux-thunk';
 import { createAppContainer } from 'react-navigation';
 import AsyncStorage from '@react-native-community/async-storage';
 import { library } from '@fortawesome/fontawesome-svg-core';
@@ -21,8 +22,6 @@ import { styles, colours } from './src/styles';
 import { utils } from './src/utils';
 import { initSettings } from './src/actions/SettingActions';
 
-const AppContainer = createAppContainer(AppNavigator);
-const store = createStore(reducers);
 library.add(
   faAnkh, faArrowLeft, faAtom, faBook, faBookOpen, faBrain, faCaretDown, faChartPie,
   faCheck, faChevronLeft, faChevronRight, faClock, faCog, faEnvelope, faFilm, faFutbol,
@@ -30,6 +29,9 @@ library.add(
   faQuestion, faQuoteRight, faSignInAlt, faSignOutAlt, faTh, faTimes, faTv, faUser, 
   faUserFriends, faUserPlus,
 );
+
+const AppContainer = createAppContainer(AppNavigator);
+const store = createStore(reducers, applyMiddleware(thunk));
 
 export default class App extends Component {
   constructor() {

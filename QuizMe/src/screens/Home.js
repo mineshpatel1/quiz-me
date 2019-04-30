@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import { Animated, TouchableOpacity, View, Image } from 'react-native';
 
 import { Container, Text, Button, Icon, Modal, SnackBar } from '../components/Core';
+import { checkSession } from '../actions/SessionActions';
 import { colours, styles } from '../styles';
 import { utils, api } from '../utils';
 
-export default class Home extends Component {
+class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -18,18 +21,13 @@ export default class Home extends Component {
 
   componentWillMount() {
     console.log('Mounting');
-    api.checkSession()
-      .then(status => this.setState({ loggedIn: status }))
-      .catch(err => console.error(err));
+    this.props.checkSession();
     utils.animate(this.state.opacity, 1);  // Fade in
-  }
-
-  componentDidUpdate() {
-    console.log('Updated');
   }
 
   render() {
     let { props, state } = this;
+    console.log(props.session)
 
     return (
       <Container 
@@ -49,7 +47,7 @@ export default class Home extends Component {
               }}
             />            
             {
-              state.loggedIn && 
+              props.session.active && 
               <Button
                 width={240} label="Edit Profile" icon="user" style={styles.mt15}
                 onPress={() => {
@@ -58,7 +56,7 @@ export default class Home extends Component {
               />
             }
             {
-              state.loggedIn &&
+              props.session.active &&
               <Button
                 width={240} label="Sign Out" icon="sign-out-alt" style={styles.mt15}
                 onPress={() => {
@@ -89,7 +87,7 @@ export default class Home extends Component {
             <Button
               label="Head to Head" icon="user-friends" style={styles.mt15} disabled={!state.online}
               onPress={() => {
-                if (state.loggedIn) {
+                if (props.session.active) {
                   console.log("I am logged in!!!!");
                 } else {
                   props.navigation.navigate('SignIn');
@@ -104,3 +102,17 @@ export default class Home extends Component {
     );
   }
 }
+
+const mapStateToProps = (state) => {
+  return {
+    session: state.session,
+  }
+};
+
+const mapDispatchToProps = dispatch => (
+  bindActionCreators({
+    checkSession,
+  }, dispatch)
+);
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home);
