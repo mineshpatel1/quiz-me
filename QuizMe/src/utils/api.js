@@ -9,8 +9,8 @@ class api {
   static async checkSession() {
     return utils.get('session')
       .then(res => {
-        if (!res.hasOwnProperty('session')) return false;
-        else return true;
+        if (!res.user) return null;
+        else return res.user;
       });
   }
 
@@ -23,8 +23,9 @@ class api {
   static async newUser(data) {
     return utils.post('user/new', data)
         .then(res => {
-          if (res.hasOwnProperty('error')) throw res.error;
+          if (res.error) throw res.error;
           if (!res.success) throw UNEXPECTED_ERROR_MSG;
+          return res;
         });
   }
 }

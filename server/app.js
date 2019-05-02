@@ -30,7 +30,7 @@ app.get('/', function (req, res) {
 });
 
 app.get('/session', function (req, res) {
-  res.send({ session: req.session.user });
+  res.send({ user: req.session.user });
 });
 
 app.get('/session/logout', function(req, res) {
@@ -46,33 +46,6 @@ app.get('/session/logout', function(req, res) {
   } else {
     return res.send({});
   }
-});
-
-app.get('/user', function(req, res) {
-  pg.query("SELECT * FROM users")
-    .then(result => {
-      console.log(result);
-    })
-    .catch(err => {
-      console.log(err);
-    });
-
-  users.get("nesh.patel1@gmail.com")
-    .then(user => {
-      console.log('User', user);
-    })
-    .catch(err => {
-      console.log("Error", err.toString());
-    });
-
-    users.get("x@gmail.com")
-    .then(user => {
-      console.log('User2', user);
-    })
-    .catch(err => {
-      console.log("Error2", err.toString());
-    })
-  return res.send('User Page');
 });
 
 app.get('/email', function(req, res) {
@@ -99,11 +72,11 @@ app.post('/user/new', function(req, res) {
         .then(() => { 
           console.log('Successfully created user ' + data.email);
           req.session.user = newUser;
-          return res.send({ success: true }) 
+          return res.send({ success: true, user: newUser });
         })
         .catch(err => { 
           console.error('Error creating user:');
-          return utils.error(res, err) 
+          return utils.error(res, err);
         });
     })
     .catch(err => { return utils.error(res, err) });
@@ -118,9 +91,10 @@ app.post('/user/auth', function(req, res) {
     .then(user => {
       if (!user) return utils.error(res, "No user with email " + data.email + " exists.");
       users.auth(data.email, data.password)
-        .then(result => { 
+        .then(() => {
+          console.log(data.email + ' logged in...');
           req.session.user = user;
-          return res.send({ success: result });
+          return res.send({ success: true, user: user });
         })
         .catch(err => { return utils.error(res, err) })
     })

@@ -45,7 +45,7 @@ class Home extends Component {
               }}
             />            
             {
-              props.session.active && 
+              props.session.user && 
               <Button
                 width={240} label="Edit Profile" icon="user" style={styles.mt15}
                 onPress={() => {
@@ -54,7 +54,7 @@ class Home extends Component {
               />
             }
             {
-              props.session.active &&
+              props.session.user &&
               <Button
                 width={240} label="Sign Out" icon="sign-out-alt" style={styles.mt15}
                 onPress={() => {
@@ -86,7 +86,7 @@ class Home extends Component {
             <Button
               label="Head to Head" icon="user-friends" style={styles.mt15} disabled={!state.online}
               onPress={() => {
-                if (props.session.active) {
+                if (props.session.user) {
                   console.log("I am logged in!!!!");
                 } else {
                   props.navigation.navigate('SignIn');

@@ -1,21 +1,18 @@
-import { SET_STATUS } from '../types';
+import { SET_USER } from '../types';
 import { api } from '../utils';
 
-export const setStatus = status => ({
-  type: SET_STATUS,
-  status: status,
+export const setUser = user => ({
+  type: SET_USER,
+  user: user,
 });
 
 export const checkSession = () => {
   return function(dispatch) {
     api.checkSession()
-        .then(status => { 
-          console.log('CheckSession', status);
-          dispatch(setStatus(status));
-        })
+        .then(user => dispatch(setUser(user)))
         .catch(err => {
           console.error(err);
-          dispatch(setStatus(false));
+          dispatch(setUser(null));
         });
   }
 }
@@ -23,10 +20,10 @@ export const checkSession = () => {
 export const signOut = () => {
   return function(dispatch) {
     api.signOut()
-      .then(status => dispatch(setStatus(false)))
+      .then(() => dispatch(setUser(null)))
       .catch(err => {
         console.error(err);
-        dispatch(setStatus(false))
+        dispatch(setUser(null))
       });
   }
 }

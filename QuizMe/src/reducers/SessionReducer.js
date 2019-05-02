@@ -1,16 +1,15 @@
-import { SET_STATUS, CHECK_SESSION } from '../types';
-import { utils, api } from '../utils';
+import { SET_USER } from '../types';
 
 const INITIAL_STATE = {
-  active: false,
+  user: null,
 };
 
 const sessionReducer = (state = INITIAL_STATE, action) => {
-  let _status;
+  let _user;
   switch (action.type) {
-    case SET_STATUS:
-      _status = action.status || state.status;
-      return { active: _status };
+    case SET_USER:
+      _user = action.user === undefined ? state.user : action.user;
+      return { user: _user };
     default:
       return state;
   }

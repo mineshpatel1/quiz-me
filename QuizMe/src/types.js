@@ -5,4 +5,4 @@ export const NEW_GAME = 'NEW_GAME';
 export const NEXT_TURN = 'NEXT_TURN';
 export const CHOOSE_ANSWER = 'CHOOSE_ANSWER';
 
-export const SET_STATUS = 'SET_STATUS';
+export const SET_USER = 'SET_USER';

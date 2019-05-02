@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import { View } from 'react-native';
 
 import { Container, Header, Text, Button, Form, SnackBar } from '../components/Core';
-import { setStatus } from '../actions/SessionActions';
+import { setUser } from '../actions/SessionActions';
 import { styles } from '../styles';
 import { utils, validators } from '../utils';
 
@@ -26,9 +26,10 @@ class SignIn extends Component {
     this.setState({ loading: true }, () => {
       utils.post('user/auth', values)
         .then((res) => {
-          if (res.hasOwnProperty('error')) return this.showError(res.error);
+          if (res.error) return this.showError(res.error);
           if (res.success) {
-            this.props.setStatus(true);
+            console.log(res);
+            this.props.setUser(res.user);
             this.setState({ loading: false });
             return this.props.navigation.navigate('Home');
           }
@@ -100,7 +101,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = dispatch => (
   bindActionCreators({
-    setStatus,
+    setUser,
   }, dispatch)
 );
 

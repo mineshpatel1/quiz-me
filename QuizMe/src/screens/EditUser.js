@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import { View } from 'react-native';
 
 import { Container, Header, Form, SnackBar } from '../components/Core';
-import { setStatus } from '../actions/SessionActions';
+import { setUser } from '../actions/SessionActions';
 import { styles } from '../styles';
 import { validators, api } from '../utils';
 
@@ -20,8 +20,8 @@ class EditUser extends Component {
   post(values) {
     this.setState({ loading: true }, () => {
       api.newUser(values)
-        .then(() => {
-          this.props.setStatus(true);
+        .then(res => {
+          this.props.setUser(res.user);
           this.showSuccess("Signed Up Successfully.")
         })
         .catch(err => this.showError(err.toString()))
@@ -120,7 +120,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = dispatch => (
   bindActionCreators({
-    setStatus,
+    setUser,
   }, dispatch)
 );
 
