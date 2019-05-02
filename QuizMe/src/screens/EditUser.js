@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import { View } from 'react-native';
 
 import { Container, Header, Form, SnackBar } from '../components/Core';
+import { setStatus } from '../actions/SessionActions';
 import { styles } from '../styles';
-import { utils, validators, api } from '../utils';
+import { validators, api } from '../utils';
 
-export default class EditUser extends Component {
+class EditUser extends Component {
   constructor(props) {
     super(props);
     this.state = { 
@@ -17,7 +20,10 @@ export default class EditUser extends Component {
   post(values) {
     this.setState({ loading: true }, () => {
       api.newUser(values)
-        .then(() => this.showSuccess("Signed Up Successfully."))
+        .then(() => {
+          this.props.setStatus(true);
+          this.showSuccess("Signed Up Successfully.")
+        })
         .catch(err => this.showError(err.toString()))
     });
   }
@@ -105,3 +111,17 @@ export default class EditUser extends Component {
     )
   }
 }
+
+const mapStateToProps = (state) => {
+  return {
+    session: state.session,
+  }
+};
+
+const mapDispatchToProps = dispatch => (
+  bindActionCreators({
+    setStatus,
+  }, dispatch)
+);
+
+export default connect(mapStateToProps, mapDispatchToProps)(EditUser);

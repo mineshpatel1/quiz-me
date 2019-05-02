@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import { Animated, TouchableOpacity, View, Image } from 'react-native';
 
 import { Container, Text, Button, Icon, Modal, SnackBar } from '../components/Core';
-import { checkSession } from '../actions/SessionActions';
+import { checkSession, signOut } from '../actions/SessionActions';
 import { colours, styles } from '../styles';
 import { utils, api } from '../utils';
 
@@ -20,14 +20,12 @@ class Home extends Component {
   }
 
   componentWillMount() {
-    console.log('Mounting');
     this.props.checkSession();
     utils.animate(this.state.opacity, 1);  // Fade in
   }
 
   render() {
     let { props, state } = this;
-    console.log(props.session)
 
     return (
       <Container 
@@ -60,7 +58,8 @@ class Home extends Component {
               <Button
                 width={240} label="Sign Out" icon="sign-out-alt" style={styles.mt15}
                 onPress={() => {
-                  console.log('Sign Out');
+                  props.signOut();
+                  this.setState({ modal: false });
                 }}
               />
             }
@@ -98,7 +97,6 @@ class Home extends Component {
         </Animated.View>
         <SnackBar ref="error" error={true} />
       </Container>
-
     );
   }
 }
@@ -111,7 +109,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = dispatch => (
   bindActionCreators({
-    checkSession,
+    checkSession, signOut,
   }, dispatch)
 );
 

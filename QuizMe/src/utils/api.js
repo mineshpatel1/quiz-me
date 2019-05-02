@@ -14,6 +14,11 @@ class api {
       });
   }
 
+  /** Signs out of a QuizMe session. */
+  static async signOut() {
+    return utils.get('session/logout');
+  }
+
   /** Creates a new QuizMe user. */
   static async newUser(data) {
     return utils.post('user/new', data)

@@ -1,4 +1,4 @@
-import { CHECK_SESSION, SET_STATUS } from '../types';
+import { SET_STATUS } from '../types';
 import { api } from '../utils';
 
 export const setStatus = status => ({
@@ -17,5 +17,16 @@ export const checkSession = () => {
           console.error(err);
           dispatch(setStatus(false));
         });
+  }
+}
+
+export const signOut = () => {
+  return function(dispatch) {
+    api.signOut()
+      .then(status => dispatch(setStatus(false)))
+      .catch(err => {
+        console.error(err);
+        dispatch(setStatus(false))
+      });
   }
 }

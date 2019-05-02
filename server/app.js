@@ -33,6 +33,21 @@ app.get('/session', function (req, res) {
   res.send({ session: req.session.user });
 });
 
+app.get('/session/logout', function(req, res) {
+  if (req.session.user) {
+    console.log('Logging out ' + req.session.user.email + '...');
+    req.session.destroy(function(err) {
+      if (err) {
+        console.log(err);
+        return utils.error(res, err);
+      }
+      return res.send({ success: true });
+    });
+  } else {
+    return res.send({});
+  }
+});
+
 app.get('/user', function(req, res) {
   pg.query("SELECT * FROM users")
     .then(result => {

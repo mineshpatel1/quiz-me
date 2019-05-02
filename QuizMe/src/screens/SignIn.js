@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import { View } from 'react-native';
 
 import { Container, Header, Text, Button, Form, SnackBar } from '../components/Core';
+import { setStatus } from '../actions/SessionActions';
 import { styles } from '../styles';
 import { utils, validators } from '../utils';
 
-export default class SignIn extends Component {
+class SignIn extends Component {
   constructor(props) {
     super(props);
     this.state = { 
@@ -25,6 +28,7 @@ export default class SignIn extends Component {
         .then((res) => {
           if (res.hasOwnProperty('error')) return this.showError(res.error);
           if (res.success) {
+            this.props.setStatus(true);
             this.setState({ loading: false });
             return this.props.navigation.navigate('Home');
           }
@@ -87,3 +91,17 @@ export default class SignIn extends Component {
     );
   }
 }
+
+const mapStateToProps = (state) => {
+  return {
+    session: state.session,
+  }
+};
+
+const mapDispatchToProps = dispatch => (
+  bindActionCreators({
+    setStatus,
+  }, dispatch)
+);
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignIn);
