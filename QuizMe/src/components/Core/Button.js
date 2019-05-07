@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { View, TouchableOpacity, TouchableNativeFeedback } from 'react-native';
+import { Platform, View, TouchableOpacity, TouchableNativeFeedback } from 'react-native';
 
 import Text from './Text';
 import Icon from './Icon';
-import { styles, colours, fonts } from '../../styles';
+import { styles, colours } from '../../styles';
+import { utils } from '../../utils';
 
 export default class Button extends Component {
   static defaultProps = {
@@ -19,6 +20,7 @@ export default class Button extends Component {
     style: null,
     activeOpacity: 0.7,
     iconSize: 20,
+    rippleHighlight: -40,
   }
 
   render() {
@@ -33,30 +35,61 @@ export default class Button extends Component {
       activeOpacity = 1;
     }
 
-    let touchableProps = {
-      style: [styles.f1, styles.row, {
-        paddingLeft: props.padding, borderRadius: props.borderRadius,
-        backgroundColor: btnColour,
-      }],
-      activeOpacity: activeOpacity, onPress: onPress,
-    }
+    let labelBtn, iconBtn;
+    if (Platform.OS == 'android') {
 
-    touchable = (props, children) => {
-      return (
-        <TouchableOpacity {...props}>{ children }</TouchableOpacity>
-      )
-    }
+      let rippleColour = utils.alterColour(btnColour, props.rippleHighlight);
+      let touchableProps = {
+        style: [styles.f1, styles.row, {
+          borderRadius: props.borderRadius,
+        }],
+        activeOpacity: activeOpacity, onPress: onPress,
+      }
+      
+      labelBtn = (
+        <TouchableNativeFeedback 
+          {...touchableProps} background={TouchableNativeFeedback.Ripple(rippleColour, true)}
+        >
+          <View style={[styles.f1, styles.row, {
+            borderRadius: props.borderRadius,
+            paddingLeft: props.padding - 15, backgroundColor: btnColour,
+          }]}>
+            <View style={[styles.f2, {
+              justifyContent: 'center', alignItems: 'flex-start', marginLeft: 20,
+            }]}>
+              <Text bold={true} colour={props.fontColour}>{props.label}</Text>
+            </View>
+            <View style={[styles.f1, {
+              justifyContent: 'center', alignItems: 'flex-end', paddingRight: props.padding,
+            }]}>
+              <Icon icon={props.icon} size={props.iconSize} colour={props.fontColour} />
+            </View>
+          </View>
+        </TouchableNativeFeedback>
+      );
 
-    return (
-      <View style={[styles.shadow,
-        {
-          width: props.width, height: props.height, borderRadius: props.borderRadius,
-          backgroundColor: colours.white,
-        }, props.style
-      ]}>
-        {
-          props.label && props.icon &&
-          <TouchableOpacity {...touchableProps}>
+      iconBtn = (
+        <TouchableNativeFeedback 
+          {...touchableProps} background={TouchableNativeFeedback.Ripple(rippleColour, true)}
+        >
+          <View style={[styles.f1, styles.center, { borderRadius: props.borderRadius, backgroundColor: btnColour }]}>
+            <Icon icon={props.icon} size={props.iconSize} colour={props.fontColour} />
+          </View>
+        </TouchableNativeFeedback>
+      );
+    } else if (Platform.OS != 'ios') {
+      let touchableProps = {
+        style: [styles.f1, styles.row, {
+          borderRadius: props.borderRadius,
+          paddingLeft: props.padding,
+          backgroundColor: btnColour,
+        }],
+        activeOpacity: activeOpacity, onPress: onPress,
+      }
+      
+      labelBtn = (
+        <TouchableOpacity {...touchableProps}>
+          <View style={[styles.f1, styles.row]}>
             <View style={[styles.f2, {
               justifyContent: 'center', alignItems: 'flex-start',
             }]}>
@@ -67,15 +100,31 @@ export default class Button extends Component {
             }]}>
               <Icon icon={props.icon} size={props.iconSize} colour={props.fontColour} />
             </View>
-          </TouchableOpacity>
+          </View>
+        </TouchableOpacity>
+      );
+
+      iconBtn = (
+        <TouchableOpacity {...touchableProps}>
+          <View style={[styles.center, {width: props.width - (props.padding * 2)}]}>
+            <Icon icon={props.icon} size={props.iconSize} colour={props.fontColour} />
+          </View>
+        </TouchableOpacity>
+      );
+    }
+
+    return (
+      <View style={[styles.shadow,
+        {
+          width: props.width, height: props.height, borderRadius: props.borderRadius,
+          backgroundColor: colours.white,
+        }, props.style
+      ]}>
+        {
+          props.label && props.icon && labelBtn
         }
         {
-          props.icon && !props.label &&
-          <TouchableOpacity {...touchableProps}>
-            <View style={[styles.center, {width: props.width - (props.padding * 2)}]}>
-              <Icon icon={props.icon} size={props.iconSize} colour={props.fontColour} />
-            </View>
-          </TouchableOpacity>
+          !props.label && props.icon && iconBtn
         }
       </View>
     )

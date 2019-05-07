@@ -75,17 +75,16 @@ class Home extends Component {
             <View style={[styles.aCenter, styles.row, {
               height: 35, marginLeft: 10, marginTop: 15, marginRight: 10,
             }]}>
-              <View style={{ 
+              <View style={{
                 backgroundColor: statusColour, height: 15, width: 15, borderRadius: 15,
                 borderColor: colours.light, borderWidth: 2,
               }} />
             </View>
-            <TouchableOpacity 
-              style={[styles.center, {height: 35, width: 26, marginTop: 15}]} activeOpacity={0.75} 
+            <Icon
+              style={[styles.center, {height: 35, width: 26, marginTop: 15}]}  
               onPress={() => this.setState({ modal: true })}
-            >
-              <Icon size={26} icon="cog" colour={colours.white}/>
-            </TouchableOpacity>
+              size={26} icon="cog" colour={colours.white}
+            />
           </View>
           <View style={[styles.f1, {justifyContent: 'flex-end', alignItems: 'center'}]}>
             <Image style={{width: 400, height: 150}} source={require('../../assets/images/title.png')} />

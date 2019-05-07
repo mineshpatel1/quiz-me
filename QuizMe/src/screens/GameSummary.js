@@ -4,7 +4,7 @@ import { Platform, View } from 'react-native';
 import Swiper from 'react-native-swiper';
 
 import Option from '../components/Option';
-import { Container, Text, IconButton } from '../components/Core';
+import { Container, Text, Icon } from '../components/Core';
 import { styles, colours } from '../styles';
 import { utils } from '../utils';
 
@@ -78,23 +78,23 @@ class GameSummary extends Component {
     return (
       <Container bgColour={colours.black}>
         <View style={[styles.row, {marginTop: iosAdjust.top}]}>
-          <IconButton
+          <Icon
             icon='chart-pie' onPress={() => {props.navigation.goBack()}}
-            style={[{marginLeft: 45, paddingTop: 30}]}
+            style={[{marginLeft: 45, paddingTop: 30}]} colour={colours.white}
           />
           <View style={[styles.row, styles.center, {flex: 1, padding: 30}]}>
             <Text size={24} colour={colours.white} display={true}>Quiz Review</Text>
           </View>
-          <IconButton
+          <Icon
             icon='home' onPress={() => {props.navigation.navigate('Home')}}
-            style={[styles.row, {marginRight: 45, paddingTop: 30}]}
+            style={[styles.row, {marginRight: 45, paddingTop: 30}]} colour={colours.white}
           />
         </View>
         <View style={[styles.f1, styles.row]}>
           <View style={[styles.center, {width: 45}]}>
             {
               state.index > 0 &&
-              <IconButton icon='chevron-left' onPress={() => { this.left() }} />
+              <Icon icon='chevron-left' onPress={() => { this.left() }} colour={colours.white} />
             }
           </View>
           <View style={[styles.f1, {
@@ -138,7 +138,7 @@ class GameSummary extends Component {
           <View style={[styles.center, {width: 45}]}>
             {
               (state.index + 1) < questions.length &&
-              <IconButton icon='chevron-right' onPress={() => { this.right() }} />
+              <Icon icon='chevron-right' onPress={() => { this.right() }} colour={colours.white} />
             }
           </View>
         </View>

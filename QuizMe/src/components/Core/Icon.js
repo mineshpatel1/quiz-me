@@ -22,7 +22,7 @@ export default class Icon extends Component {
         }
         {
           props.onPress &&
-          <TouchableOpacity onPress={props.onPress}>
+          <TouchableOpacity onPress={props.onPress} activeOpacity={0.75} >
             <FontAwesomeIcon icon={props.icon} size={props.size} color={props.colour} />
           </TouchableOpacity>
         }
