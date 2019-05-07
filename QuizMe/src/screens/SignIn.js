@@ -70,7 +70,7 @@ class SignIn extends Component {
         spinner={state.loading}
         onConnectionChange={(info, online) => {this.setState({ offline: !online, loading: false })}}
       >
-        <Header title={'Sign In'} route={'Home'} />
+        <Header title={'Sign In'} />
         <View style={[styles.f1, styles.col, styles.aCenter]}>
           <View style={[styles.center, styles.mt15]}>
             <Button label="Sign Up" icon="user-plus" onPress={() => { 

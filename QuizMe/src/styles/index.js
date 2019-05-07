@@ -12,6 +12,7 @@ export const colours = {
   grey: '#333333',
   midGrey: '#555555',
   lightGrey: '#AAAAAA',
+  softGrey: '#CCCCCC',
 };
 
 const fontSize = {

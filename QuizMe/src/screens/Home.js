@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Animated, TouchableOpacity, View, Image } from 'react-native';
+import { Animated, View, Image } from 'react-native';
 
-import { Container, Button, Icon, Modal, SnackBar } from '../components/Core';
+import { Container, Button, Icon } from '../components/Core';
 import { checkSession, signOut } from '../actions/SessionActions';
 import { colours, styles } from '../styles';
 import { utils } from '../utils';
@@ -42,34 +42,6 @@ class Home extends Component {
         bgColour={colours.primary} style={[styles.center]}
         onConnectionChange={(info, online) => this.connectionChange(online)}
       >
-        <Modal
-          theme={true} isVisible={this.state.modal} onCancel={() => this.setState({ modal: false})}
-          style={[styles.center]}
-        >
-          <View>
-            <Button
-              width={240} label="Settings" icon="cog" style={styles.mt15}
-              onPress={() => this.navigate('Settings')}
-            />
-            {
-              !props.session.user &&
-              <Button
-                width={240} label="Sign In" icon="sign-in-alt" style={styles.mt15}
-                onPress={() => this.navigate('SignIn')}
-              />
-            }
-            {
-              props.session.user &&
-              <Button
-                width={240} label="Sign Out" icon="sign-out-alt" style={styles.mt15}
-                onPress={() => {
-                  props.signOut();
-                  this.setState({ modal: false });
-                }}
-              />
-            }
-          </View>
-        </Modal>
         <Animated.View style={{opacity: state.opacity}}>
           <View style={[styles.row, {height: 35, justifyContent: 'flex-end', paddingRight: 10}]}>
             <View style={[styles.aCenter, styles.row, {
@@ -82,7 +54,7 @@ class Home extends Component {
             </View>
             <Icon
               style={[styles.center, {height: 35, width: 26, marginTop: 15}]}  
-              onPress={() => this.setState({ modal: true })}
+              onPress={() => props.navigation.navigate('Settings')}
               size={26} icon="cog" colour={colours.white}
             />
           </View>
@@ -107,7 +79,6 @@ class Home extends Component {
             />
           </View>
         </Animated.View>
-        <SnackBar ref="error" error={true} />
       </Container>
     );
   }

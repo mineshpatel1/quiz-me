@@ -36,7 +36,7 @@ export default class Button extends Component {
     }
 
     let labelBtn, iconBtn;
-    if (Platform.OS == 'android') {
+    if (!props.disabled && Platform.OS == 'android') {
 
       let rippleColour = utils.alterColour(btnColour, props.rippleHighlight);
       let touchableProps = {
@@ -77,7 +77,7 @@ export default class Button extends Component {
           </View>
         </TouchableNativeFeedback>
       );
-    } else if (Platform.OS != 'ios') {
+    } else if (props.disabled || Platform.OS == 'ios') {
       let touchableProps = {
         style: [styles.f1, styles.row, {
           borderRadius: props.borderRadius,
