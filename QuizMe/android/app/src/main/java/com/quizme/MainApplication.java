@@ -3,6 +3,7 @@ package com.quizme;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.rnbiometrics.ReactNativeBiometricsPackage;
 import com.reactnativecommunity.netinfo.NetInfoPackage;
 import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
 import com.horcrux.svg.SvgPackage;
@@ -27,6 +28,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new ReactNativeBiometricsPackage(),
             new NetInfoPackage(),
             new AsyncStoragePackage(),
             new SvgPackage(),
