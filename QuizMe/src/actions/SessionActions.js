@@ -11,7 +11,7 @@ export const checkSession = () => {
     api.checkSession()
         .then(user => dispatch(setUser(user)))
         .catch(err => {
-          console.error(err);
+          // console.error(err);
           dispatch(setUser(null));
         });
   }

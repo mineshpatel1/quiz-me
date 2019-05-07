@@ -20,17 +20,27 @@ class Home extends Component {
   }
 
   componentWillMount() {
-    this.props.checkSession();
     utils.animate(this.state.opacity, 1);  // Fade in
+  }
+
+  connectionChange(online) {
+    if (online) this.props.checkSession();
+    this.setState({ online: online })
+  }
+
+  navigate(page) {
+    this.setState({ modal: false });
+    this.props.navigation.navigate(page);
   }
 
   render() {
     let { props, state } = this;
+    let statusColour = props.session.user ? colours.success : colours.error;
 
     return (
       <Container 
         bgColour={colours.primary} style={[styles.center]}
-        onConnectionChange={(info, online) => {this.setState({ online: online })}}
+        onConnectionChange={(info, online) => this.connectionChange(online)}
       >
         <Modal
           theme={true} isVisible={this.state.modal} onCancel={() => this.setState({ modal: false})}
@@ -39,18 +49,20 @@ class Home extends Component {
           <View>
             <Button
               width={240} label="Settings" icon="cog" style={styles.mt15}
-              onPress={() => {
-                this.setState({ modal: false });
-                props.navigation.navigate('Settings');
-              }}
-            />            
+              onPress={() => this.navigate('Settings')}
+            />
+            {
+              !props.session.user &&
+              <Button
+                width={240} label="Sign In" icon="sign-in-alt" style={styles.mt15}
+                onPress={() => this.navigate('SignIn')}
+              />
+            }
             {
               props.session.user && 
               <Button
                 width={240} label="Edit Profile" icon="user" style={styles.mt15}
-                onPress={() => {
-                  console.log('Edit Profile');
-                }}
+                onPress={() => console.log('Edit Profile')}
               />
             }
             {
@@ -67,8 +79,16 @@ class Home extends Component {
         </Modal>
         <Animated.View style={{opacity: state.opacity}}>
           <View style={[styles.row, {height: 35, justifyContent: 'flex-end', paddingRight: 10}]}>
+            <View style={[styles.aCenter, styles.row, {
+              height: 35, marginLeft: 10, marginTop: 15, marginRight: 10,
+            }]}>
+              <View style={{ 
+                backgroundColor: statusColour, height: 15, width: 15, borderRadius: 15,
+                borderColor: colours.light, borderWidth: 2,
+              }} />
+            </View>
             <TouchableOpacity 
-              style={[{width: 26, paddingTop: 15}]} activeOpacity={0.75} 
+              style={[styles.center, {height: 35, width: 26, marginTop: 15}]} activeOpacity={0.75} 
               onPress={() => this.setState({ modal: true })}
             >
               <Icon size={26} icon="cog" colour={colours.white}/>
