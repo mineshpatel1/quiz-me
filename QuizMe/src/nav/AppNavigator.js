@@ -4,6 +4,7 @@ import { createStackNavigator } from 'react-navigation';
 import Home from '../screens/Home';
 import NewGame from '../screens/NewGame';
 import Game from '../screens/Game';
+import GameSettings from '../screens/GameSettings';
 import Settings from '../screens/Settings';
 import Questions from '../screens/Questions';
 import GameSummary from '../screens/GameSummary';
@@ -54,6 +55,7 @@ const AppNavigator = createStackNavigator({
   Home: { screen: Home },
   NewGame: { screen: NewGame },
   Game: { screen: Game },
+  GameSettings: { screen: GameSettings },
   Settings: { screen: Settings },
   Questions: { screen: Questions },
   GameSummary: { screen: GameSummary },
@@ -61,7 +63,7 @@ const AppNavigator = createStackNavigator({
   SignIn: { screen: SignIn },
 },
 {
-  initialRouteName: "Settings",
+  initialRouteName: "Home",
   transitionConfig: (nav) => slideFromRight(nav),
   defaultNavigationOptions: {
     header: null,

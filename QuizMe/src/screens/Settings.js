@@ -1,25 +1,23 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
 
-import SettingsForm from '../components/SettingsForm';
-import { Container, Header, Text, Button, Input } from '../components/Core';
-import { styles, colours } from '../styles';
-import { utils } from '../utils';
+import { Container, Header, Text, Icon, Menu } from '../components/Core';
+import { styles } from '../styles';
 
-export default class Settings extends Component {
+export default class GameSettings extends Component {
   render() {
     let { props, state } = this;
+
+    let menu = [
+      { label: 'Account Settings', icon: 'user', onPress: () => { console.log('user settings'); }},
+      { label: 'Game Settings', icon: 'cog', onPress: () => { props.navigation.navigate('GameSettings'); }},
+    ]
+
     return (
       <Container>
-        <Header title={'Default Settings'} route={'Home'} />
-        <View style={[styles.f1, styles.col, styles.aCenter]}>
-          <SettingsForm
-            onSave={() => { props.navigation.goBack(); }}
-            onCancel={() => { props.navigation.goBack(); }}
-            save={true}
-          />
-        </View>
+        <Header title={'Settings'} route={'Home'} />
+        <Menu menu={menu} />
       </Container>
-    )
+    );
   }
 }

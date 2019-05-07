@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity, TouchableNativeFeedback } from 'react-native';
 
 import Text from './Text';
 import Icon from './Icon';
@@ -18,6 +18,7 @@ export default class Button extends Component {
     disabled: false,
     style: null,
     activeOpacity: 0.7,
+    iconSize: 20,
   }
 
   render() {
@@ -40,6 +41,12 @@ export default class Button extends Component {
       activeOpacity: activeOpacity, onPress: onPress,
     }
 
+    touchable = (props, children) => {
+      return (
+        <TouchableOpacity {...props}>{ children }</TouchableOpacity>
+      )
+    }
+
     return (
       <View style={[styles.shadow,
         {
@@ -58,7 +65,7 @@ export default class Button extends Component {
             <View style={[styles.f1, {
               justifyContent: 'center', alignItems: 'flex-end', paddingRight: props.padding,
             }]}>
-              <Icon icon={props.icon} size={20} colour={props.fontColour} />
+              <Icon icon={props.icon} size={props.iconSize} colour={props.fontColour} />
             </View>
           </TouchableOpacity>
         }
@@ -66,7 +73,7 @@ export default class Button extends Component {
           props.icon && !props.label &&
           <TouchableOpacity {...touchableProps}>
             <View style={[styles.center, {width: props.width - (props.padding * 2)}]}>
-              <Icon icon={props.icon} size={20} colour={props.fontColour} />
+              <Icon icon={props.icon} size={props.iconSize} colour={props.fontColour} />
             </View>
           </TouchableOpacity>
         }

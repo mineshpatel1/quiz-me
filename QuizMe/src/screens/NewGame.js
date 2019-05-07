@@ -4,10 +4,9 @@ import { bindActionCreators } from 'redux';
 import { View } from 'react-native';
 
 import SettingsForm from '../components/SettingsForm';
-import { Container, Header, Text, Button, Input, Picker } from '../components/Core';
+import { Container, Header } from '../components/Core';
 import { newGame } from '../actions/GameActions';
-import { styles, colours } from '../styles';
-import { utils } from '../utils';
+import { styles } from '../styles';
 
 class NewGame extends Component {
   constructor(props) {
@@ -28,9 +27,6 @@ class NewGame extends Component {
       <Container>
         <Header title={'New Game'} route={'Home'}/>
         <View style={[styles.f1, styles.col, styles.aCenter]}>
-          {/* <View>
-            <Picker icon="th" value="General Knowledge" />
-          </View> */}
           <SettingsForm
             onSave={(values) => {
               props.newGame(values);

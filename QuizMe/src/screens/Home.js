@@ -3,10 +3,10 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Animated, TouchableOpacity, View, Image } from 'react-native';
 
-import { Container, Text, Button, Icon, Modal, SnackBar } from '../components/Core';
+import { Container, Button, Icon, Modal, SnackBar } from '../components/Core';
 import { checkSession, signOut } from '../actions/SessionActions';
 import { colours, styles } from '../styles';
-import { utils, api } from '../utils';
+import { utils } from '../utils';
 
 class Home extends Component {
   constructor(props) {
@@ -56,13 +56,6 @@ class Home extends Component {
               <Button
                 width={240} label="Sign In" icon="sign-in-alt" style={styles.mt15}
                 onPress={() => this.navigate('SignIn')}
-              />
-            }
-            {
-              props.session.user && 
-              <Button
-                width={240} label="Edit Profile" icon="user" style={styles.mt15}
-                onPress={() => console.log('Edit Profile')}
               />
             }
             {
