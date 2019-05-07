@@ -25,18 +25,22 @@ app.use(session({
   unset: 'destroy',
 }));
 
-app.get('/', function (req, res) {
+app.get('/', (req, res) => {
   res.send({test: 'Hello World'});
 });
 
-app.get('/session', function (req, res) {
+app.get('/reset', (req, res) => {
+  res.redirect('quizme://quizme/reset')
+});
+
+app.get('/session', (req, res) => {
   res.send({ user: req.session.user });
 });
 
-app.get('/session/logout', function(req, res) {
+app.get('/session/logout', (req, res) => {
   if (req.session.user) {
     console.log('Logging out ' + req.session.user.email + '...');
-    req.session.destroy(function(err) {
+    req.session.destroy(err => {
       if (err) {
         console.log(err);
         return utils.error(res, err);
@@ -48,7 +52,7 @@ app.get('/session/logout', function(req, res) {
   }
 });
 
-app.get('/email', function(req, res) {
+app.get('/email', (req, res) => {
   email.send('nesh.patel1@gmail.com', 'Test Email', 'This is some text')
     .then(data => {
       console.log('Success', data);
@@ -59,7 +63,7 @@ app.get('/email', function(req, res) {
     });
 });
 
-app.post('/user/new', function(req, res) {
+app.post('/user/new', (req, res) => {
   let data = req.body;
   if (!data.email) return utils.error(res, "Email is required.");
   if (!data.password) return utils.error(res, "Password is required.");
@@ -82,7 +86,7 @@ app.post('/user/new', function(req, res) {
     .catch(err => { return utils.error(res, err) });
 });
 
-app.post('/user/auth', function(req, res) {
+app.post('/user/auth', (req, res) => {
   let data = req.body;
   if (!data.email) return utils.error(res, "Email is required.");
   if (!data.password) return utils.error(res, "Password is required.");
@@ -101,6 +105,6 @@ app.post('/user/auth', function(req, res) {
     .catch(err => { return utils.error(res, err) })
 });
 
-app.listen(global.config.server.port, function(){
+app.listen(global.config.server.port, () => {
   console.log('QuizMe Server Started');
 });

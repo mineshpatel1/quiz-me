@@ -22,8 +22,7 @@ export default class Header extends Component {
   render() {
     let { props } = this;
   
-    let iosAdjust = 0;
-    if (Platform.OS == 'ios') iosAdjust = 25;
+    let iosAdjust = Platform.OS == 'ios' ? 25 : 0;
 
     return (
       <View style={[

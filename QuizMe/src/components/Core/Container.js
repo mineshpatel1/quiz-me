@@ -12,7 +12,7 @@ export default class Container extends Component {
     onConnectionChange: null,
   }
 
-  componentWillMount() {
+  componentDidMount() {
     if (this.props.onConnectionChange) {
       NetInfo.addEventListener('connectionChange', (info) => {
         this.props.onConnectionChange(info, this.online(info));

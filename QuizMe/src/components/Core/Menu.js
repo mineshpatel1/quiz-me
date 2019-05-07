@@ -45,7 +45,10 @@ export default class Menu extends Component {
       } else if (item.disabled || Platform.OS == 'ios') {
         return (
           <View key={key} style={_style}>
-            <TouchableOpacity style={containerStyle} disabled={item.disabled}>
+            <TouchableOpacity 
+              style={containerStyle} disabled={item.disabled}
+              onPress={onPress}
+            >
               <Text colour={colour}>{item.label}</Text>
               <Icon colour={colour} icon={item.icon} />
             </TouchableOpacity>

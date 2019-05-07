@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Animated, View } from 'react-native';
+import { Animated, View, Linking } from 'react-native';
 import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
@@ -54,7 +54,7 @@ export default class App extends Component {
     }
   }
 
-  async componentWillMount() {
+  async componentDidMount() {
     await this.retrieveItem('settings', initSettings);
     utils.animate(this.state.opacity, 0, null, () => {
       this.setState({ isReady: true });

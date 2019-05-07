@@ -1,6 +1,8 @@
+import { Platform } from 'react-native';
 import { validators } from './utils';
 
-export const server = { host: "10.0.2.2", port: 3000, secure: false }
+const loopback = Platform.OS == 'android' ? '10.0.2.2' : '127.0.0.1';
+export const server = { host: loopback, port: 3000, secure: false };
 export const animationDuration = 300;
 export const waitTime = 0.5;
 

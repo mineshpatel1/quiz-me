@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Animated, View, Image } from 'react-native';
+import { Platform, Animated, View, Image, Linking } from 'react-native';
 
 import { Container, Button, Icon } from '../components/Core';
 import { checkSession, signOut } from '../actions/SessionActions';
@@ -19,8 +19,20 @@ class Home extends Component {
     }
   }
 
-  componentWillMount() {
+  componentDidMount() {
     utils.animate(this.state.opacity, 1);  // Fade in
+    Linking.addEventListener('url', this.handleOpenURL);
+    Linking.getInitialURL().then(url => {
+      console.log('InitialURL', url);
+    });
+  }
+
+  componentWillUnmount() {
+    Linking.removeEventListener('url', this.handleOpenURL);
+  }
+
+  handleOpenURL(event) {
+    console.log('Handle', event.url);
   }
 
   connectionChange(online) {
@@ -36,6 +48,8 @@ class Home extends Component {
   render() {
     let { props, state } = this;
     let statusColour = props.session.user ? colours.success : colours.error;
+    let iosAdjust = Platform.OS == 'ios' ? 25 : 0;
+    let iosRightAdjust = Platform.OS == 'ios' ? 25 : 10;
 
     return (
       <Container 
@@ -43,7 +57,10 @@ class Home extends Component {
         onConnectionChange={(info, online) => this.connectionChange(online)}
       >
         <Animated.View style={{opacity: state.opacity}}>
-          <View style={[styles.row, {height: 35, justifyContent: 'flex-end', paddingRight: 10}]}>
+          <View style={[styles.row, {
+            height: 35, alignItems: 'center', justifyContent: 'flex-end', 
+            marginRight: iosRightAdjust, marginTop: iosAdjust,
+          }]}>
             <View style={[styles.aCenter, styles.row, {
               height: 35, marginLeft: 10, marginTop: 15, marginRight: 10,
             }]}>
