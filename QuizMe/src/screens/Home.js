@@ -22,7 +22,7 @@ class Home extends Component {
   componentDidMount() {
     utils.animate(this.state.opacity, 1);  // Fade in
     Linking.addEventListener('url', this.handleOpenURL);
-    Linking.getInitialURL().then(url => {
+    Linking.getInitialURL().then(url => {  // Android Deep Link
       console.log('InitialURL', url);
     });
   }
@@ -31,7 +31,7 @@ class Home extends Component {
     Linking.removeEventListener('url', this.handleOpenURL);
   }
 
-  handleOpenURL(event) {
+  handleOpenURL(event) {  // IOS Deep Link
     console.log('Handle', event.url);
   }
 
@@ -52,7 +52,7 @@ class Home extends Component {
     let iosRightAdjust = Platform.OS == 'ios' ? 25 : 10;
 
     return (
-      <Container 
+      <Container
         bgColour={colours.primary} style={[styles.center]}
         onConnectionChange={(info, online) => this.connectionChange(online)}
       >

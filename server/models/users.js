@@ -2,7 +2,7 @@ const pg = require(__dirname + '/../api/pg.js');
 
 exports.User = class User{
   constructor(email, name=null) {
-      if (!email) throw "User requires email address.";
+      if (!email) throw new Error("User requires email address.");
       this.email = email;
       this.name = name;
   }
@@ -13,7 +13,7 @@ exports.get = (email) => {
     pg.query(`SELECT * FROM users WHERE email = $1::text`, [email])
     .then(result => {
       if (result.length == 0) return resolve(null);
-      if (result.length > 1) return reject("More than 1 user found for a single email.");
+      if (result.length > 1) return reject(new Error("More than 1 user found for a single email."));
       return resolve(result[0]);
     })
     .catch(reject);
@@ -31,8 +31,8 @@ exports.auth = (email, password) => {
       [email, password],
     ).then(result => {      
       if (result.length == 1) return resolve(true);
-      if (result.length == 0) return reject("Invalid password."); 
-      reject("Unexpected failure during password retrieval.");
+      if (result.length == 0) return reject(new Error("Invalid password.")); 
+      reject(new Error("Unexpected failure during password retrieval."));
     }).catch(reject);
   });
 }

@@ -71,7 +71,7 @@ app.post('/user/new', (req, res) => {
   let newUser = new users.User(data.email, data.name);
   users.get(data.email)
     .then(user => {
-      if (user) return utils.error(res, "User with this email already exists.");
+      if (user) return utils.error(res, new Error("User with this email already exists."));
       users.new(newUser, data.password)
         .then(() => { 
           console.log('Successfully created user ' + data.email);

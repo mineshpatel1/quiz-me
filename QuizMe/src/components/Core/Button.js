@@ -38,7 +38,7 @@ export default class Button extends Component {
     let labelBtn, iconBtn;
     if (!props.disabled && Platform.OS == 'android') {
 
-      let rippleColour = utils.alterColour(btnColour, props.rippleHighlight);
+      let rippleColour = utils.alterBrightness(btnColour, props.rippleHighlight);
       let touchableProps = {
         style: [styles.f1, styles.row, {
           borderRadius: props.borderRadius,

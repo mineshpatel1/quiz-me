@@ -272,7 +272,7 @@ class utils {
   }
 
   /** Lighten or darken a colour given by a Hex value. */
-  static alterColour(col, amt) {
+  static alterBrightness(col, amt) {
     let usePound = false;
     
     if (col[0] == "#") {
@@ -280,23 +280,21 @@ class utils {
         usePound = true;
     }
   
-    let num = parseInt(col,16);
+    let num = parseInt(col, 16);
   
     let r = (num >> 16) + amt;
-  
     if (r > 255) r = 255;
     else if  (r < 0) r = 0;
   
     let b = ((num >> 8) & 0x00FF) + amt;
-  
     if (b > 255) b = 255;
     else if  (b < 0) b = 0;
   
     let g = (num & 0x0000FF) + amt;
-  
     if (g > 255) g = 255;
     else if (g < 0) g = 0;
-  
+
+    if (r == 0 && b == 0 && g == 0) return '#000000';
     return (usePound?"#":"") + (g | (b << 8) | (r << 16)).toString(16);
   }
 

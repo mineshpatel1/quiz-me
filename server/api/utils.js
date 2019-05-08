@@ -1,4 +1,9 @@
 exports.error = (res, err) => {
-  console.error(err);
-  return res.send({ error: err.toString() });
+  if (err instanceof Error) {
+    console.error(err.message);
+    return res.send({ error: err.message });
+  } else {
+    console.error(err);
+    return res.send({ error: err.toString() });
+  }
 }
