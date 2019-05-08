@@ -6,7 +6,7 @@ import { View } from 'react-native';
 import { Container, Header, Text, Button, Form, SnackBar } from '../components/Core';
 import { setUser } from '../actions/SessionActions';
 import { styles } from '../styles';
-import { utils, validators } from '../utils';
+import { api, validators } from '../utils';
 
 class SignIn extends Component {
   constructor(props) {
@@ -24,20 +24,13 @@ class SignIn extends Component {
 
   signIn(values) {
     this.setState({ loading: true }, () => {
-      utils.post('user/auth', values)
-        .then((res) => {
-          if (res.error) return this.showError(res.error);
-          if (res.success) {
-            console.log(res);
-            this.props.setUser(res.user);
-            this.setState({ loading: false });
-            return this.props.navigation.navigate('Home');
-          }
-          this.showError("Unexpected login failure.");
+      api.signIn(values)
+        .then(res => {
+          this.props.setUser(res.user);
+          this.setState({ loading: false });
+          return this.props.navigation.navigate('Home');
         })
-        .catch((error) => {
-          this.showError(error.toString());
-        });
+        .catch(err => { this.showError(err) });
     });
   }
 

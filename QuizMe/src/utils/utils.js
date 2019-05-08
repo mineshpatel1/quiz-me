@@ -2,7 +2,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import NetInfo from "@react-native-community/netinfo";
 import { Animated, Easing } from 'react-native';
 
-import { animationDuration, server } from '../config';
+import { animationDuration } from '../config';
 
 const _sleep = (ms) => {
   return new Promise(resolve => setTimeout(resolve, ms));
@@ -10,11 +10,6 @@ const _sleep = (ms) => {
 
 const _clone = (_orig) => {
   return Object.assign( Object.create( Object.getPrototypeOf(_orig)), _orig);
-}
-
-const _serverUrl = (path) => {
-  let http = server.secure ? 'https' : 'http';
-  return http + '://' + server.host + ':' + server.port + '/' + path;
 }
 
 class utils {
@@ -331,34 +326,6 @@ class utils {
     // Using the HSP value, determine whether the color is light or dark
     if (hsp > 127.5) return false;
     else return true;
-  }
-
-  /** Standard GET method for contacting the server. */
-  static async get(path) {
-    let url = _serverUrl(path);
-    return fetch(url, { method: 'GET', credentials: 'include' })
-      .then(res => {
-        if (!res.ok) throw "Server Error: " + res.status.toString();
-        return res.json();
-      });
-  }
-
-  /** Standard POST method for contacting the server. */
-  static async post(path, data) {
-    let url = _serverUrl(path);
-
-    return fetch(url, {
-      method: 'POST',
-      credentials: 'include',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    }).then(res => {
-      if (!res.ok) throw "Server Error: " + res.status.toString();
-      return res.json();
-    });
   }
 
   /** Gets network connectivity info from the phone. */

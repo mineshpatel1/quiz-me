@@ -1,5 +1,6 @@
 import _Button from './Button';
 import _ConfirmButtons from './ConfirmButtons';
+import _ConfirmModal from './ConfirmModal';
 import _Container from './Container';
 import _Form from './Form';
 import _Header from './Header';
@@ -17,6 +18,7 @@ import _Timer from './Timer';
 
 export const Button = _Button;
 export const ConfirmButtons = _ConfirmButtons;
+export const ConfirmModal = _ConfirmModal;
 export const Container = _Container;
 export const Form = _Form;
 export const Header = _Header;

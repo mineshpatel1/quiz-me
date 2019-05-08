@@ -8,6 +8,7 @@ import { styles, colours } from '../../styles'
 
 export default class CustomModal extends Component {
   static defaultProps = {
+    isVisible: false,
     width: 350,
     height: 350,
     animationIn: 'slideInRight',

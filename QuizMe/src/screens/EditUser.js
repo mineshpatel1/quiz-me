@@ -24,7 +24,7 @@ class EditUser extends Component {
           this.props.setUser(res.user);
           this.showSuccess("Signed Up Successfully.")
         })
-        .catch(err => this.showError(err.toString()))
+        .catch(err => this.showError(err))
     });
   }
 

@@ -25,34 +25,25 @@ app.use(session({
   unset: 'destroy',
 }));
 
-app.get('/', (req, res) => {
+app.get('/', (_req, res) => {
   res.send({test: 'Hello World'});
 });
 
-app.get('/reset', (req, res) => {
+app.get('/reset', (_req, res) => {
   res.redirect('quizme://quizme/reset')
 });
 
 app.get('/session', (req, res) => {
-  res.send({ user: req.session.user });
+  res.send({ ok: true, user: req.session.user });
 });
 
-app.get('/session/logout', (req, res) => {
-  if (req.session.user) {
-    console.log('Logging out ' + req.session.user.email + '...');
-    req.session.destroy(err => {
-      if (err) {
-        console.log(err);
-        return utils.error(res, err);
-      }
-      return res.send({ success: true });
-    });
-  } else {
-    return res.send({});
-  }
+app.get('/session/logout', (req, res, next) => {
+  utils.endSession(req)
+    .then(() => res.send({ ok: true }))
+    .catch(next);
 });
 
-app.get('/email', (req, res) => {
+app.get('/email', (_req, res) => {
   email.send('nesh.patel1@gmail.com', 'Test Email', 'This is some text')
     .then(data => {
       console.log('Success', data);
@@ -63,47 +54,59 @@ app.get('/email', (req, res) => {
     });
 });
 
-app.post('/user/new', (req, res) => {
+app.post('/user/new', (req, res, next) => {
   let data = req.body;
-  if (!data.email) return utils.error(res, "Email is required.");
-  if (!data.password) return utils.error(res, "Password is required.");
+  if (!data.email) return next(new Error("Email is required."));
+  if (!data.password) return next(new Error("Email is required."));
 
   let newUser = new users.User(data.email, data.name);
   users.get(data.email)
     .then(user => {
-      if (user) return utils.error(res, new Error("User with this email already exists."));
+      if (user) return next(new Error("User with this email already exists."));
       users.new(newUser, data.password)
-        .then(() => { 
-          console.log('Successfully created user ' + data.email);
+        .then(() => {
           req.session.user = newUser;
-          return res.send({ success: true, user: newUser });
+          return res.send({ ok: true, user: newUser });
         })
-        .catch(err => { 
-          console.error('Error creating user:');
-          return utils.error(res, err);
-        });
+        .catch(next);
     })
-    .catch(err => { return utils.error(res, err) });
+    .catch(next);
 });
 
-app.post('/user/auth', (req, res) => {
+app.delete('/user', (req, res) => {
+  let email = req.session.user.email;
+  if (!email) return utils.error(res, new Error("User does not have an active session."));
+  
+  req.session.destroy(err => {
+    if (err) utils.error(res, err);
+    users.delete(email)
+      .then(() => {
+          return res.send({ ok: true });
+      })
+      .catch(err => { return utils.error(res, err) })
+  });
+});
+
+app.post('/user/auth', (req, res, next) => {
   let data = req.body;
-  if (!data.email) return utils.error(res, "Email is required.");
-  if (!data.password) return utils.error(res, "Password is required.");
+  if (!data.email) return next(new Error("Email is required."));
+  if (!data.password) return next(new Error("Password is required."));
 
   users.get(data.email)
     .then(user => {
-      if (!user) return utils.error(res, "No user with email " + data.email + " exists.");
+      if (!user) return next(new Error("No user with email " + data.email + " exists."));
       users.auth(data.email, data.password)
         .then(() => {
-          console.log(data.email + ' logged in...');
-          req.session.user = user;
-          return res.send({ success: true, user: user });
+          req.session.user = user;  // Activate session
+          return res.send({ ok: true, user: user });
         })
-        .catch(err => { return utils.error(res, err) })
+        .catch(next)
     })
-    .catch(err => { return utils.error(res, err) })
+    .catch(next)
 });
+
+app.use(utils.errorHandler);
+
 
 app.listen(global.config.server.port, () => {
   console.log('QuizMe Server Started');

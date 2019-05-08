@@ -10,8 +10,7 @@ export const checkSession = () => {
   return function(dispatch) {
     api.checkSession()
         .then(user => dispatch(setUser(user)))
-        .catch(err => {
-          // console.error(err);
+        .catch(_err => {
           dispatch(setUser(null));
         });
   }
@@ -25,5 +24,13 @@ export const signOut = () => {
         console.error(err);
         dispatch(setUser(null))
       });
+  }
+}
+
+export const deleteAccount = () => {
+  return function(dispatch) {
+    api.deleteUser()
+      .then(() => dispatch(setUser(null)))
+      .catch(err => console.error(err))
   }
 }

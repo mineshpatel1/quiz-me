@@ -20,6 +20,15 @@ exports.get = (email) => {
   });
 }
 
+exports.delete = (email) => {
+  console.log('Deleting user ' + email + '...');
+  return new Promise((resolve, reject) => {
+    pg.query(`DELETE FROM users WHERE email = $1::text`, [email])
+    .then(resolve)
+    .catch(reject);
+  })
+}
+
 exports.auth = (email, password) => {
   return new Promise((resolve, reject) => {
     pg.query(
@@ -29,8 +38,11 @@ exports.auth = (email, password) => {
         email = $1::text
         AND password = crypt($2::text, password)`,
       [email, password],
-    ).then(result => {      
-      if (result.length == 1) return resolve(true);
+    ).then(result => {
+      if (result.length == 1) {
+        console.log(email + ' logged in...');
+        return resolve(true);
+      }
       if (result.length == 0) return reject(new Error("Invalid password.")); 
       reject(new Error("Unexpected failure during password retrieval."));
     }).catch(reject);
@@ -49,8 +61,14 @@ exports.new = (user, password) => {
           $1::text, crypt($2::text, gen_salt('bf'))
         )`, [user.email, password],
       )
-      .then(resolve)
-      .catch(reject);
+      .then(() => {
+        console.log('Successfully created user ' + user.email);
+        resolve();
+      })
+      .catch(err => {
+        console.error('Error creating user ' + user.email);
+        reject(err);
+      });
     }).catch(reject);
   });
 }
