@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { View } from 'react-native';
-// import { openInbox } from 'react-native-email-link'
+import { Platform, View } from 'react-native';
+import launchMailApp from "react-native-mail-launcher";
 
 import { Container, Text, Button } from '../components/Core';
 import { setUser } from '../actions/SessionActions';
@@ -24,10 +24,12 @@ export default class Activate extends Component {
           }</Text>
         </View>
         <View style={[styles.f1, styles.center, { padding: 20 }]}>
-          <Button
+          {
+            Platform.OS == 'android' && 
+            <Button
             label="Check Mail" icon="envelope"
-            onPress={() => {  }}
-          />
+            onPress={() => { launchMailApp(); }} />
+          }
           <Button
             label="Resend Link" icon="link" style={[styles.mt15]}
             onPress={() => { console.log('Link') }}
