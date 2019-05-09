@@ -12,6 +12,8 @@ const users = require(__dirname + '/models/users.js');
 const app = express();
 app.use(bodyParser.json());
 
+app.use('/images', express.static(__dirname + '/assets/images/'))
+
 // Configure sessionisation with PostgreSQL
 app.use(session({
   store: new (require('connect-pg-simple')(session))({
@@ -38,7 +40,10 @@ app.get('/reset', (_req, res) => {
 });
 
 app.get('/session', (req, res) => {
-  res.send({ ok: true, user: req.session.user });
+  if (req.unconfirmed && req.unconfirmed.expiry_time < (Date.now())) {
+    req.session.unconfirmed = undefined;
+  }
+  return res.send({ ok: true, user: req.session.user });
 });
 
 app.get('/session/logout', (req, res, next) => {
@@ -47,27 +52,68 @@ app.get('/session/logout', (req, res, next) => {
     .catch(next);
 });
 
-app.get('/email', (_req, res) => {
-  email.send('nesh.patel1@gmail.com', 'Test Email', 'This is some text')
-    .then(data => {
-      console.log('Success', data);
-      return res.send("Email succeeded");
-    }).catch(err => {
-      console.log('Error', err);
-      return res.send("Email failed");
-    });
+app.get('/activate/:token', (req, res, next) => {
+  console.log(req.params.token);
+  res.send({ ok: true });
 });
 
-app.post('/user/new', (req, res, next) => {
-  let data = req.body;
+app.get('/email', (_req, res, next) => {
+  email.send(
+    'nesh@lightyearfoundation.org', 'Activate QuizMe account', 'activate', 
+    { user: 'Chinnu', token: '12345678'}
+  ).then(data => {
+      console.log('Success', data);
+      return res.send("Email succeeded");
+    }).catch(next);
+});
+
+app.get('/user/register', (req, res, next) => {
+  // let data = req.body;
+  let data = {
+    email: 'nesh@lightyearfoundation.org',
+    password: 'D1sney34',
+  }
   if (!data.email) return next(new Error("Email is required."));
-  if (!data.password) return next(new Error("Email is required."));
+  if (!data.password) return next(new Error("Password is required."));
 
   let newUser = new users.User(data.email, data.name);
   users.get(data.email, false)
     .then(user => {
       if (user) {
-        if (!user.is_confirmed) return next(new Error("Unconfirmed user with this email already exists."));
+        if (!user.is_activated) return next(new Error("Unconfirmed user with this email already exists."));
+        return next(new Error("User with this email already exists."));
+      }
+      
+      users.new(newUser, data.password)
+        .then((token, expiry_time) => {
+          console.log('After');
+          console.log(token);
+
+          req.session.unconfirmed = { email: newUser.email, expiry_time: expiry_time };
+          let name = newUser.name ? newUser.name : newUser.email;
+          console.log('About to send email');
+          email.send(
+            newUser.email, 'Activate QuizMe account', 'activate',
+            { user: name, token: token }
+          ).then(data => {
+            console.log('Send confiormation mail to ' + newUser.email);
+            return res.send({ ok: true, user: newUser });
+          }).catch(next);
+        })
+    })
+    .catch(next);
+});
+
+app.post('/user/new', (req, res, next) => {
+  let data = req.body;
+  if (!data.email) return next(new Error("Email is required."));
+  if (!data.password) return next(new Error("Password is required."));
+
+  let newUser = new users.User(data.email, data.name);
+  users.get(data.email, false)
+    .then(user => {
+      if (user) {
+        if (!user.is_activated) return next(new Error("Unconfirmed user with this email already exists."));
         return next(new Error("User with this email already exists."));
       };
       users.new(newUser, data.password)

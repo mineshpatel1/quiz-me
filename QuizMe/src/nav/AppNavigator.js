@@ -8,7 +8,7 @@ import GameSettings from '../screens/GameSettings';
 import Settings from '../screens/Settings';
 import Questions from '../screens/Questions';
 import GameSummary from '../screens/GameSummary';
-import EditUser from '../screens/EditUser';
+import Register from '../screens/Register';
 import SignIn from '../screens/SignIn';
 import { animationDuration } from '../config';
 
@@ -59,7 +59,7 @@ const AppNavigator = createStackNavigator({
   Settings: { screen: Settings },
   Questions: { screen: Questions },
   GameSummary: { screen: GameSummary },
-  EditUser: { screen: EditUser },
+  Register: { screen: Register },
   SignIn: { screen: SignIn },
 },
 {

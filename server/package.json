@@ -19,6 +19,7 @@
   "dependencies": {
     "aws-sdk": "^2.444.0",
     "body-parser": "^1.18.3",
+    "ejs": "^2.6.1",
     "express": "^4.16.4",
     "express-session": "^1.16.1",
     "uid-generator": "^1.0.0"

@@ -8,7 +8,7 @@ import { setUser } from '../actions/SessionActions';
 import { styles } from '../styles';
 import { validators, api } from '../utils';
 
-class EditUser extends Component {
+class Register extends Component {
   constructor(props) {
     super(props);
     this.state = { 
@@ -40,11 +40,7 @@ class EditUser extends Component {
 
   render() {
     let { props, state } = this;
-    let create = props.navigation.getParam('create', false);
-
-    let title = 'Edit Profile';
-    if (create) title = 'Sign Up';
-
+    let title = 'Register';
     let fields = {
       email: {
         label: "Email",
@@ -124,4 +120,4 @@ const mapDispatchToProps = dispatch => (
   }, dispatch)
 );
 
-export default connect(mapStateToProps, mapDispatchToProps)(EditUser);
+export default connect(mapStateToProps, mapDispatchToProps)(Register);

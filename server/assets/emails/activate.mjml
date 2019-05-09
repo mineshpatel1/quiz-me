@@ -1,0 +1,21 @@
+<mjml version="3.3.3">
+  <mj-body>
+    <mj-section background-color="#48ABFF" background-repeat="repeat" padding="20px 0" text-align="center" vertical-align="top">
+      <mj-column>
+        <mj-text align="center" color="#FFFFFF" font-size="48px" font-family="Lobster, Lato, Helvetica, Arial, sans-serif">QuizMe</mj-text>
+      </mj-column>
+    </mj-section>
+    <mj-section background-color="#ffffff" background-repeat="repeat" padding="80px 0" text-align="center" vertical-align="top" border-left="1px solid #CCCCCC" border-right="1px solid #CCCCCC">
+      <mj-column>
+        <mj-text align="center" color="#333333" font-family="Lato, Avenir, Helvetica, Arial, sans-serif" font-size="18px" line-height="28px" padding="10px 25px 0px 25px">Welcome nesh.patel1@gmail.com!</mj-text>
+        <mj-text align="center" color="#333333" font-family="Lato, Avenir, Helvetica, Arial, sans-serif" font-size="18px" line-height="28px" padding="10px 25px 0px 25px">Click below to <b>activate</b> your account:</mj-text>
+        <mj-button align="center" background-color="#5CB85C" color="#FFFFFF" width="150px" height="25px" border-radius="24px" href="http://localhost:3000/activate/" font-size="16px" font-family="Helvetica, Arial, sans-serif" padding-bottom="10px" padding-top="40px">ACTIVATE</mj-button>
+      </mj-column>
+    </mj-section>
+    <mj-section background-color="#48ABFF" background-repeat="repeat" padding="20px 0" text-align="center" vertical-align="top">
+      <mj-column>
+        <mj-text align="center" color="#FFFFFF" font-family="Lato, Avenir, Helvetica, Arial, sans-serif" font-size="12px" line-height="28px" padding="10px 25px 0px 25px">Sent with love from Chinnu =)</mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

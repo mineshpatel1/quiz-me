@@ -59,19 +59,19 @@ class SignIn extends Component {
     }
 
     return (
-      <Container 
+      <Container
         spinner={state.loading}
         onConnectionChange={(info, online) => {this.setState({ offline: !online, loading: false })}}
       >
         <Header title={'Sign In'} />
         <View style={[styles.f1, styles.col, styles.aCenter]}>
           <View style={[styles.center, styles.mt15]}>
-            <Button label="Sign Up" icon="user-plus" onPress={() => { 
-              props.navigation.navigate('EditUser', { create: true })
+            <Button label="Register" icon="user-plus" onPress={() => { 
+              props.navigation.navigate('Register');
             }} />
             <Text display={true} style={styles.mt15}> Or </Text>
           </View>
-          <Form 
+          <Form
             fields={fields}
             onCancel={() => { this.props.navigation.goBack() }}
             onSuccess={values => {this.signIn(values)}}
