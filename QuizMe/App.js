@@ -9,8 +9,8 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import {
   faAnkh, faArrowLeft, faAtom, faBook, faBookOpen, faBrain, faCaretDown, faChartPie,
   faCheck, faChevronLeft, faChevronRight, faClock, faCog, faEnvelope, faFilm, faFutbol,
-  faGlobeAmericas, faHome, faHourglassHalf, faLandmark, faLock, faMusic, faPaw, faPlay,
-  faQuestion, faQuoteRight, faSignInAlt, faSignOutAlt, faTh, faTimes, faTv, faUser, 
+  faGlobeAmericas, faHome, faHourglassHalf, faLandmark, faLink, faLock, faMusic, faPaw, 
+  faPlay, faQuestion, faQuoteRight, faSignInAlt, faSignOutAlt, faTh, faTimes, faTv, faUser, 
   faUserFriends, faUserPlus,
 } from '@fortawesome/free-solid-svg-icons';
 
@@ -25,8 +25,8 @@ import { initSettings } from './src/actions/SettingActions';
 library.add(
   faAnkh, faArrowLeft, faAtom, faBook, faBookOpen, faBrain, faCaretDown, faChartPie,
   faCheck, faChevronLeft, faChevronRight, faClock, faCog, faEnvelope, faFilm, faFutbol,
-  faGlobeAmericas, faHome, faHourglassHalf, faLandmark, faLock, faMusic, faPaw, faPlay,
-  faQuestion, faQuoteRight, faSignInAlt, faSignOutAlt, faTh, faTimes, faTv, faUser, 
+  faGlobeAmericas, faHome, faHourglassHalf, faLandmark, faLink, faLock, faMusic, faPaw,
+  faPlay, faQuestion, faQuoteRight, faSignInAlt, faSignOutAlt, faTh, faTimes, faTv, faUser, 
   faUserFriends, faUserPlus,
 );
 

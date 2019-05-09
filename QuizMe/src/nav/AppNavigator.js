@@ -9,6 +9,7 @@ import Settings from '../screens/Settings';
 import Questions from '../screens/Questions';
 import GameSummary from '../screens/GameSummary';
 import Register from '../screens/Register';
+import Activate from '../screens/Activate';
 import SignIn from '../screens/SignIn';
 import { animationDuration } from '../config';
 
@@ -60,10 +61,11 @@ const AppNavigator = createStackNavigator({
   Questions: { screen: Questions },
   GameSummary: { screen: GameSummary },
   Register: { screen: Register },
+  Activate: {screen: Activate },
   SignIn: { screen: SignIn },
 },
 {
-  initialRouteName: "Home",
+  initialRouteName: "Activate",
   transitionConfig: (nav) => slideFromRight(nav),
   defaultNavigationOptions: {
     header: null,

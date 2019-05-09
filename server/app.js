@@ -52,9 +52,8 @@ app.get('/session/logout', (req, res, next) => {
     .catch(next);
 });
 
-app.get('/activate/:token', (req, res, next) => {
-  console.log(req.params.token);
-  res.send({ ok: true });
+app.get('/activate/:token', (req, res, _next) => {
+  res.redirect('quizme://quizme/activate/' + req.params.token);
 });
 
 app.get('/email', (_req, res, next) => {

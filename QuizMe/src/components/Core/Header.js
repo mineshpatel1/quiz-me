@@ -12,6 +12,7 @@ export default class Header extends Component {
   }
 
   nav(route) {
+    console.log(route);
     if (route) {
       NavigationService.navigate(route);
     } else {
@@ -21,7 +22,6 @@ export default class Header extends Component {
 
   render() {
     let { props } = this;
-  
     let iosAdjust = Platform.OS == 'ios' ? 25 : 0;
 
     return (
