@@ -8,9 +8,11 @@ exports.User = class User{
   }
 }
 
-exports.get = (email) => {
+exports.get = (email, confirmed=true) => {
+  let query = `SELECT * FROM users WHERE email = $1::text`;
+  if (confirmed) query += ' AND is_confirmed';
   return new Promise((resolve, reject) => {
-    pg.query(`SELECT * FROM users WHERE email = $1::text`, [email])
+    pg.query(query, [email])
     .then(result => {
       if (result.length == 0) return resolve(null);
       if (result.length > 1) return reject(new Error("More than 1 user found for a single email."));

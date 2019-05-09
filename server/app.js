@@ -25,8 +25,12 @@ app.use(session({
   unset: 'destroy',
 }));
 
-app.get('/', (_req, res) => {
-  res.send({test: 'Hello World'});
+app.get('/', (_req, res, next) => {
+  utils.getToken()
+    .then(token => {
+      res.send({test: token});
+    })
+    .catch(next);
 });
 
 app.get('/reset', (_req, res) => {
@@ -60,9 +64,12 @@ app.post('/user/new', (req, res, next) => {
   if (!data.password) return next(new Error("Email is required."));
 
   let newUser = new users.User(data.email, data.name);
-  users.get(data.email)
+  users.get(data.email, false)
     .then(user => {
-      if (user) return next(new Error("User with this email already exists."));
+      if (user) {
+        if (!user.is_confirmed) return next(new Error("Unconfirmed user with this email already exists."));
+        return next(new Error("User with this email already exists."));
+      };
       users.new(newUser, data.password)
         .then(() => {
           req.session.user = newUser;
@@ -73,18 +80,17 @@ app.post('/user/new', (req, res, next) => {
     .catch(next);
 });
 
-app.delete('/user', (req, res) => {
+app.delete('/user', (req, res, next) => {
   let email = req.session.user.email;
-  if (!email) return utils.error(res, new Error("User does not have an active session."));
+  if (!email) return next(new Error("User does not have an active session."));
   
-  req.session.destroy(err => {
-    if (err) utils.error(res, err);
-    users.delete(email)
-      .then(() => {
-          return res.send({ ok: true });
-      })
-      .catch(err => { return utils.error(res, err) })
-  });
+  utils.endSession(req)
+    .then(() => {
+      users.delete(email)
+        .then(() => { return res.send({ ok: true }) })
+        .catch(next)
+    })
+    .catch(next);
 });
 
 app.post('/user/auth', (req, res, next) => {
@@ -106,7 +112,6 @@ app.post('/user/auth', (req, res, next) => {
 });
 
 app.use(utils.errorHandler);
-
 
 app.listen(global.config.server.port, () => {
   console.log('QuizMe Server Started');
