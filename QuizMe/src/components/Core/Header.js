@@ -12,7 +12,6 @@ export default class Header extends Component {
   }
 
   nav(route) {
-    console.log(route);
     if (route) {
       NavigationService.navigate(route);
     } else {

@@ -89,6 +89,8 @@ class Home extends Component {
               onPress={() => {
                 if (props.session.user) {
                   console.log("I am logged in!!!!");
+                } else if (props.session.unconfirmed) {
+                  props.navigation.navigate('Activate');
                 } else {
                   props.navigation.navigate('SignIn');
                 }

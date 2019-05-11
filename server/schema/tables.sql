@@ -1,6 +1,3 @@
-CREATE EXTENSION pgcrypto;
-SET TIME ZONE 'UTC';
-
 -- Express cookie sessionisation
 DROP TABLE IF EXISTS sessions;
 CREATE TABLE "sessions" (

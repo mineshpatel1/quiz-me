@@ -1,28 +1,27 @@
-import { SET_USER } from '../types';
+import { SET_SESSION } from '../types';
 import { api } from '../utils';
 
-export const setUser = user => ({
-  type: SET_USER,
-  user: user,
+export const setSession = session => ({
+  type: SET_SESSION,
+  user: session && session.user,
+  unconfirmed: session && session.unconfirmed,
 });
 
 export const checkSession = () => {
   return function(dispatch) {
     api.checkSession()
-        .then(user => dispatch(setUser(user)))
-        .catch(_err => {
-          dispatch(setUser(null));
-        });
+        .then(session => dispatch(setSession(session)))
+        .catch(_err => dispatch(setSession(null)));
   }
 }
 
 export const signOut = () => {
   return function(dispatch) {
     api.signOut()
-      .then(() => dispatch(setUser(null)))
+      .then(() => dispatch(setSession(null)))
       .catch(err => {
         console.error(err);
-        dispatch(setUser(null))
+        dispatch(setSession(null))
       });
   }
 }
@@ -30,7 +29,7 @@ export const signOut = () => {
 export const deleteAccount = () => {
   return function(dispatch) {
     api.deleteUser()
-      .then(() => dispatch(setUser(null)))
+      .then(() => dispatch(setSession(null)))
       .catch(err => console.error(err))
   }
 }

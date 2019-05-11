@@ -26,11 +26,13 @@ export default class Button extends Component {
   render() {
     let { props } = this;
     let btnColour = props.btnColour;
+    let fontColour = props.fontColour;
     let onPress = props.onPress;
     let activeOpacity = props.activeOpacity;
 
     if (props.disabled) {
       btnColour = colours.disabled;
+      fontColour = colours.midGrey;
       onPress = null;
       activeOpacity = 1;
     }
@@ -57,12 +59,12 @@ export default class Button extends Component {
             <View style={[styles.f2, {
               justifyContent: 'center', alignItems: 'flex-start', marginLeft: 20,
             }]}>
-              <Text bold={true} colour={props.fontColour}>{props.label}</Text>
+              <Text bold={true} colour={fontColour}>{props.label}</Text>
             </View>
             <View style={[styles.f1, {
               justifyContent: 'center', alignItems: 'flex-end', paddingRight: props.padding,
             }]}>
-              <Icon icon={props.icon} size={props.iconSize} colour={props.fontColour} />
+              <Icon icon={props.icon} size={props.iconSize} colour={fontColour} />
             </View>
           </View>
         </TouchableNativeFeedback>
@@ -73,7 +75,7 @@ export default class Button extends Component {
           {...touchableProps} background={TouchableNativeFeedback.Ripple(rippleColour, true)}
         >
           <View style={[styles.f1, styles.center, { borderRadius: props.borderRadius, backgroundColor: btnColour }]}>
-            <Icon icon={props.icon} size={props.iconSize} colour={props.fontColour} />
+            <Icon icon={props.icon} size={props.iconSize} colour={fontColour} />
           </View>
         </TouchableNativeFeedback>
       );
@@ -93,12 +95,12 @@ export default class Button extends Component {
             <View style={[styles.f2, {
               justifyContent: 'center', alignItems: 'flex-start',
             }]}>
-              <Text bold={true} colour={props.fontColour}>{props.label}</Text>
+              <Text bold={true} colour={fontColour}>{props.label}</Text>
             </View>
             <View style={[styles.f1, {
               justifyContent: 'center', alignItems: 'flex-end', paddingRight: props.padding,
             }]}>
-              <Icon icon={props.icon} size={props.iconSize} colour={props.fontColour} />
+              <Icon icon={props.icon} size={props.iconSize} colour={fontColour} />
             </View>
           </View>
         </TouchableOpacity>
@@ -107,7 +109,7 @@ export default class Button extends Component {
       iconBtn = (
         <TouchableOpacity {...touchableProps}>
           <View style={[styles.center, {width: props.width - (props.padding * 2)}]}>
-            <Icon icon={props.icon} size={props.iconSize} colour={props.fontColour} />
+            <Icon icon={props.icon} size={props.iconSize} colour={fontColour} />
           </View>
         </TouchableOpacity>
       );

@@ -1,15 +1,17 @@
-import { SET_USER } from '../types';
+import { SET_SESSION } from '../types';
 
 const INITIAL_STATE = {
   user: null,
+  unconfirmed: null,
 };
 
 const sessionReducer = (state = INITIAL_STATE, action) => {
-  let _user;
+  let _user, _unconfirmed;
   switch (action.type) {
-    case SET_USER:
+    case SET_SESSION:
       _user = action.user === undefined ? state.user : action.user;
-      return { user: _user };
+      _unconfirmed = action.unconfirmed === undefined ? state.unconfirmed : action.unconfirmed;
+      return { user: _user, unconfirmed: _unconfirmed };
     default:
       return state;
   }

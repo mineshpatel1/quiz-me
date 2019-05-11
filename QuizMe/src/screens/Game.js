@@ -226,7 +226,7 @@ class Game extends Component {
     )
 
     let gameOver = (
-      <Animated.View style={[styles.f1, { opacity: state.opacity }]}>
+      <Animated.View style={[styles.f1, { opacity: state.opacity, marginBottom: iosAdjust }]}>
         <View style={[styles.f1, {justifyContent: 'center'}]}>
           <Text display={true} size={32} colour={colours.white} align="center">
             {'Game Over'}

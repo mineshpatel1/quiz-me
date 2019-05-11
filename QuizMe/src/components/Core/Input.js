@@ -10,8 +10,10 @@ export default class Input extends Component {
   static defaultProps = {
     width: 300,
     height: 50,
+    icon: null,
     borderRadius: 50,
-    colour: colours.white,
+    colour: colours.primary,
+    fontColour: colours.white,
     type: 'default',
     onChange: null,
     format: null,
@@ -99,7 +101,7 @@ export default class Input extends Component {
 
     let secure = showLabel ? false : props.secure;
     let valid = this.validate(this.parseVal(state.value));
-    let bg = valid ? colours.primary: colours.error;
+    let bg = valid ? props.colour: colours.error;
 
     return (
       <View style={[styles.shadow, styles.row, styles.aCenter,
@@ -115,12 +117,12 @@ export default class Input extends Component {
           }]}
         >
           <View style={{paddingLeft: 20, width: 55, height: props.height, justifyContent: 'center'}}>
-            <Icon icon={props.icon} name={props.icon} colour={props.colour} size={20} />
+            <Icon icon={props.icon} name={props.icon} colour={props.fontColour} size={20} />
           </View>
           {
             keyboardType == 'numeric' &&
             <View style={{flex: 1, height: props.height, justifyContent: 'center'}}>
-              <Text bold={true} colour={props.colour}>{props.label}</Text>
+              <Text bold={true} colour={props.fontColour}>{props.label}</Text>
             </View>
           }
         </TouchableOpacity>

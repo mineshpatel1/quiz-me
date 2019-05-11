@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import { View } from 'react-native';
 
 import SettingsForm from '../components/SettingsForm';
-import { Container, Header } from '../components/Core';
+import { Container } from '../components/Core';
 import { newGame } from '../actions/GameActions';
 import { styles } from '../styles';
 
@@ -17,15 +17,9 @@ class NewGame extends Component {
   }
 
   render() {
-    let { props, state } = this;
-
-    testPicker = [
-      {name: 'Java', value: 'java'},
-      {name: 'Python', value: 'python'},
-    ]
+    let { props } = this;
     return (
-      <Container>
-        <Header title={'New Game'} route={'Home'}/>
+      <Container header={'New Game'}>
         <View style={[styles.f1, styles.col, styles.aCenter]}>
           <SettingsForm
             onSave={(values) => {

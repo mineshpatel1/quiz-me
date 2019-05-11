@@ -28,11 +28,7 @@ app.use(session({
 }));
 
 app.get('/', (_req, res, next) => {
-  utils.getToken()
-    .then(token => {
-      res.send({test: token});
-    })
-    .catch(next);
+  res.send(utils.serverUrl())
 });
 
 app.get('/reset', (_req, res) => {
@@ -43,7 +39,9 @@ app.get('/session', (req, res) => {
   if (req.unconfirmed && req.unconfirmed.expiry_time < (Date.now())) {
     req.session.unconfirmed = undefined;
   }
-  return res.send({ ok: true, user: req.session.user });
+  return res.send({
+    ok: true, user: req.session.user, unconfirmed: req.session.unconfirmed,
+  });
 });
 
 app.get('/session/logout', (req, res, next) => {
@@ -53,7 +51,9 @@ app.get('/session/logout', (req, res, next) => {
 });
 
 app.get('/activate/:token', (req, res, _next) => {
-  res.redirect('quizme://quizme/activate/' + req.params.token);
+  console.log(req.session);
+  return res.send('Activate');
+  // res.redirect('quizme://quizme/activate/' + req.params.token);
 });
 
 app.get('/email', (_req, res, next) => {
@@ -66,12 +66,8 @@ app.get('/email', (_req, res, next) => {
     }).catch(next);
 });
 
-app.get('/user/register', (req, res, next) => {
-  // let data = req.body;
-  let data = {
-    email: 'nesh@lightyearfoundation.org',
-    password: 'D1sney34',
-  }
+app.post('/user/register', (req, res, next) => {
+  let data = req.body;
   if (!data.email) return next(new Error("Email is required."));
   if (!data.password) return next(new Error("Password is required."));
 
@@ -85,18 +81,14 @@ app.get('/user/register', (req, res, next) => {
       
       users.new(newUser, data.password)
         .then((token, expiry_time) => {
-          console.log('After');
-          console.log(token);
-
           req.session.unconfirmed = { email: newUser.email, expiry_time: expiry_time };
           let name = newUser.name ? newUser.name : newUser.email;
-          console.log('About to send email');
           email.send(
             newUser.email, 'Activate QuizMe account', 'activate',
-            { user: name, token: token }
+            { user: name, token: token, url: utils.serverUrl() + '/activate/' }
           ).then(data => {
-            console.log('Send confiormation mail to ' + newUser.email);
-            return res.send({ ok: true, user: newUser });
+            console.log('Sent confirmation mail to ' + newUser.email);
+            return res.send({ ok: true, unconfirmed: newUser.email });
           }).catch(next);
         })
     })

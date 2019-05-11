@@ -65,7 +65,7 @@ const AppNavigator = createStackNavigator({
   SignIn: { screen: SignIn },
 },
 {
-  initialRouteName: "Activate",
+  initialRouteName: "Home",
   transitionConfig: (nav) => slideFromRight(nav),
   defaultNavigationOptions: {
     header: null,

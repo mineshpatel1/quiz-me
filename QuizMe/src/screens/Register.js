@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { View } from 'react-native';
 
-import { Container, Header, Form, SnackBar } from '../components/Core';
-import { setUser } from '../actions/SessionActions';
+import { Container, Form, SnackBar } from '../components/Core';
+import { setSession } from '../actions/SessionActions';
 import { styles } from '../styles';
 import { validators, api } from '../utils';
 
@@ -19,10 +19,10 @@ class Register extends Component {
 
   post(values) {
     this.setState({ loading: true }, () => {
-      api.newUser(values)
+      api.register(values)
         .then(res => {
-          this.props.setUser(res.user);
-          this.showSuccess("Signed Up Successfully.")
+          this.props.setSession(res);
+          this.showSuccess("Registered Successfully.")
         })
         .catch(err => this.showError(err))
     });
@@ -40,7 +40,6 @@ class Register extends Component {
 
   render() {
     let { props, state } = this;
-    let title = 'Register';
     let fields = {
       email: {
         label: "Email",
@@ -78,15 +77,14 @@ class Register extends Component {
         type: "string",
         inputType: "text",
         validator: (val) => { return validators.isAlphaNumeric(val)},
-      }
+      },
     }
 
     return (
       <Container 
-        spinner={state.loading}
+        spinner={state.loading} header="Register"
         onConnectionChange={(info, online) => {this.setState({ offline: !online, loading: false })}}
       >
-        <Header title={title} />
         <View style={[styles.f1, styles.col, styles.aCenter]}>
           <Form 
             fields={fields}
@@ -100,8 +98,8 @@ class Register extends Component {
         }} />
         <SnackBar 
           ref="success" success={true} 
-          onAction={() => this.props.navigation.navigate('Home')}
-          onAutoHide={() => this.props.navigation.navigate('Home')}
+          onAction={() => this.props.navigation.navigate('Activate')}
+          onAutoHide={() => this.props.navigation.navigate('Activate')}
         />
       </Container>
     )
@@ -116,7 +114,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = dispatch => (
   bindActionCreators({
-    setUser,
+    setSession,
   }, dispatch)
 );
 

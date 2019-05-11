@@ -28,3 +28,10 @@ exports.endSession = async (req) => {
     });
   });
 }
+
+/** Returns a URL to the server. */
+exports.serverUrl = () => {
+  let url = global.config.server.secure ? 'https' : 'http';
+  url += '://' + global.config.server.host + ':' + global.config.server.port;
+  return url;
+}

@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { Animated, ScrollView, View, Easing } from 'react-native';
 
-import { Container, Header, Text, Icon } from '../components/Core';
+import { Container, Text, Icon } from '../components/Core';
 import { styles, colours } from '../styles';
 import { utils } from '../utils';
-import { animationDuration, categories } from '../config';
+import { categories } from '../config';
 
 const questionLib = require('../../assets/data/questions.json');
 
@@ -67,8 +67,7 @@ export default class Questions extends Component {
     let { props, state } = this;
 
     return (
-      <Container>
-        <Header title={'Question Summary'} route={'Home'} />
+      <Container header={'Question Summary'}>
         <View style={[styles.col, styles.pd15, styles.mt15, {flex: 4}]}>
           <ScrollView>
             {

@@ -9,9 +9,9 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import {
   faAnkh, faArrowLeft, faAtom, faBook, faBookOpen, faBrain, faCaretDown, faChartPie,
   faCheck, faChevronLeft, faChevronRight, faClock, faCog, faEnvelope, faFilm, faFutbol,
-  faGlobeAmericas, faHome, faHourglassHalf, faLandmark, faLink, faLock, faMusic, faPaw, 
-  faPlay, faQuestion, faQuoteRight, faSignInAlt, faSignOutAlt, faTh, faTimes, faTv, faUser, 
-  faUserFriends, faUserPlus,
+  faGlobeAmericas, faHome, faHashtag, faHourglassHalf, faLandmark, faLink, faLock, faMusic, 
+  faPaw, faPlay, faQuestion, faQuoteRight, faSignInAlt, faSignOutAlt, faTh, faTimes, faTv,
+  faUser, faUserFriends, faUserPlus,
 } from '@fortawesome/free-solid-svg-icons';
 
 import AppNavigator from './src/nav/AppNavigator';
@@ -25,9 +25,9 @@ import { initSettings } from './src/actions/SettingActions';
 library.add(
   faAnkh, faArrowLeft, faAtom, faBook, faBookOpen, faBrain, faCaretDown, faChartPie,
   faCheck, faChevronLeft, faChevronRight, faClock, faCog, faEnvelope, faFilm, faFutbol,
-  faGlobeAmericas, faHome, faHourglassHalf, faLandmark, faLink, faLock, faMusic, faPaw,
-  faPlay, faQuestion, faQuoteRight, faSignInAlt, faSignOutAlt, faTh, faTimes, faTv, faUser, 
-  faUserFriends, faUserPlus,
+  faGlobeAmericas, faHome, faHashtag, faHourglassHalf, faLandmark, faLink, faLock, faMusic, 
+  faPaw, faPlay, faQuestion, faQuoteRight, faSignInAlt, faSignOutAlt, faTh, faTimes, faTv,
+  faUser, faUserFriends, faUserPlus,
 );
 
 const AppContainer = createAppContainer(AppNavigator);

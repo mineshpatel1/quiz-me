@@ -61,8 +61,8 @@ class api {
   static async checkSession() {
     return _get('session')
       .then(res => {
-        if (!res.user) return null;
-        else return res.user;
+        if (!res.user && !res.unconfirmed) return null;
+        else return res;
       });
   }
 
@@ -77,8 +77,8 @@ class api {
   }
 
   /** Creates a new QuizMe user. */
-  static async newUser(data) {
-    return _post('user/new', data);
+  static async register(data) {
+    return _post('user/register', data);
   }
 
   /** Deletes the currently active user's account. */

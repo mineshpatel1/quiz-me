@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { View } from 'react-native';
 
-import { Container, Header, Text, Button, Form, SnackBar } from '../components/Core';
-import { setUser } from '../actions/SessionActions';
+import { Container, Text, Button, Form, SnackBar } from '../components/Core';
+import { setSession } from '../actions/SessionActions';
 import { styles } from '../styles';
 import { api, validators } from '../utils';
 
@@ -26,7 +26,7 @@ class SignIn extends Component {
     this.setState({ loading: true }, () => {
       api.signIn(values)
         .then(res => {
-          this.props.setUser(res.user);
+          this.props.setSession(res);
           this.setState({ loading: false });
           return this.props.navigation.navigate('Home');
         })
@@ -60,10 +60,9 @@ class SignIn extends Component {
 
     return (
       <Container
-        spinner={state.loading}
+        spinner={state.loading} header={'Sign In'}
         onConnectionChange={(info, online) => {this.setState({ offline: !online, loading: false })}}
       >
-        <Header title={'Sign In'} />
         <View style={[styles.f1, styles.col, styles.aCenter]}>
           <View style={[styles.center, styles.mt15]}>
             <Button label="Register" icon="user-plus" onPress={() => { 
@@ -94,7 +93,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = dispatch => (
   bindActionCreators({
-    setUser,
+    setSession,
   }, dispatch)
 );
 
