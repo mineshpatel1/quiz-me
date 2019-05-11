@@ -21,6 +21,7 @@ import { Text } from './src/components/Core';
 import { styles, colours } from './src/styles';
 import { utils } from './src/utils';
 import { initSettings } from './src/actions/SettingActions';
+import { initActivated } from './src/actions/SessionActions';
 
 library.add(
   faAnkh, faArrowLeft, faAtom, faBook, faBookOpen, faBrain, faCaretDown, faChartPie,
@@ -56,6 +57,7 @@ export default class App extends Component {
 
   async componentDidMount() {
     await this.retrieveItem('settings', initSettings);
+    await this.retrieveItem('activated', initActivated);
     utils.animate(this.state.opacity, 0, null, () => {
       this.setState({ isReady: true });
     });

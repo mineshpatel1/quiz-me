@@ -21,18 +21,24 @@ class Home extends Component {
 
   componentDidMount() {
     utils.animate(this.state.opacity, 1);  // Fade in
-    Linking.addEventListener('url', this.handleOpenURL);
-    Linking.getInitialURL().then(url => {  // Android Deep Link
-      console.log('InitialURL', url);
-    });
+    Linking.addEventListener('url', event => this.redirectUrl(event.url));  // IOS Deep Link
+    Linking.getInitialURL().then(url => this.redirectUrl(url));  // Android Deep Link
   }
 
   componentWillUnmount() {
-    Linking.removeEventListener('url', this.handleOpenURL);
+    Linking.removeEventListener('url', event => this.redirectUrl(event.url));
   }
 
-  handleOpenURL(event) {  // IOS Deep Link
-    console.log('Handle', event.url);
+  redirectUrl(url) {
+    if (url && url.startsWith('quizme://quizme/activate')) {
+        this.props.checkSession()
+        .then(session => {
+          if (!session.user && session.unconfirmed) {
+            this.props.navigation.navigate('Activate', { token: url.replace('quizme://quizme/activate/', '') });
+          }
+        })
+        .catch(err => console.error('Check Session from URL Redirect', err))
+      }
   }
 
   connectionChange(online) {
@@ -40,26 +46,20 @@ class Home extends Component {
     this.setState({ online: online })
   }
 
-  navigate(page) {
-    this.setState({ modal: false });
-    this.props.navigation.navigate(page);
-  }
-
   render() {
     let { props, state } = this;
     let statusColour = props.session.user ? colours.success : colours.error;
-    let iosAdjust = Platform.OS == 'ios' ? 25 : 0;
     let iosRightAdjust = Platform.OS == 'ios' ? 25 : 10;
 
     return (
       <Container
         bgColour={colours.primary} style={[styles.center]}
-        onConnectionChange={(info, online) => this.connectionChange(online)}
+        onConnectionChange={(_info, online) => this.connectionChange(online)}
       >
         <Animated.View style={{opacity: state.opacity}}>
           <View style={[styles.row, {
             height: 35, alignItems: 'center', justifyContent: 'flex-end', 
-            marginRight: iosRightAdjust, marginTop: iosAdjust,
+            marginRight: iosRightAdjust
           }]}>
             <View style={[styles.aCenter, styles.row, {
               height: 35, marginLeft: 10, marginTop: 15, marginRight: 10,

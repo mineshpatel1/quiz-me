@@ -1,13 +1,7 @@
 const pg = require(__dirname + '/../api/pg.js');
 const utils = require(__dirname + '/../api/utils.js');
 
-exports.User = class User{
-  constructor(email, name=null) {
-      if (!email) throw new Error("User requires email address.");
-      this.email = email;
-      this.name = name;
-  }
-}
+const TOKEN_LIFE = (60 * 60 * 48);  // 48 Hours
 
 exports.get = (email, activated=true) => {
   let query = `SELECT * FROM users WHERE email = $1::text`;
@@ -27,8 +21,8 @@ exports.delete = (email) => {
   console.log('Deleting user ' + email + '...');
   return new Promise((resolve, reject) => {
     pg.query(`DELETE FROM users WHERE email = $1::text`, [email])
-    .then(resolve)
-    .catch(reject);
+      .then(resolve)
+      .catch(reject);
   })
 }
 
@@ -52,6 +46,31 @@ exports.auth = (email, password) => {
   });
 }
 
+exports.resetToken = email => {
+  return new Promise((resolve, reject) => {
+    exports.get(email, false)
+      .then(user => {
+        if (!user) return reject(new Error("No user found with email: " + email));
+        utils.getToken()
+          .then(token => {
+            let expiry_time = utils.now() + TOKEN_LIFE;
+            pg.query(
+              `UPDATE confirm_tokens SET
+                token = $1::text,
+                expiry_time = $2::bigint
+              WHERE email = $3::text;`,
+              [token, expiry_time, email],
+            ).then(() => {
+              console.log('Reset activation token for ' + email + '.');
+              return resolve([user, token, expiry_time]);
+            }).catch(reject);
+          })
+          .catch(reject);
+      })
+    .catch(reject);
+  });
+}
+
 exports.new = (user, password) => {
   console.log('Creating new user ' + user.email + '...');
   return new Promise((resolve, reject) => {
@@ -60,26 +79,55 @@ exports.new = (user, password) => {
       VALUES ($1::text, $2::text, EXTRACT(epoch FROM now()))`, 
       [user.email, user.name],
     ).then(() => {
-      console.log('Inserted User');
       pg.query(
         `INSERT INTO user_auth (email, password) 
         VALUES ($1::text, crypt($2::text, gen_salt('bf')))`,
         [user.email, password],
       ).then(() => {
-        console.log('Inserted Auth');
           utils.getToken()
-          .then(token => {
-            console.log('Got token', token);
-            // Insert token with a 48 hour expiry time
-            let expiry_time = Math.ceil(Date.now() / 1000) + (60 * 60 * 48);
+            .then(token => {
+              // Insert token with a 48 hour expiry time
+              let expiry_time = utils.now() + TOKEN_LIFE;
+              pg.query(
+                `INSERT INTO confirm_tokens (token, email, expiry_time) 
+                VALUES ($1::text, $2::text, $3::bigint)`,
+                [token, user.email, expiry_time],
+              ).then(() => {
+                console.log('Successfully created user: ' + user.email);
+                return resolve([token, expiry_time]);
+              }).catch(reject);
+            }).catch(reject);
+        }).catch(reject);
+      }).catch(reject);
+  });
+}
+
+exports.activate = (email, token) => {
+  console.log('Activating user ' + email + '...');
+  return new Promise((resolve, reject) => {
+    exports.get(email, false)
+      .then(user => {
+        if (!user) return reject(new Error("No user found with email: " + email));
+        if (user.is_activated) return reject(new Error("User already activated."));
+        
+        pg.query(
+          `SELECT expiry_time FROM confirm_tokens
+           WHERE email = $1::text AND token = $2::text`,
+          [user.email, token]
+        ).then(result => {
+          if (result.length == 0) return reject(new Error("Invalid activation token."));
+          let token = result[0];
+          if (token.expiry_time < utils.now()) return reject(new Error("Activation token has expired."));
+
+          pg.query(
+            `UPDATE users SET is_activated = TRUE WHERE id = $1::integer`,
+            [user.id],
+          ).then(() => {
             pg.query(
-              `INSERT INTO confirm_tokens (token, email, expiry_time) 
-              VALUES ($1::text, $2::text, $3::bigint)`,
-              [token, user.email, expiry_time],
+              `DELETE FROM confirm_tokens WHERE email = $1::text`, [user.email]
             ).then(() => {
-              console.log('Successfully created user: ' + user.email);
-              console.log('Completed', token, expiry_time);
-              return resolve(token, expiry_time);
+              console.log('Activated user ' + user.email);
+              resolve(user);
             }).catch(reject);
           }).catch(reject);
         }).catch(reject);

@@ -3,6 +3,7 @@ const ejs = require('ejs');
 const aws = require('aws-sdk');
 aws.config.loadFromPath(__dirname + '/../../.config/aws.json');
 
+const utils = require(__dirname + '/../api/utils.js');
 const templatePath = __dirname + '/../assets/emails';
 
 loadTemplate = (template, params={}) => {
@@ -17,7 +18,7 @@ loadTemplate = (template, params={}) => {
   });
 }
 
-exports.send = (to, subject, template, params) => {
+exports.send = async (to, subject, template, params) => {
   console.log('Sending mail to ' + to + '...');
 
   return new Promise((resolve, reject) => {
@@ -39,4 +40,12 @@ exports.send = (to, subject, template, params) => {
     })
     .catch(reject);
   });
+}
+
+exports.activate = async (user, token) => {
+  let name = user.name ? user.name : user.email;
+  return exports.send(
+    user.email, 'Activate QuizMe account', 'activate',
+    { user: name, token: token, url: utils.serverUrl() + '/activate/' }
+  ).then(() => console.log('Sent activation mail to ' + user.email));
 }

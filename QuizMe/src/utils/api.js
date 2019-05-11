@@ -85,6 +85,16 @@ class api {
   static async deleteUser() {
     return _delete('user');
   }
+
+  /** Activates a user account. */
+  static async activate(email, token) {
+    return _post('user/activate', { email, token });
+  }
+
+  /** Reset the activation token for the user and prompt an email. */
+  static async resetToken(email) {
+    return _post('user/resetToken', { email })
+  }
 }
 
 export default api;

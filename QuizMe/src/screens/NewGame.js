@@ -35,7 +35,7 @@ class NewGame extends Component {
   }
 }
 
-const mapStateToProps = (state) => { return {} };
+const mapStateToProps = (_state) => { return {} };
 const mapDispatchToProps = dispatch => (
   bindActionCreators({ newGame }, dispatch)
 );

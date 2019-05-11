@@ -36,7 +36,7 @@ app.get('/reset', (_req, res) => {
 });
 
 app.get('/session', (req, res) => {
-  if (req.unconfirmed && req.unconfirmed.expiry_time < (Date.now())) {
+  if (req.unconfirmed && req.unconfirmed.expiry_time < utils.now()) {
     req.session.unconfirmed = undefined;
   }
   return res.send({
@@ -51,19 +51,7 @@ app.get('/session/logout', (req, res, next) => {
 });
 
 app.get('/activate/:token', (req, res, _next) => {
-  console.log(req.session);
-  return res.send('Activate');
-  // res.redirect('quizme://quizme/activate/' + req.params.token);
-});
-
-app.get('/email', (_req, res, next) => {
-  email.send(
-    'nesh@lightyearfoundation.org', 'Activate QuizMe account', 'activate', 
-    { user: 'Chinnu', token: '12345678'}
-  ).then(data => {
-      console.log('Success', data);
-      return res.send("Email succeeded");
-    }).catch(next);
+  res.redirect('quizme://quizme/activate/' + req.params.token);
 });
 
 app.post('/user/register', (req, res, next) => {
@@ -71,7 +59,7 @@ app.post('/user/register', (req, res, next) => {
   if (!data.email) return next(new Error("Email is required."));
   if (!data.password) return next(new Error("Password is required."));
 
-  let newUser = new users.User(data.email, data.name);
+  let newUser = { email: data.email, name: data.name };
   users.get(data.email, false)
     .then(user => {
       if (user) {
@@ -80,38 +68,40 @@ app.post('/user/register', (req, res, next) => {
       }
       
       users.new(newUser, data.password)
-        .then((token, expiry_time) => {
+        .then(([token, expiry_time]) => {
           req.session.unconfirmed = { email: newUser.email, expiry_time: expiry_time };
-          let name = newUser.name ? newUser.name : newUser.email;
-          email.send(
-            newUser.email, 'Activate QuizMe account', 'activate',
-            { user: name, token: token, url: utils.serverUrl() + '/activate/' }
-          ).then(data => {
-            console.log('Sent confirmation mail to ' + newUser.email);
-            return res.send({ ok: true, unconfirmed: newUser.email });
-          }).catch(next);
+          email.activate(newUser, token)
+            .then(() => res.send({ ok: true, unconfirmed: newUser.email }))
+            .catch(next);
         })
     })
     .catch(next);
 });
 
-app.post('/user/new', (req, res, next) => {
+app.post('/user/activate', (req, res, next) => {
   let data = req.body;
+  if (!req.session.unconfirmed) return next(new Error("Session is not in an uncofirmed state."));
   if (!data.email) return next(new Error("Email is required."));
-  if (!data.password) return next(new Error("Password is required."));
+  if (!data.token) return next(new Error("Token is required."));
 
-  let newUser = new users.User(data.email, data.name);
-  users.get(data.email, false)
+  users.activate(data.email, data.token)
     .then(user => {
-      if (user) {
-        if (!user.is_activated) return next(new Error("Unconfirmed user with this email already exists."));
-        return next(new Error("User with this email already exists."));
-      };
-      users.new(newUser, data.password)
-        .then(() => {
-          req.session.user = newUser;
-          return res.send({ ok: true, user: newUser });
-        })
+      req.session.unconfirmed = null;
+      req.session.user = user;
+      res.send({ ok: true, user: user });
+    })
+    .catch(next);
+});
+
+app.post('/user/resetToken', (req, res, next) => {
+  let data = req.body;
+  if (!req.session.unconfirmed) return next(new Error("Session is not in an uncofirmed state."));
+  if (!data.email) return next(new Error("Email is required."));
+  users.resetToken(data.email)
+    .then(([user, token, expiry_time]) => {
+      req.session.unconfirmed = { email: user.email, expiry_time: expiry_time };
+      email.activate(user, token,)
+        .then(() => res.send({ ok: true, unconfirmed: user.email }))
         .catch(next);
     })
     .catch(next);

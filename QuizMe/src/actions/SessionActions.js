@@ -1,5 +1,10 @@
-import { SET_SESSION } from '../types';
+import { SET_SESSION, INIT_ACTIVATED } from '../types';
 import { api } from '../utils';
+
+export const initActivated = activated => ({
+  type: INIT_ACTIVATED,
+  activated: activated,
+});
 
 export const setSession = session => ({
   type: SET_SESSION,
@@ -9,9 +14,17 @@ export const setSession = session => ({
 
 export const checkSession = () => {
   return function(dispatch) {
-    api.checkSession()
-        .then(session => dispatch(setSession(session)))
-        .catch(_err => dispatch(setSession(null)));
+    return new Promise((resolve, reject) => {
+      api.checkSession()
+        .then(session => {
+          dispatch(setSession(session));
+          return resolve(session);
+        })
+        .catch(_err => {
+          dispatch(setSession(null));
+          return reject(_err);
+        });
+    });
   }
 }
 

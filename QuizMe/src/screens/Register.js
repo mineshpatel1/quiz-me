@@ -22,7 +22,7 @@ class Register extends Component {
       api.register(values)
         .then(res => {
           this.props.setSession(res);
-          this.showSuccess("Registered Successfully.")
+          this.showSuccess("Registered Successfully.");
         })
         .catch(err => this.showError(err))
     });
@@ -35,7 +35,7 @@ class Register extends Component {
 
   showSuccess(msg) {
     this.setState({ loading: false });
-    this.refs.success.show(msg, 1000);
+    this.refs.success.show(msg, 1500);
   }
 
   render() {

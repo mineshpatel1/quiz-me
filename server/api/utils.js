@@ -1,5 +1,10 @@
 const UIDGenerator = require('uid-generator');
 
+/** Returns the current time in UTC seconds. */
+exports.now = () => {
+  return Math.ceil(Date.now() / 1000);
+}
+
 /** Returns a short (10 Base36) UID token. */
 exports.getToken = async () => {
   let uidgen = new UIDGenerator(UIDGenerator.BASE36, 10);

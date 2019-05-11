@@ -47,9 +47,9 @@ export default class Form extends Component {
       return (
         <Input
           key={i} style={[{marginBottom: 15}]} icon={field.icon}
-          value={this.state.values[field.param]} type={field.type}
+          value={state.values[field.param]} type={field.type}
           validator={(val) => {
-            return field.validator(val, this.state.values);
+            return field.validator(val, state.values);
           }} label={field.label} secure={field.secure}
           onChange={(val, valid) => {this.update(field.param, val, valid)}}
           format={field.format}
@@ -61,7 +61,7 @@ export default class Form extends Component {
       return (
         <Picker
           key={i} style={[{marginBottom: 15}]} icon={field.icon}
-          value={this.state.values[field.param]} options={field.options}
+          value={state.values[field.param]} options={field.options}
           onChange={(val) => {this.update(field.param, val, true)}}
           format={field.format}
         />
@@ -79,7 +79,7 @@ export default class Form extends Component {
       }
       i += 1;
     }
-    let valid = Object.values(this.state.valid).every((x) => {return x});
+    let valid = Object.values(state.valid).every((x) => {return x});
 
     return (
       <View style={[styles.f1, {width: '100%'}]}>
