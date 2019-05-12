@@ -23,7 +23,7 @@ app.use(session({
   secret: global.config.session_secret,
   resave: false,
   saveUninitialized: false,
-  cookie : { httpOnly: true, maxAge: 30 * 24 * 60 * 60 * 1000 },  // 30 Days
+  cookie : { httpOnly: true, maxAge: 28 * 24 * 60 * 60 * 1000 },  // 28 Days
   unset: 'destroy',
 }));
 
@@ -31,16 +31,20 @@ app.get('/', (_req, res, next) => {
   res.send(utils.serverUrl())
 });
 
-app.get('/reset', (_req, res) => {
-  res.redirect('quizme://quizme/reset')
-});
-
 app.get('/session', (req, res) => {
   if (req.unconfirmed && req.unconfirmed.expiry_time < utils.now()) {
     req.session.unconfirmed = undefined;
   }
+
+  if (req.resetPassword && req.resetPassword.expiry_time < utils.now()) {
+    req.session.resetPassword  = undefined;
+  }
+
   return res.send({
-    ok: true, user: req.session.user, unconfirmed: req.session.unconfirmed,
+    ok: true,
+    user: req.session.user,
+    unconfirmed: req.session.unconfirmed,
+    resetPassword: req.session.resetPassword,
   });
 });
 
@@ -78,9 +82,23 @@ app.post('/user/register', (req, res, next) => {
     .catch(next);
 });
 
+app.post('/user/resetToken', (req, res, next) => {
+  let data = req.body;
+  if (!req.session.unconfirmed) return next(new Error("Session is not in an unconfirmed state."));
+  if (!data.email) return next(new Error("Email is required."));
+  users.resetActivationToken(data.email)
+    .then(([user, token, expiry_time]) => {
+      req.session.unconfirmed = { email: user.email, expiry_time: expiry_time };
+      email.activate(user, token)
+        .then(() => res.send({ ok: true, unconfirmed: user.email }))
+        .catch(next);
+    })
+    .catch(next);
+});
+
 app.post('/user/activate', (req, res, next) => {
   let data = req.body;
-  if (!req.session.unconfirmed) return next(new Error("Session is not in an uncofirmed state."));
+  if (!req.session.unconfirmed) return next(new Error("Session is not in an unconfirmed state."));
   if (!data.email) return next(new Error("Email is required."));
   if (!data.token) return next(new Error("Token is required."));
 
@@ -93,28 +111,31 @@ app.post('/user/activate', (req, res, next) => {
     .catch(next);
 });
 
-app.post('/user/resetToken', (req, res, next) => {
+app.post('/user/forgottenPassword', (req, res, next) => {
   let data = req.body;
-  if (!req.session.unconfirmed) return next(new Error("Session is not in an uncofirmed state."));
   if (!data.email) return next(new Error("Email is required."));
-  users.resetActivationToken(data.email)
+  users.forgottenPassword(data.email)
     .then(([user, token, expiry_time]) => {
-      req.session.unconfirmed = { email: user.email, expiry_time: expiry_time };
-      email.activate(user, token)
-        .then(() => res.send({ ok: true, unconfirmed: user.email }))
+      req.session.resetPassword = { email: user.email, expiry_time: expiry_time };
+      email.resetPassword(user, token)
+        .then(() => res.send({ ok: true, resetPassword: user.email }))
         .catch(next);
     })
     .catch(next);
 });
 
-app.post('/user/forgottenPassword', (req, res, next) => {
+app.post('/user/resetPassword', (req, res, next) => {
   let data = req.body;
+  if (!req.session.resetPassword) return next(new Error("Session is not in an password reset state."));
   if (!data.email) return next(new Error("Email is required."));
-  users.forgottenPassword(data.email)
-    .then(([user, token]) => {
-      email.resetPassword(user, token)
-      .then(() => res.send({ ok: true }))
-      .catch(next);
+  if (!data.password) return next(new Error("Password is required."));
+  if (!data.token) return next(new Error("Token is required."));
+
+  users.resetPassword(data.email, data.token, data.password)
+    .then(user => {
+      req.session.resetPassword = null;
+      req.session.user = user;
+      res.send({ ok: true, user: user });
     })
     .catch(next);
 });

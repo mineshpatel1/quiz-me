@@ -8,24 +8,13 @@ import { setSession } from '../actions/SessionActions';
 import { styles } from '../styles';
 import { validators, api } from '../utils';
 
-class Register extends Component {
+class ResetPassword extends Component {
   constructor(props) {
     super(props);
     this.state = { 
       loading: false,
       offline: false,
     };
-  }
-
-  post(values) {
-    this.setState({ loading: true }, () => {
-      api.register(values)
-        .then(res => {
-          this.props.setSession(res);
-          this.showSuccess("Registered Successfully.");
-        })
-        .catch(err => this.showError(err))
-    });
   }
 
   showError(err) {
@@ -38,19 +27,28 @@ class Register extends Component {
     this.refs.success.show(msg, 1500);
   }
 
+  post(values) {
+    console.log(this.props.session.resetPassword.email);
+    console.log(this.props.navigation.getParam('token'));
+    console.log(values.password);
+    api.resetPassword(
+      this.props.session.resetPassword.email,
+      this.props.navigation.getParam('token'),
+      values.password,
+    )
+    .then(res => {
+      this.props.setSession(res);
+      this.showSuccess('Reset password successfully.');
+    })
+    .catch(err => this.showError(err));
+  }
+
   render() {
-    let { state } = this;
+    let { props, state } = this;
+
     let fields = {
-      email: {
-        label: "Email",
-        icon: "envelope",
-        type: "string",
-        inputType: "text",
-        validator: (val) => {return val && validators.isEmail(val)},
-        format: (val) => { return val.toLowerCase() },
-      },
       password: {
-        label: "Password",
+        label: "New Password",
         icon: "lock",
         type: "string",
         inputType: "text",
@@ -71,35 +69,28 @@ class Register extends Component {
         secure: true,
         validator: (val, formVals) => {return val && val == formVals.password},
       },
-      name: {
-        label: "Nickname",
-        icon: "user",
-        type: "string",
-        inputType: "text",
-        validator: (val) => { return validators.isAlphaNumeric(val)},
-      },
     }
 
     return (
       <Container 
-        spinner={state.loading} header="Register"
+        spinner={state.loading} header="Reset Password"
         onConnectionChange={(_info, online) => {this.setState({ offline: !online, loading: false })}}
       >
         <View style={[styles.f1, styles.col, styles.aCenter]}>
           <Form 
             fields={fields}
-            onCancel={() => { this.props.navigation.goBack() }}
+            onCancel={() => { this.props.navigation.navigate('Home') }}
             onSuccess={values => {this.post(values)}}
             disabled={state.loading || state.offline}
           />
         </View>
         <SnackBar ref="error" error={true} onAction={() => {
-          this.setState({loading: false})
+          this.setState({loading: false});
         }} />
         <SnackBar 
           ref="success" success={true} 
-          onAction={() => this.props.navigation.navigate('Activate')}
-          onAutoHide={() => this.props.navigation.navigate('Activate')}
+          onAction={() => this.props.navigation.navigate('Home')}
+          onAutoHide={() => this.props.navigation.navigate('Home')}
         />
       </Container>
     )
@@ -118,4 +109,4 @@ const mapDispatchToProps = dispatch => (
   }, dispatch)
 );
 
-export default connect(mapStateToProps, mapDispatchToProps)(Register);
+export default connect(mapStateToProps, mapDispatchToProps)(ResetPassword);

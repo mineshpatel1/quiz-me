@@ -22,7 +22,7 @@ BEGIN
         WHERE
             NOT is_activated
             AND (now_utc() - created_time) > age
-        RETURNING *
+        RETURNING email
     ),
     _sessions AS (
         DElETE FROM sessions
@@ -43,8 +43,13 @@ BEGIN
 	_expired AS (
 		DELETE FROM forgotten_password_tokens
 		WHERE (now_utc() - expiry_time) > 0
-		RETURNING *
-	)
+		RETURNING email
+	),
+    _sessions AS (
+        DElETE FROM sessions
+        WHERE
+            sess -> 'forgottenPassword' ->> 'email' IN (SELECT email FROM _expired)
+    )
 	SELECT COUNT(*) INTO tokens FROM _expired;
 END;
 $$ LANGUAGE plpgsql;

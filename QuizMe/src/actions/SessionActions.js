@@ -1,15 +1,11 @@
-import { SET_SESSION, INIT_ACTIVATED } from '../types';
+import { SET_SESSION } from '../types';
 import { api } from '../utils';
-
-export const initActivated = activated => ({
-  type: INIT_ACTIVATED,
-  activated: activated,
-});
 
 export const setSession = session => ({
   type: SET_SESSION,
   user: session && session.user,
   unconfirmed: session && session.unconfirmed,
+  resetPassword: session && session.resetPassword,
 });
 
 export const checkSession = () => {

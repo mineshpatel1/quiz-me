@@ -29,18 +29,29 @@ class Home extends Component {
     Linking.removeEventListener('url', event => this.redirectUrl(event.url));
   }
 
+  checkSession(prop, callback) {
+    this.props.checkSession()
+      .then(session => {
+        if (session && !session.user && session[prop]) callback();
+      })
+      .catch(err => console.error(err));
+  }
+
+  // Handle deep links
   redirectUrl(url) {
-    // Handle deep link for activation via email
-    if (url && url.startsWith('quizme://quizme/activate')) {
-      console.log(url);
-        // this.props.checkSession()
-        // .then(session => {
-        //   if (!session.user && session.unconfirmed) {
-        //     this.props.navigation.navigate('Activate', { token: url.replace('quizme://quizme/activate/', '') });
-        //   }
-        // })
-        // .catch(err => console.error('Check Session from URL Redirect', err))
+    if (url && url.startsWith('quizme://quizme/')) {
+      url = url.replace('quizme://quizme/', '');
+
+      if (url.startsWith('activate')) {
+        this.checkSession('unconfirmed', () => {
+          this.props.navigation.navigate('Activate', { token: url.replace('activate/', '') });
+        });
+      } else if (url.startsWith('resetPassword')) { 
+        this.checkSession('resetPassword', () => {
+          this.props.navigation.navigate('ResetPassword', { token: url.replace('resetPassword/', '') });
+        });        
       }
+    }
   }
 
   connectionChange(online) {

@@ -1,19 +1,21 @@
-import { INIT_ACTIVATED, SET_SESSION } from '../types';
+import { SET_SESSION } from '../types';
+import utils from '../utils/utils';
 
 const INITIAL_STATE = {
   user: null,
   unconfirmed: null,
+  resetPassword: null,
 };
 
 const sessionReducer = (state = INITIAL_STATE, action) => {
-  let _user, _unconfirmed;
+  let _session;
   switch (action.type) {
-    case INIT_ACTIVATED:
-      return { user: state.user, unconfirmed: state.unconfirmed, activated: action.activated };
     case SET_SESSION:
-      _user = action.user === undefined ? state.user : action.user;
-      _unconfirmed = action.unconfirmed === undefined ? state.unconfirmed : action.unconfirmed;
-      return { user: _user, unconfirmed: _unconfirmed };
+      _session = {};
+      Object.keys(state).forEach(prop => {
+        _session[prop] = action[prop] === undefined ? state[prop] : action[prop];
+      });
+      return _session;
     default:
       return state;
   }

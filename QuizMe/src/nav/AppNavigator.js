@@ -1,16 +1,18 @@
 import { Animated, Easing } from 'react-native';
 import { createStackNavigator } from 'react-navigation';
 
-import Home from '../screens/Home';
-import NewGame from '../screens/NewGame';
+import Activate from '../screens/Activate';
 import Game from '../screens/Game';
 import GameSettings from '../screens/GameSettings';
-import Settings from '../screens/Settings';
-import Questions from '../screens/Questions';
 import GameSummary from '../screens/GameSummary';
+import Home from '../screens/Home';
+import NewGame from '../screens/NewGame';
+import Questions from '../screens/Questions';
 import Register from '../screens/Register';
-import Activate from '../screens/Activate';
+import ResetPassword from '../screens/ResetPassword';
+import Settings from '../screens/Settings';
 import SignIn from '../screens/SignIn';
+
 import { animationDuration } from '../config';
 
 const slideFromRight = () => {
@@ -51,19 +53,20 @@ const slideFromRight = () => {
 }
 
 const AppNavigator = createStackNavigator({
-  Home: { screen: Home },
-  NewGame: { screen: NewGame },
+  Activate: { screen: Activate },
   Game: { screen: Game },
   GameSettings: { screen: GameSettings },
-  Settings: { screen: Settings },
-  Questions: { screen: Questions },
   GameSummary: { screen: GameSummary },
+  Home: { screen: Home },
+  NewGame: { screen: NewGame },
+  Questions: { screen: Questions },
   Register: { screen: Register },
-  Activate: {screen: Activate },
+  ResetPassword: { screen: ResetPassword },
+  Settings: { screen: Settings },
   SignIn: { screen: SignIn },
 },
 {
-  initialRouteName: "SignIn",
+  initialRouteName: "Home",
   transitionConfig: (nav) => slideFromRight(nav),
   defaultNavigationOptions: {
     header: null,

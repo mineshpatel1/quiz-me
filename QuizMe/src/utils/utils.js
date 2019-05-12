@@ -120,6 +120,11 @@ class utils {
   /** Clones an instance of a class. */
   static clone = _clone;
 
+  /** Updates an old object with a new one, returning a completely new Object. */
+  static update = (prev, next) => {
+    return Object.assign({}, prev, next);
+  }
+
   /** Sorts an array of objects by the value of a specific key. */
   static sortByKey = (_array, _key, asc=true) => {
     let new_array = [];

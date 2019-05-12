@@ -61,7 +61,7 @@ class api {
   static async checkSession() {
     return _get('session')
       .then(res => {
-        if (!res.user && !res.unconfirmed) return null;
+        if (!res.user && !res.unconfirmed && !res.resetPassword) return null;
         else return res;
       });
   }
@@ -99,6 +99,11 @@ class api {
   /** Sends a password reset token to the user. */
   static async forgottenPassword(email) {
     return _post('user/forgottenPassword', { email });
+  }
+
+  /** Resets a user's password. */
+  static async resetPassword(email, token, password) {
+    return _post('user/resetPassword', { email, token, password });
   }
 }
 

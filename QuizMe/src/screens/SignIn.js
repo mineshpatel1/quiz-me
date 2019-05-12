@@ -30,7 +30,8 @@ class SignIn extends Component {
   signIn(values) {
     this.setState({ loading: true }, () => {
       api.signIn(values)
-        .then(() => {
+        .then(res => {
+          this.props.setSession(res);
           this.setState({ loading: false });
           this.props.navigation.navigate('Home');
         })

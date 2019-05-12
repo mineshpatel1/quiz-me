@@ -90,9 +90,37 @@ exports.forgottenPassword = email => {
               [user.email, token, expiry_time],
             ).then(() => {
               console.log('Sent password reset link to ' + email + '.');
-              return resolve([user, token]);
+              return resolve([user, token, expiry_time]);
             }).catch(reject);
           }).catch(reject);
+      }).catch(reject);
+  });
+}
+
+exports.resetPassword = (email, token, password) => {
+  return new Promise((resolve, reject) => {
+    exports.get(email)
+      .then(user => {
+        if (!user) return reject(new Error("No user found with email: " + email));
+        pg.query(
+          `SELECT token FROM forgotten_password_tokens 
+          WHERE email = $1::text AND token = $2::text AND expiry_time > now_utc()`,
+          [email, token]
+        ).then(result => {
+          if (result.length == 0) return reject(new Error("Invalid reset token."));
+          pg.query(
+            `UPDATE user_auth SET password = crypt($1::text, gen_salt('bf'))
+            WHERE email = $2::text`,
+            [password, email]
+          ).then(() => {
+            pg.query(
+              `DELETE FROM forgotten_password_tokens WHERE email = $1::text`, [user.email]
+            ).then(() => {
+              console.log('Password reset for ' + email + '.');
+              resolve(user);
+            }).catch(reject);
+          }).catch(reject);
+        }).catch(reject);
       }).catch(reject);
   });
 }
@@ -138,13 +166,10 @@ exports.activate = (email, token) => {
         
         pg.query(
           `SELECT expiry_time FROM confirm_tokens
-           WHERE email = $1::text AND token = $2::text`,
+           WHERE email = $1::text AND token = $2::text AND expiry_time > now_utc()`,
           [user.email, token]
         ).then(result => {
           if (result.length == 0) return reject(new Error("Invalid activation token."));
-          let token = result[0];
-          if (token.expiry_time < utils.now()) return reject(new Error("Activation token has expired."));
-
           pg.query(
             `UPDATE users SET is_activated = TRUE WHERE id = $1::integer`,
             [user.id],
@@ -152,7 +177,7 @@ exports.activate = (email, token) => {
             pg.query(
               `DELETE FROM confirm_tokens WHERE email = $1::text`, [user.email]
             ).then(() => {
-              console.log('Activated user ' + user.email);
+              console.log('Activated user ' + user.email + '.');
               resolve(user);
             }).catch(reject);
           }).catch(reject);
