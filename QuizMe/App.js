@@ -20,7 +20,7 @@ import reducers from './src/reducers/index';
 import { Text } from './src/components/Core';
 import { styles, colours } from './src/styles';
 import { utils } from './src/utils';
-import { initGameSettings } from './src/actions/SettingActions';
+import { initGameSettings, initUserSettings } from './src/actions/SettingActions';
 
 library.add(
   faAnkh, faArrowLeft, faAtom, faBook, faBookOpen, faBrain, faCaretDown, faChartPie,
@@ -56,6 +56,7 @@ export default class App extends Component {
 
   async componentDidMount() {
     await this.retrieveItem('gameSettings', initGameSettings);
+    await this.retrieveItem('userSettings', initUserSettings);
     utils.animate(this.state.opacity, 0, null, () => {
       this.setState({ isReady: true });
     });

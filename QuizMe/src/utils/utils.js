@@ -15,6 +15,10 @@ const _clone = (_orig) => {
 class utils {
   constructor() {}
 
+  static now = () => {
+    return Math.ceil(Date.now() / 1000);
+  }
+
   /**
   Gets the index of an object array based on the value of a given key
   */

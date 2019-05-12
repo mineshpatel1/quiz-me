@@ -1,3 +1,4 @@
+const crypto = require('crypto');
 const pg = require(__dirname + '/../api/pg.js');
 const utils = require(__dirname + '/../api/utils.js');
 
@@ -229,7 +230,7 @@ exports.enableFingerprint = (id, publicKey) => {
   })
 }
 
-exports.disableFingerprint = (id) => {
+exports.disableFingerprint = id => {
   return new Promise((resolve, reject) => {
     exports.get(id)
       .then(user => {
@@ -243,4 +244,23 @@ exports.disableFingerprint = (id) => {
         }).catch(reject);
       }).catch(reject);
   })
+}
+
+exports.verifyFingerprint = (id, signature, payload) => {
+  return new Promise((resolve, reject) => {
+    pg.query(
+      `SELECT fingerprint_key FROM users WHERE id = $1::integer`, [id]
+    ).then(result => {
+      if (result.length == 0) reject(new Error("No fingerprint data found for user " + id));
+      if (!result[0].fingerprint_key) reject(new Error("No fingerprint data found for user " + id));
+
+      let publicKey = '-----BEGIN PUBLIC KEY-----\n' + result[0].fingerprint_key + '\n-----END PUBLIC KEY-----';
+      let verifier = crypto.createVerify('RSA-SHA256');
+      verifier.update(payload);
+      var publicKeyBuf = new Buffer.from(publicKey, 'ascii');
+      var signatureBuf = new Buffer.from(signature, 'base64');
+      if (verifier.verify(publicKeyBuf, signatureBuf)) return resolve();  // True if verified
+      return reject(new Error("Could not verify identify with fingerprint"));
+    })
+  });
 }

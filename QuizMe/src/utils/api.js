@@ -122,6 +122,10 @@ class api {
   static async disableFingerprint(publicKey) {
     return _post('user/disableFingerprint', { publicKey });
   }
+
+  static async verifyFingerprint(payload, signature) {
+    return _post('user/auth/fingerprint', { payload, signature });
+  }
 }
 
 export default api;

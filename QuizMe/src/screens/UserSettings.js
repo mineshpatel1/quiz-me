@@ -4,9 +4,9 @@ import { bindActionCreators } from 'redux';
 import Biometrics from 'react-native-biometrics';
 
 import { setSession, deleteAccount } from '../actions/SessionActions';
+import { saveUserSettings } from '../actions/SettingActions';
 import { Container, Menu, ConfirmModal, SnackBar } from '../components/Core';
 import { api } from '../utils';
-import utils from '../utils/utils';
 
 class Settings extends Component {
   constructor(props) {
@@ -44,7 +44,7 @@ class Settings extends Component {
         api.enableFingerprint(publicKey)
           .then(res => { 
             this.props.setSession(res);
-            utils.persistStore('fingerprintEnabled', true);
+            this.props.saveUserSettings({ fingerprint: this.props.session.user.id });
             this.showSuccess("Registered fingerprint.");
           })
           .catch(err => this.showError(err));
@@ -59,7 +59,7 @@ class Settings extends Component {
         api.disableFingerprint()
           .then(res => {
             this.props.setSession(res);
-            utils.persistStore('fingerprintEnabled', false);
+            this.props.saveUserSettings({ fingerprint: null });
             this.showSuccess("Disabled fingerprint.");
           })
           .catch(err => this.showError(err));
@@ -117,12 +117,15 @@ class Settings extends Component {
 }
 
 const mapStateToProps = (state) => {
-  return { session: state.session }
+  return { 
+    session: state.session,
+    settings: state.settings.user,
+  }
 };
 
 const mapDispatchToProps = dispatch => (
   bindActionCreators({
-    setSession, deleteAccount
+    setSession, deleteAccount, saveUserSettings
   }, dispatch)
 );
 

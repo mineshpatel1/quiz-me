@@ -3,11 +3,12 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { View } from 'react-native';
 import launchMailApp from "react-native-mail-launcher";
+import Biometrics from 'react-native-biometrics';
 
-import { Container, Text, Button, Form, SnackBar } from '../components/Core';
+import { Container, Text, Button, Form, SnackBar, Icon } from '../components/Core';
 import { setSession } from '../actions/SessionActions';
 import { styles } from '../styles';
-import { api, validators } from '../utils';
+import { utils, api, validators } from '../utils';
 
 class SignIn extends Component {
   constructor(props) {
@@ -52,6 +53,23 @@ class SignIn extends Component {
     });
   }
 
+  verifyFingerprint() {
+    let payload = { id: this.props.fingerprint, timestamp: utils.now(), random: Math.random() };
+    Biometrics.createSignature('Verify fingerprint', JSON.stringify(payload))
+        .then(signature => {
+          this.setState({ loading: true }, () => {
+            api.verifyFingerprint(payload, signature)
+              .then(res => {
+                this.props.setSession(res);
+                this.setState({ loading: false });
+                this.props.navigation.navigate('Home');
+              })
+              .catch(err => this.showError(err));
+          });
+        })
+        .catch(err => this.showError(err));
+  }
+
   render() {
     let { props, state } = this;
 
@@ -77,6 +95,8 @@ class SignIn extends Component {
       },
     }
 
+    console.log(props.fingerprint);
+
     return (
       <Container
         spinner={state.loading} header={'Sign In'}
@@ -89,6 +109,15 @@ class SignIn extends Component {
             }} />
             <Text display={true} style={styles.mt15}> Or </Text>
           </View>
+          {
+            props.fingerprint &&
+            <View style={[styles.center, styles.mt15]}>
+              <Button label="Use Fingerprint" icon="fingerprint" onPress={() => { 
+                this.verifyFingerprint();
+              }} />
+              <Text display={true} style={styles.mt15}> Or </Text>
+            </View>
+          }
           <Form
             fields={fields} width={200} successIcon={'sign-in-alt'}
             onSuccess={values => {this.signIn(values)}} ref={'form'}
@@ -118,6 +147,7 @@ class SignIn extends Component {
 const mapStateToProps = (state) => {
   return {
     session: state.session,
+    fingerprint: state.settings.user.fingerprint,
   }
 };
 

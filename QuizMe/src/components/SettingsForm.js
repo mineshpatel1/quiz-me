@@ -30,7 +30,7 @@ class SettingsForm extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    settings: state.settings.settings,
+    settings: state.settings.game,
   }
 };
 
