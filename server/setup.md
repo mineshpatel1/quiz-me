@@ -91,8 +91,9 @@ npm install
 
 ## Create tables in PostgreSQL
 
-Run `schema/tables.sql` using a client, or using the command line:
+Run SQL files in `schema` using a client, or using the command line:
 
 ```bash
 psql quizme < schema/tables.sql
+psql quizme < schema/functions.sql
 ```

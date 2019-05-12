@@ -8,6 +8,7 @@ const utils = require(__dirname + '/api/utils.js');
 const email = require(__dirname + '/api/email.js');
 const pg = require(__dirname + '/api/pg.js');
 const users = require(__dirname + '/models/users.js');
+const cron = require(__dirname + '/api/cron.js');
 
 const app = express();
 app.use(bodyParser.json());
