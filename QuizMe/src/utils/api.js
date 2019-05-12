@@ -57,6 +57,10 @@ const _delete = async (path) => {
 class api {
   constructor() {}
 
+  static async get(path) { return _get(path) }
+  static async post(path, data) { return _post(path, data) }
+  static async delete(path) { return _delete(path) }
+
   /** Checks if a user already has an active session. */
   static async checkSession() {
     return _get('session')
@@ -107,8 +111,16 @@ class api {
   }
 
   /** Changes a user's password. */
-  static async changePassword(email, password) {
-    return _post('user/changePassword', { email, password });
+  static async changePassword(password) {
+    return _post('user/changePassword', { password });
+  }
+
+  static async enableFingerprint(publicKey) {
+    return _post('user/enableFingerprint', { publicKey });
+  }
+
+  static async disableFingerprint(publicKey) {
+    return _post('user/disableFingerprint', { publicKey });
   }
 }
 

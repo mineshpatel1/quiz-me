@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { signOut, deleteAccount } from '../actions/SessionActions';
-import { Container, Menu, ConfirmModal } from '../components/Core';
+import { signOut } from '../actions/SessionActions';
+import { Container, Menu } from '../components/Core';
 
 class Settings extends Component {
   constructor(props) {

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { Form } from '../components/Core';
-import { saveSettings } from '../actions/SettingActions';
+import { saveGameSettings } from '../actions/SettingActions';
 import { defaultSettings } from '../config';
 
 class SettingsForm extends Component {
@@ -20,7 +20,7 @@ class SettingsForm extends Component {
         fields={defaultSettings} values={props.settings} 
         onCancel={props.onCancel}
         onSuccess={(values) => {
-          if (props.save) props.saveSettings(values);
+          if (props.save) props.saveGameSettings(values);
           if (props.onSave) props.onSave(values);
         }}
       />
@@ -36,7 +36,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = dispatch => (
   bindActionCreators({
-    saveSettings,
+    saveGameSettings,
   }, dispatch)
 );
 

@@ -1,11 +1,11 @@
-import { INIT_SETTINGS, SAVE_SETTINGS } from '../types';
+import { INIT_GAME_SETTINGS, SAVE_GAME_SETTINGS } from '../types';
 
-export const initSettings = settings => ({
-  type: INIT_SETTINGS,
+export const initGameSettings = settings => ({
+  type: INIT_GAME_SETTINGS,
   settings: settings,
 });
 
-export const saveSettings = settings => ({
-  type: SAVE_SETTINGS,
+export const saveGameSettings = settings => ({
+  type: SAVE_GAME_SETTINGS,
   settings: settings,
-})
+});

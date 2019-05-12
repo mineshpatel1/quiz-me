@@ -4,17 +4,39 @@ const utils = require(__dirname + '/../api/utils.js');
 const ACTIVATION_TOKEN_LIFE = (60 * 60 * 48);  // 48 Hours
 const PASSWORD_TOKEN_LIFE = (60 * 60); // 1 Hour
 
-exports.get = (email, activated=true) => {
+class User {
+  constructor(row) {
+    this.id = row.id;
+    this.email = row.email;
+    this.name = row.name;
+    this.is_activated = row.is_activated;
+    this.fingerprint_enabled = row.fingerprint_key ? true: false;
+  }
+}
+
+exports.get = id => {
+  return new Promise((resolve, reject) => {
+    pg.query(`SELECT * FROM users WHERE id = $1::integer AND is_activated`, [id])
+      .then(result => {
+        if (result.length == 0) return resolve(null);
+        if (result.length > 1) return reject(new Error("More than 1 user found for a single ID."));
+        return resolve(new User(result[0]));
+      })
+      .catch(reject);
+  });
+}
+
+exports.getFromEmail = (email, activated=true) => {
   let query = `SELECT * FROM users WHERE email = $1::text`;
   if (activated) query += ' AND is_activated';
   return new Promise((resolve, reject) => {
     pg.query(query, [email])
-    .then(result => {
-      if (result.length == 0) return resolve(null);
-      if (result.length > 1) return reject(new Error("More than 1 user found for a single email."));
-      return resolve(result[0]);
-    })
-    .catch(reject);
+      .then(result => {
+        if (result.length == 0) return resolve(null);
+        if (result.length > 1) return reject(new Error("More than 1 user found for a single email."));
+        return resolve(new User(result[0]));
+      })
+      .catch(reject);
   });
 }
 
@@ -49,7 +71,7 @@ exports.auth = (email, password) => {
 
 exports.resetActivationToken = email => {
   return new Promise((resolve, reject) => {
-    exports.get(email, false)
+    exports.getFromEmail(email, false)
       .then(user => {
         if (!user) return reject(new Error("No user found with email: " + email));
         utils.getToken()
@@ -74,7 +96,7 @@ exports.resetActivationToken = email => {
 
 exports.forgottenPassword = email => {
   return new Promise((resolve, reject) => {
-    exports.get(email)
+    exports.getFromEmail(email)
       .then(user => {
         if (!user) return reject(new Error("No user found with email: " + email));
         utils.getToken()
@@ -98,16 +120,16 @@ exports.forgottenPassword = email => {
 }
 
 exports.changePassword = (email, password) => {
-  return  pg.query(
+  return pg.query(
     `UPDATE user_auth SET password = crypt($1::text, gen_salt('bf'))
     WHERE email = $2::text`,
     [password, email]
-  )
+  );
 }
 
 exports.resetPassword = (email, token, password) => {
   return new Promise((resolve, reject) => {
-    exports.get(email)
+    exports.getFromEmail(email)
       .then(user => {
         if (!user) return reject(new Error("No user found with email: " + email));
         pg.query(
@@ -163,7 +185,7 @@ exports.new = (user, password) => {
 exports.activate = (email, token) => {
   console.log('Activating user ' + email + '...');
   return new Promise((resolve, reject) => {
-    exports.get(email, false)
+    exports.getFromEmail(email, false)
       .then(user => {
         if (!user) return reject(new Error("No user found with email: " + email));
         if (user.is_activated) return reject(new Error("User already activated."));
@@ -182,10 +204,43 @@ exports.activate = (email, token) => {
               `DELETE FROM confirm_tokens WHERE email = $1::text`, [user.email]
             ).then(() => {
               console.log('Activated user ' + user.email + '.');
-              resolve(user);
+              user.is_activated = true;
+              return resolve(user);
             }).catch(reject);
           }).catch(reject);
         }).catch(reject);
       }).catch(reject);
   });
+}
+
+exports.enableFingerprint = (id, publicKey) => {
+  return new Promise((resolve, reject) => {
+    exports.get(id)
+      .then(user => {
+        pg.query(
+          `UPDATE users SET fingerprint_key = $1::text WHERE id = $2::integer`,
+          [publicKey, user.id]
+        ).then(() => {
+          user.fingerprint_enabled = true;
+          console.log('Enabled fingerprint for user ' + id + '.');
+          return resolve(user);
+        }).catch(reject);
+      }).catch(reject);
+  })
+}
+
+exports.disableFingerprint = (id) => {
+  return new Promise((resolve, reject) => {
+    exports.get(id)
+      .then(user => {
+        pg.query(
+          `UPDATE users SET fingerprint_key = NULL WHERE id = $1::integer`,
+          [user.id]
+        ).then(() => {
+          user.fingerprint_enabled = false;
+          console.log('Disabled fingerprint for user ' + id + '.');
+          return resolve(user);
+        }).catch(reject);
+      }).catch(reject);
+  })
 }

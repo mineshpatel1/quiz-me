@@ -64,7 +64,7 @@ app.post('/user/register', (req, res, next) => {
   if (!data.password) return next(new Error("Password is required."));
 
   let newUser = { email: data.email, name: data.name };
-  users.get(data.email, false)
+  users.getFromEmail(data.email, false)
     .then(user => {
       if (user) {
         if (!user.is_activated) return next(new Error("Unconfirmed user with this email already exists."));
@@ -114,10 +114,9 @@ app.post('/user/activate', (req, res, next) => {
 app.post('/user/changePassword', (req, res, next) => {
   let data = req.body;
   if (!req.session.user) return next(new Error("Session is not active."));
-  if (!data.email) return next(new Error("Email is required."));
   if (!data.password) return next(new Error("Password is required."));
 
-  users.changePassword(data.email, data.password)
+  users.changePassword(req.session.user.email, data.password)
     .then(() => res.send({ ok: true }))
     .catch(next);
 });
@@ -131,6 +130,29 @@ app.post('/user/forgottenPassword', (req, res, next) => {
       email.resetPassword(user, token)
         .then(() => res.send({ ok: true, resetPassword: user.email }))
         .catch(next);
+    })
+    .catch(next);
+});
+
+app.post('/user/enableFingerprint', (req, res, next) => {
+  let data = req.body;
+  if (!req.session.user) return next(new Error("Session is not active."));
+  if (!data.publicKey) return next(new Error("Public Key is required."));
+  users.enableFingerprint(req.session.user.id, data.publicKey)
+    .then(user => {
+      req.session.user = user;
+      return res.send({ ok: true, user: user });
+    })
+    .catch(next);
+});
+
+app.post('/user/disableFingerprint', (req, res, next) => {
+  let data = req.body;
+  if (!req.session.user) return next(new Error("Session is not active."));
+  users.disableFingerprint(req.session.user.id)
+    .then(user => {
+      req.session.user = user;
+      return res.send({ ok: true, user: user });
     })
     .catch(next);
 });
@@ -169,7 +191,7 @@ app.post('/user/auth', (req, res, next) => {
   if (!data.email) return next(new Error("Email is required."));
   if (!data.password) return next(new Error("Password is required."));
 
-  users.get(data.email)
+  users.getFromEmail(data.email)
     .then(user => {
       if (!user) return next(new Error("No user with email " + data.email + " exists."));
       users.auth(data.email, data.password)

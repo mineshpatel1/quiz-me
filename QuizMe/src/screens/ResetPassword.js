@@ -40,12 +40,9 @@ class ResetPassword extends Component {
       })
       .catch(err => this.showError(err));
     } else if (this.props.session.user) {
-      api.changePassword(
-        this.props.session.user.email,
-        values.password,
-      )
-      .then(() => this.showSuccess('Changed password successfully.'))
-      .catch(err => this.showError(err));
+      api.changePassword(values.password)
+        .then(() => this.showSuccess('Changed password successfully.'))
+        .catch(err => this.showError(err));
     }
   }
 

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Animated, View, Linking } from 'react-native';
+import { Animated, View } from 'react-native';
 import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
@@ -8,10 +8,10 @@ import AsyncStorage from '@react-native-community/async-storage';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import {
   faAnkh, faArrowLeft, faAtom, faBook, faBookOpen, faBrain, faCaretDown, faChartPie,
-  faCheck, faChevronLeft, faChevronRight, faClock, faCog, faEnvelope, faFilm, faFutbol,
-  faGlobeAmericas, faHome, faHashtag, faHourglassHalf, faLandmark, faLink, faLock, faMusic, 
-  faPaw, faPlay, faQuestion, faQuoteRight, faSignInAlt, faSignOutAlt, faTh, faTimes, faTv,
-  faUser, faUserFriends, faUserPlus,
+  faCheck, faChevronLeft, faChevronRight, faClock, faCog, faEnvelope, faFilm, faFingerprint, 
+  faFutbol, faGlobeAmericas, faHome, faHashtag, faHourglassHalf, faLandmark, faLink, faLock, 
+  faMusic,  faPaw, faPlay, faQuestion, faQuoteRight, faSignInAlt, faSignOutAlt, faTh, faTimes, 
+  faTv, faUser, faUserFriends, faUserPlus,
 } from '@fortawesome/free-solid-svg-icons';
 
 import AppNavigator from './src/nav/AppNavigator';
@@ -20,15 +20,14 @@ import reducers from './src/reducers/index';
 import { Text } from './src/components/Core';
 import { styles, colours } from './src/styles';
 import { utils } from './src/utils';
-import { initSettings } from './src/actions/SettingActions';
-import { initActivated } from './src/actions/SessionActions';
+import { initGameSettings } from './src/actions/SettingActions';
 
 library.add(
   faAnkh, faArrowLeft, faAtom, faBook, faBookOpen, faBrain, faCaretDown, faChartPie,
-  faCheck, faChevronLeft, faChevronRight, faClock, faCog, faEnvelope, faFilm, faFutbol,
-  faGlobeAmericas, faHome, faHashtag, faHourglassHalf, faLandmark, faLink, faLock, faMusic, 
-  faPaw, faPlay, faQuestion, faQuoteRight, faSignInAlt, faSignOutAlt, faTh, faTimes, faTv,
-  faUser, faUserFriends, faUserPlus,
+  faCheck, faChevronLeft, faChevronRight, faClock, faCog, faEnvelope, faFilm, faFingerprint, 
+  faFutbol, faGlobeAmericas, faHome, faHashtag, faHourglassHalf, faLandmark, faLink, faLock, 
+  faMusic,  faPaw, faPlay, faQuestion, faQuoteRight, faSignInAlt, faSignOutAlt, faTh, faTimes, 
+  faTv, faUser, faUserFriends, faUserPlus,
 );
 
 const AppContainer = createAppContainer(AppNavigator);
@@ -56,8 +55,7 @@ export default class App extends Component {
   }
 
   async componentDidMount() {
-    await this.retrieveItem('settings', initSettings);
-    await this.retrieveItem('activated', initActivated);
+    await this.retrieveItem('gameSettings', initGameSettings);
     utils.animate(this.state.opacity, 0, null, () => {
       this.setState({ isReady: true });
     });

@@ -1,4 +1,4 @@
-import { INIT_SETTINGS, SAVE_SETTINGS } from '../types';
+import { INIT_GAME_SETTINGS, SAVE_GAME_SETTINGS } from '../types';
 import { defaultSettings } from '../config';
 import { utils } from '../utils';
 
@@ -9,7 +9,7 @@ const INITIAL_STATE = {
 const settingsReducer = (state = INITIAL_STATE, action) => {
   let _settings = {};
   switch (action.type) {
-    case INIT_SETTINGS:
+    case INIT_GAME_SETTINGS:
       for (param in defaultSettings) {
         _settings[param] = defaultSettings[param].default;
       }
@@ -19,7 +19,7 @@ const settingsReducer = (state = INITIAL_STATE, action) => {
         }
       }
       return { settings: _settings };
-    case SAVE_SETTINGS:
+    case SAVE_GAME_SETTINGS:
       for (param in defaultSettings) {
         if (action.settings.hasOwnProperty(param)) {
           _settings[param] = utils.parseValue(action.settings[param], defaultSettings[param].type);
@@ -27,7 +27,7 @@ const settingsReducer = (state = INITIAL_STATE, action) => {
           _settings[param] = defaultSettings[param];
         }
       }
-      utils.persistStore('settings', _settings);
+      utils.persistStore('gameSettings', _settings);
       return { settings: action.settings };
     default:
       return state;

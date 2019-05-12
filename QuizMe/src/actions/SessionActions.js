@@ -37,8 +37,13 @@ export const signOut = () => {
 
 export const deleteAccount = () => {
   return function(dispatch) {
-    api.deleteUser()
-      .then(() => dispatch(setSession(null)))
-      .catch(err => console.error(err))
+    return new Promise((resolve, reject) => {
+      api.deleteUser()
+        .then(() => {
+          dispatch(setSession(null));
+          return resolve();
+        })
+        .catch(reject);
+    });
   }
 }

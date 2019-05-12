@@ -20,6 +20,7 @@ CREATE TABLE IF NOT EXISTS users (
     email VARCHAR NOT NULL UNIQUE,
     name VARCHAR,
     is_activated BOOLEAN DEFAULT FALSE,
+    fingerprint_key VARCHAR,
     created_time BIGINT
 );
 CREATE INDEX users_id_idx ON users (id);
@@ -34,7 +35,7 @@ CREATE INDEX user_auth_email_idx ON user_auth (email);
 
 -- Email Confirmation Tokens
 CREATE TABLE IF NOT EXISTS confirm_tokens (
-    token VARCHAR PRIMARY KEY,
+    token VARCHAR(10) PRIMARY KEY,
     email VARCHAR NOT NULL UNIQUE REFERENCES users(email) ON UPDATE RESTRICT ON DELETE CASCADE,
     expiry_time BIGINT NOT NULL
 );
@@ -43,7 +44,7 @@ CREATE INDEX confirm_tokens_email_idx ON confirm_tokens (email);
 -- Forgotten Password Tokens
 CREATE TABLE IF NOT EXISTS forgotten_password_tokens (
     email VARCHAR PRIMARY KEY REFERENCES users(email) ON UPDATE RESTRICT ON DELETE CASCADE,
-    token VARCHAR NOT NULL UNIQUE,
+    token VARCHAR(10) NOT NULL UNIQUE,
     expiry_time BIGINT NOT NULL
 );
 CREATE INDEX forgotten_password_tokens_email_idx ON forgotten_password_tokens (email);
