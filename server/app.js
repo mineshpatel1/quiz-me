@@ -111,6 +111,17 @@ app.post('/user/activate', (req, res, next) => {
     .catch(next);
 });
 
+app.post('/user/changePassword', (req, res, next) => {
+  let data = req.body;
+  if (!req.session.user) return next(new Error("Session is not active."));
+  if (!data.email) return next(new Error("Email is required."));
+  if (!data.password) return next(new Error("Password is required."));
+
+  users.changePassword(data.email, data.password)
+    .then(() => res.send({ ok: true }))
+    .catch(next);
+});
+
 app.post('/user/forgottenPassword', (req, res, next) => {
   let data = req.body;
   if (!data.email) return next(new Error("Email is required."));

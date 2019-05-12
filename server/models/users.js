@@ -97,6 +97,14 @@ exports.forgottenPassword = email => {
   });
 }
 
+exports.changePassword = (email, password) => {
+  return  pg.query(
+    `UPDATE user_auth SET password = crypt($1::text, gen_salt('bf'))
+    WHERE email = $2::text`,
+    [password, email]
+  )
+}
+
 exports.resetPassword = (email, token, password) => {
   return new Promise((resolve, reject) => {
     exports.get(email)
@@ -108,11 +116,7 @@ exports.resetPassword = (email, token, password) => {
           [email, token]
         ).then(result => {
           if (result.length == 0) return reject(new Error("Invalid reset token."));
-          pg.query(
-            `UPDATE user_auth SET password = crypt($1::text, gen_salt('bf'))
-            WHERE email = $2::text`,
-            [password, email]
-          ).then(() => {
+          exports.changePassword(email, password).then(() => {
             pg.query(
               `DELETE FROM forgotten_password_tokens WHERE email = $1::text`, [user.email]
             ).then(() => {

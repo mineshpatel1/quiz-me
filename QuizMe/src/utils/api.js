@@ -105,6 +105,11 @@ class api {
   static async resetPassword(email, token, password) {
     return _post('user/resetPassword', { email, token, password });
   }
+
+  /** Changes a user's password. */
+  static async changePassword(email, password) {
+    return _post('user/changePassword', { email, password });
+  }
 }
 
 export default api;

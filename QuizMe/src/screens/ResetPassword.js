@@ -28,19 +28,25 @@ class ResetPassword extends Component {
   }
 
   post(values) {
-    console.log(this.props.session.resetPassword.email);
-    console.log(this.props.navigation.getParam('token'));
-    console.log(values.password);
-    api.resetPassword(
-      this.props.session.resetPassword.email,
-      this.props.navigation.getParam('token'),
-      values.password,
-    )
-    .then(res => {
-      this.props.setSession(res);
-      this.showSuccess('Reset password successfully.');
-    })
-    .catch(err => this.showError(err));
+    if (this.props.session.resetPassword) {
+      api.resetPassword(
+        this.props.session.resetPassword.email,
+        this.props.navigation.getParam('token'),
+        values.password,
+      )
+      .then(res => {
+        this.props.setSession(res);
+        this.showSuccess('Reset password successfully.');
+      })
+      .catch(err => this.showError(err));
+    } else if (this.props.session.user) {
+      api.changePassword(
+        this.props.session.user.email,
+        values.password,
+      )
+      .then(() => this.showSuccess('Changed password successfully.'))
+      .catch(err => this.showError(err));
+    }
   }
 
   render() {

@@ -12,6 +12,7 @@ import Register from '../screens/Register';
 import ResetPassword from '../screens/ResetPassword';
 import Settings from '../screens/Settings';
 import SignIn from '../screens/SignIn';
+import UserSettings from '../screens/UserSettings';
 
 import { animationDuration } from '../config';
 
@@ -64,6 +65,7 @@ const AppNavigator = createStackNavigator({
   ResetPassword: { screen: ResetPassword },
   Settings: { screen: Settings },
   SignIn: { screen: SignIn },
+  UserSettings: { screen: UserSettings },
 },
 {
   initialRouteName: "Home",
