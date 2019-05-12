@@ -46,6 +46,14 @@ exports.activate = async (user, token) => {
   let name = user.name ? user.name : user.email;
   return exports.send(
     user.email, 'Activate QuizMe account', 'activate',
-    { user: name, token: token, url: utils.serverUrl() + '/activate/' }
+    { user: name, token: token, url: utils.serverUrl() + '/appRedirect/activate/' }
   ).then(() => console.log('Sent activation mail to ' + user.email));
+}
+
+exports.resetPassword = async (user, token) => {
+  let name = user.name ? user.name : user.email;
+  return exports.send(
+    user.email, 'QuizMe: Forgotten Password', 'resetPassword',
+    { user: name, token: token, url: utils.serverUrl() + '/appRedirect/resetPassword/' }
+  ).then(() => console.log('Sent reset password mail to ' + user.email));
 }

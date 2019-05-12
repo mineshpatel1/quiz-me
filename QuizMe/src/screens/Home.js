@@ -30,19 +30,21 @@ class Home extends Component {
   }
 
   redirectUrl(url) {
+    // Handle deep link for activation via email
     if (url && url.startsWith('quizme://quizme/activate')) {
-        this.props.checkSession()
-        .then(session => {
-          if (!session.user && session.unconfirmed) {
-            this.props.navigation.navigate('Activate', { token: url.replace('quizme://quizme/activate/', '') });
-          }
-        })
-        .catch(err => console.error('Check Session from URL Redirect', err))
+      console.log(url);
+        // this.props.checkSession()
+        // .then(session => {
+        //   if (!session.user && session.unconfirmed) {
+        //     this.props.navigation.navigate('Activate', { token: url.replace('quizme://quizme/activate/', '') });
+        //   }
+        // })
+        // .catch(err => console.error('Check Session from URL Redirect', err))
       }
   }
 
   connectionChange(online) {
-    if (online) this.props.checkSession();
+    if (online) this.props.checkSession().catch(err => console.log('Session check error: ', err));
     this.setState({ online: online })
   }
 

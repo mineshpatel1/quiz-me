@@ -9,6 +9,7 @@ WITH (OIDS=FALSE);
 ALTER TABLE "sessions" ADD CONSTRAINT "session_pkey" PRIMARY KEY ("sid") NOT DEFERRABLE INITIALLY IMMEDIATE;
 
 -- Drops
+DROP TABLE IF EXISTS forgotten_password_tokens;
 DROP TABLE IF EXISTS confirm_tokens;
 DROP TABLE IF EXISTS user_auth;
 DROP TABLE IF EXISTS users;
@@ -38,3 +39,11 @@ CREATE TABLE IF NOT EXISTS confirm_tokens (
     expiry_time BIGINT NOT NULL
 );
 CREATE INDEX confirm_tokens_email_idx ON confirm_tokens (email);
+
+-- Forgotten Password Tokens
+CREATE TABLE IF NOT EXISTS forgotten_password_tokens (
+    email VARCHAR PRIMARY KEY REFERENCES users(email) ON UPDATE RESTRICT ON DELETE CASCADE,
+    token VARCHAR NOT NULL UNIQUE,
+    expiry_time BIGINT NOT NULL
+);
+CREATE INDEX forgotten_password_tokens_email_idx ON forgotten_password_tokens (email);

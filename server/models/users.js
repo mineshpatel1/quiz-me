@@ -1,7 +1,8 @@
 const pg = require(__dirname + '/../api/pg.js');
 const utils = require(__dirname + '/../api/utils.js');
 
-const TOKEN_LIFE = (60 * 60 * 48);  // 48 Hours
+const ACTIVATION_TOKEN_LIFE = (60 * 60 * 48);  // 48 Hours
+const PASSWORD_TOKEN_LIFE = (60 * 60); // 1 Hour
 
 exports.get = (email, activated=true) => {
   let query = `SELECT * FROM users WHERE email = $1::text`;
@@ -46,14 +47,14 @@ exports.auth = (email, password) => {
   });
 }
 
-exports.resetToken = email => {
+exports.resetActivationToken = email => {
   return new Promise((resolve, reject) => {
     exports.get(email, false)
       .then(user => {
         if (!user) return reject(new Error("No user found with email: " + email));
         utils.getToken()
           .then(token => {
-            let expiry_time = utils.now() + TOKEN_LIFE;
+            let expiry_time = utils.now() + ACTIVATION_TOKEN_LIFE;
             pg.query(
               `UPDATE confirm_tokens SET
                 token = $1::text,
@@ -68,6 +69,31 @@ exports.resetToken = email => {
           .catch(reject);
       })
     .catch(reject);
+  });
+}
+
+exports.forgottenPassword = email => {
+  return new Promise((resolve, reject) => {
+    exports.get(email)
+      .then(user => {
+        if (!user) return reject(new Error("No user found with email: " + email));
+        utils.getToken()
+          .then(token => {
+            let expiry_time = utils.now() + PASSWORD_TOKEN_LIFE;
+            pg.query(
+              `INSERT INTO forgotten_password_tokens (email, token, expiry_time)
+              VALUES ($1::text, $2::text, $3::bigint) 
+              ON CONFLICT (email) DO
+              UPDATE SET
+                token = $2::text,
+                expiry_time = $3::bigint`,
+              [user.email, token, expiry_time],
+            ).then(() => {
+              console.log('Sent password reset link to ' + email + '.');
+              return resolve([user, token]);
+            }).catch(reject);
+          }).catch(reject);
+      }).catch(reject);
   });
 }
 
@@ -87,7 +113,7 @@ exports.new = (user, password) => {
           utils.getToken()
             .then(token => {
               // Insert token with a 48 hour expiry time
-              let expiry_time = utils.now() + TOKEN_LIFE;
+              let expiry_time = utils.now() + ACTIVATION_TOKEN_LIFE;
               pg.query(
                 `INSERT INTO confirm_tokens (token, email, expiry_time) 
                 VALUES ($1::text, $2::text, $3::bigint)`,

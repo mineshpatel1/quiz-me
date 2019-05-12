@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Platform, View } from 'react-native';
+import { Platform, View, YellowBox } from 'react-native';
 import Spinner from 'react-native-loading-spinner-overlay';
 import NetInfo from "@react-native-community/netinfo";
 
@@ -14,6 +14,16 @@ export default class Container extends Component {
     spinner: false,
     onConnectionChange: null,
     header: null,
+  }
+
+  constructor(props) {
+    super(props);
+
+    // TODO: Remove this when react-navigation is updated
+    // This will fire continually for Transitioner in react-navigation
+    YellowBox.ignoreWarnings([
+      'Warning: componentWillReceiveProps is deprecated',
+    ]);
   }
 
   componentDidMount() {

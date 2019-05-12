@@ -13,6 +13,10 @@ export default class Form extends Component {
     onSuccess: null,
     onCancel: null,
     disabled: false,
+    successIcon: 'check',
+    cancelIcon: 'times',
+    width: 120,
+    onChange: null,
   }
 
   constructor(props) {
@@ -33,6 +37,8 @@ export default class Form extends Component {
       prev.values[param] = _val;
       prev.valid[param] = _valid;
       return prev;
+    }, () => {
+      if (this.props.onChange) this.props.onChange(this.state.values, this.state.valid);
     });
   }
 
@@ -92,6 +98,12 @@ export default class Form extends Component {
                 return field;
               })
             }
+            {
+              props.children &&
+              <View style={{ paddingBottom: 15 }}>
+                { props.children }
+              </View>
+            }
           </ScrollView>
         </View>
         <View style={[{
@@ -101,10 +113,11 @@ export default class Form extends Component {
             onSuccess={() => {
               if (props.onSuccess) props.onSuccess(state.values);
             }}
-            onCancel={() => { 
-              if (props.onCancel) props.onCancel();
-            }}
+            onCancel={props.onCancel}
             disabled={!valid || props.disabled}
+            successIcon={props.successIcon}
+            cancelIcon={props.cancelIcon}
+            width={props.width}
           />
         </View>
       </View>

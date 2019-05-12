@@ -13,7 +13,7 @@ import Activate from '../screens/Activate';
 import SignIn from '../screens/SignIn';
 import { animationDuration } from '../config';
 
-const slideFromRight = ({ position, layout, scene, scenes, index }) => {
+const slideFromRight = () => {
   return {
     transitionSpec: {
       duration: animationDuration,
@@ -23,10 +23,8 @@ const slideFromRight = ({ position, layout, scene, scenes, index }) => {
     },
     screenInterpolator: sceneProps => {
       const { position, layout, scene, index, scenes } = sceneProps;
-      const toIndex = index;
       const lastSceneIndex = scenes[scenes.length - 1].index;
       const thisSceneIndex = scene.index;
-      const height = layout.initHeight;
       const width = layout.initWidth;
 
       const translateX = position.interpolate({
@@ -65,7 +63,7 @@ const AppNavigator = createStackNavigator({
   SignIn: { screen: SignIn },
 },
 {
-  initialRouteName: "Home",
+  initialRouteName: "SignIn",
   transitionConfig: (nav) => slideFromRight(nav),
   defaultNavigationOptions: {
     header: null,

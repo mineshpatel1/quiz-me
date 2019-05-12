@@ -35,7 +35,7 @@ export default class SnackBar extends Component {
   show(msg="Default SnackBar Message...", duration=null) {
     if (duration == null) duration = this.props.duration;
     if ( this.shown === false ) {
-      this.setState({ msg: msg });
+      this.setState({ msg: msg.toString() });
       this.shown = true;
 
       utils.animate(this.yPos, 0, null, () => {

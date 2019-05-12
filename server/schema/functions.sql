@@ -16,7 +16,7 @@ CREATE OR REPLACE FUNCTION cleanup_inactive(
 ) AS
 $$
 BEGIN
-	  WITH
+	WITH
     _expired AS (
         DELETE FROM users
         WHERE
@@ -30,5 +30,21 @@ BEGIN
             sess -> 'unconfirmed' ->> 'email' IN (SELECT email FROM _expired)
     )
     SELECT COUNT(*) INTO users FROM _expired;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Removes expired forgotten password tokens
+CREATE OR REPLACE FUNCTION cleanup_password_tokens(
+    OUT tokens INTEGER
+) AS
+$$
+BEGIN
+	WITH
+	_expired AS (
+		DELETE FROM forgotten_password_tokens
+		WHERE (now_utc() - expiry_time) > 0
+		RETURNING *
+	)
+	SELECT COUNT(*) INTO tokens FROM _expired;
 END;
 $$ LANGUAGE plpgsql;

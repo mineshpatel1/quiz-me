@@ -77,7 +77,7 @@ class Activate extends Component {
 
   resendSuccess(msg) {
     this.setState({ loading: false });
-    this.refs.resend.show(msg);
+    this.refs.resend.show(msg, 0);
   }
   
   render() {

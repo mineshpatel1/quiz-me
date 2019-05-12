@@ -95,6 +95,11 @@ class api {
   static async resetToken(email) {
     return _post('user/resetToken', { email })
   }
+
+  /** Sends a password reset token to the user. */
+  static async forgottenPassword(email) {
+    return _post('user/forgottenPassword', { email });
+  }
 }
 
 export default api;

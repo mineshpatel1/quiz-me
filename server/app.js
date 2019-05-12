@@ -50,8 +50,8 @@ app.get('/session/logout', (req, res, next) => {
     .catch(next);
 });
 
-app.get('/activate/:token', (req, res, _next) => {
-  res.redirect('quizme://quizme/activate/' + req.params.token);
+app.get('/appRedirect/:path/:token', (req, res, _next) => {
+  res.redirect('quizme://quizme/' + req.params.path + '/' + req.params.token);
 });
 
 app.post('/user/register', (req, res, next) => {
@@ -97,12 +97,24 @@ app.post('/user/resetToken', (req, res, next) => {
   let data = req.body;
   if (!req.session.unconfirmed) return next(new Error("Session is not in an uncofirmed state."));
   if (!data.email) return next(new Error("Email is required."));
-  users.resetToken(data.email)
+  users.resetActivationToken(data.email)
     .then(([user, token, expiry_time]) => {
       req.session.unconfirmed = { email: user.email, expiry_time: expiry_time };
-      email.activate(user, token,)
+      email.activate(user, token)
         .then(() => res.send({ ok: true, unconfirmed: user.email }))
         .catch(next);
+    })
+    .catch(next);
+});
+
+app.post('/user/forgottenPassword', (req, res, next) => {
+  let data = req.body;
+  if (!data.email) return next(new Error("Email is required."));
+  users.forgottenPassword(data.email)
+    .then(([user, token]) => {
+      email.resetPassword(user, token)
+      .then(() => res.send({ ok: true }))
+      .catch(next);
     })
     .catch(next);
 });
