@@ -1,5 +1,7 @@
 global.config = require(__dirname + '/../.config/config.json');
 
+const fs = require('fs');
+const https = require('https');
 const express = require('express');
 const session = require('express-session');
 const bodyParser = require('body-parser');
@@ -12,6 +14,13 @@ const cron = require(__dirname + '/api/cron.js');
 
 const app = express();
 app.use(bodyParser.json());
+
+// Certificate
+const credentials = {
+	key: fs.readFileSync(global.config.server.certPath + '/privkey.pem', 'utf8'),
+	cert: fs.readFileSync(global.config.server.certPath + '/cert.pem', 'utf8'),
+	ca: fs.readFileSync(global.config.server.certPath + '/chain.pem', 'utf8')
+};
 
 app.use('/images', express.static(__dirname + '/assets/images/'))
 
@@ -227,6 +236,5 @@ app.post('/user/auth/fingerprint', (req, res, next) => {
 
 app.use(utils.errorHandler);
 
-app.listen(global.config.server.port, () => {
-  console.log('QuizMe Server Started');
-});
+var httpsServer = https.createServer(credentials, app);
+httpsServer.listen(3000);

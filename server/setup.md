@@ -66,7 +66,8 @@ npm install
     "server": {
         "host": "10.0.2.2",  // Android Development Loopback
         "port": 3000,
-        "https": false
+        "https": true,
+        "certPath": "path/to/certificates"
     },
     "pg": {
         "host": "quizme.region.rds",
@@ -97,3 +98,38 @@ Run SQL files in `schema` using a client, or using the command line:
 psql quizme < schema/tables.sql
 psql quizme < schema/functions.sql
 ```
+
+# Configure IP routing
+
+Routes web traffic directly 
+
+```bash
+sudo iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 80 -j REDIRECT --to-port 3000
+sudo iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 443 -j REDIRECT --to-port 3000
+```
+
+# Configure Let's Encrypt
+
+Useful [guide](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/SSL-on-an-instance.html#letsencrypt) on configuring this for Amazon Linux.
+
+And for configuring Let's Encrypt with [NodeJS](https://itnext.io/node-express-letsencrypt-generate-a-free-ssl-certificate-and-run-an-https-server-in-5-minutes-a730fbe528ca).
+
+```bash
+cd $HOME
+sudo wget -r --no-parent -A 'epel-release-*.rpm' http://dl.fedoraproject.org/pub/epel/7/x86_64/Packages/e/
+sudo rpm -Uvh dl.fedoraproject.org/pub/epel/7/x86_64/Packages/e/epel-release-*.rpm
+sudo yum-config-manager --enable epel*
+sudo yum repolist all
+
+sudo yum install -y certbot
+
+sudo certbot certonly --manual
+
+# Follow instructions, enter e-maial address, make the key available publicly and get PEM files
+
+sudo chown root:wheel -R /etc/letsencrypt/archive
+sudo chmod 770 -R /etc/letsencrypt/archive
+sudo chown root:wheel -R /etc/letsencrypt/live
+sudo chmod 770 -R /etc/letsencrypt/live
+```
+
