@@ -1,10 +1,25 @@
 global.config = require(__dirname + '/../.config/config.json');
 
 const fs = require('fs');
+const http = require('http');
 const https = require('https');
 const express = require('express');
 const session = require('express-session');
 const bodyParser = require('body-parser');
+
+// Certificate
+var credentials;
+try {
+  credentials = {
+    key: fs.readFileSync(global.config.server.certPath + '/privkey.pem', 'utf8'),
+    cert: fs.readFileSync(global.config.server.certPath + '/cert.pem', 'utf8'),
+    ca: fs.readFileSync(global.config.server.certPath + '/chain.pem', 'utf8')
+  };
+  global.secure = true;
+} catch {
+  console.warn('Did not find security certificates.');
+  global.secure = false;
+}
 
 const utils = require(__dirname + '/api/utils.js');
 const email = require(__dirname + '/api/email.js');
@@ -15,14 +30,8 @@ const cron = require(__dirname + '/api/cron.js');
 const app = express();
 app.use(bodyParser.json());
 
-// Certificate
-const credentials = {
-	key: fs.readFileSync(global.config.server.certPath + '/privkey.pem', 'utf8'),
-	cert: fs.readFileSync(global.config.server.certPath + '/cert.pem', 'utf8'),
-	ca: fs.readFileSync(global.config.server.certPath + '/chain.pem', 'utf8')
-};
-
-app.use('/images', express.static(__dirname + '/assets/images/'))
+app.use('/images', express.static(__dirname + '/assets/images/'));
+app.use('/.well-known/acme-challenge/', express.static(__dirname + '/assets/cert/'));
 
 // Configure sessionisation with PostgreSQL
 app.use(session({
@@ -236,5 +245,12 @@ app.post('/user/auth/fingerprint', (req, res, next) => {
 
 app.use(utils.errorHandler);
 
-var httpsServer = https.createServer(credentials, app);
-httpsServer.listen(3000);
+if (global.secure) {
+  const httpsServer = https.createServer(credentials, app);
+  httpsServer.listen(global.config.server.port);
+} else {
+  const httpServer = http.createServer(app);
+  httpServer.listen(global.config.server.port);
+}
+
+console.log('Listening on ' + utils.serverUrl());
