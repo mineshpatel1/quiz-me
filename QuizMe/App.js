@@ -18,7 +18,6 @@ import {
 import AppNavigator from './src/nav/AppNavigator';
 import NavigationService from './src/nav/NavigationService';
 import reducers from './src/reducers/index';
-import { Text } from './src/components/Core';
 import { styles, colours } from './src/styles';
 import { utils } from './src/utils';
 import { initGameSettings, initUserSettings } from './src/actions/SettingActions';

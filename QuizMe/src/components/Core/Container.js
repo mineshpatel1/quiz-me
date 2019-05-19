@@ -60,6 +60,7 @@ export default class Container extends Component {
     if (utils.isDark(statusColour)) {
       statusColour = utils.alterBrightness(statusColour, +50);
     } else {
+      console.log(utils.alterBrightness(statusColour, -50));
       statusColour = utils.alterBrightness(statusColour, -50);
     }
 
