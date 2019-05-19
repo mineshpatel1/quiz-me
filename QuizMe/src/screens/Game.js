@@ -172,7 +172,9 @@ class Game extends Component {
 
     let inGame = (
       <Animated.View style={[styles.f1, { opacity: state.opacity, marginTop: iosAdjust }]}>
-        <Animated.View style={[styles.row, {opacity: state.hudOpacity}]}>
+        <Animated.View style={[styles.row, styles.mt15, {
+          opacity: state.hudOpacity
+        }]}>
           <View style={styles.f1}>
             <Text colour={colours.white} size={24} bold={true} align="left">
               {props.game.score}

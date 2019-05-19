@@ -23,6 +23,7 @@ export default class Container extends Component {
     // This will fire continually for Transitioner in react-navigation
     YellowBox.ignoreWarnings([
       'Warning: componentWillReceiveProps is deprecated',
+      'Warning: componentWillUpdate is deprecated',
     ]);
   }
 

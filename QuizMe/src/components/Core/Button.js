@@ -49,35 +49,41 @@ export default class Button extends Component {
       }
       
       labelBtn = (
-        <TouchableNativeFeedback 
-          {...touchableProps} background={TouchableNativeFeedback.Ripple(rippleColour, true)}
-        >
-          <View style={[styles.f1, styles.row, {
-            borderRadius: props.borderRadius,
-            paddingLeft: props.padding - 15, backgroundColor: btnColour,
-          }]}>
-            <View style={[styles.f2, {
-              justifyContent: 'center', alignItems: 'flex-start', marginLeft: 20,
+        <View style={[touchableProps.style, { overflow: 'hidden' }]}>
+          <TouchableNativeFeedback
+            activeOpacity={activeOpacity} onPress={onPress}
+            background={TouchableNativeFeedback.Ripple(rippleColour)}
+          >
+            <View style={[styles.f1, styles.row, {
+              borderRadius: props.borderRadius,
+              paddingLeft: props.padding - 15, backgroundColor: btnColour,
             }]}>
-              <Text bold={true} colour={fontColour}>{props.label}</Text>
+              <View style={[styles.f2, {
+                justifyContent: 'center', alignItems: 'flex-start', marginLeft: 20,
+              }]}>
+                <Text bold={true} colour={fontColour}>{props.label}</Text>
+              </View>
+              <View style={[styles.f1, {
+                justifyContent: 'center', alignItems: 'flex-end', paddingRight: props.padding,
+              }]}>
+                <Icon icon={props.icon} size={props.iconSize} colour={fontColour} />
+              </View>
             </View>
-            <View style={[styles.f1, {
-              justifyContent: 'center', alignItems: 'flex-end', paddingRight: props.padding,
-            }]}>
-              <Icon icon={props.icon} size={props.iconSize} colour={fontColour} />
-            </View>
-          </View>
-        </TouchableNativeFeedback>
+          </TouchableNativeFeedback>
+        </View>        
       );
 
       iconBtn = (
-        <TouchableNativeFeedback 
-          {...touchableProps} background={TouchableNativeFeedback.Ripple(rippleColour, true)}
-        >
-          <View style={[styles.f1, styles.center, { borderRadius: props.borderRadius, backgroundColor: btnColour }]}>
-            <Icon icon={props.icon} size={props.iconSize} colour={fontColour} />
-          </View>
-        </TouchableNativeFeedback>
+        <View style={[touchableProps.style, { overflow: 'hidden' }]}>
+          <TouchableNativeFeedback 
+            activeOpacity={activeOpacity} onPress={onPress}
+            background={TouchableNativeFeedback.Ripple(rippleColour)}
+          >
+            <View style={[styles.f1, styles.center, { borderRadius: props.borderRadius, backgroundColor: btnColour }]}>
+              <Icon icon={props.icon} size={props.iconSize} colour={fontColour} />
+            </View>
+          </TouchableNativeFeedback>
+        </View>
       );
     } else if (props.disabled || Platform.OS == 'ios') {
       let touchableProps = {
