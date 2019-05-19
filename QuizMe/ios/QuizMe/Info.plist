@@ -47,7 +47,7 @@
 		</dict>
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string/>
+	<string></string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Lato-Bold.ttf</string>
@@ -66,6 +66,8 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>UIStatusBarStyle</key>
+	<string>UIStatusBarStyleLightContent</string>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
 </dict>

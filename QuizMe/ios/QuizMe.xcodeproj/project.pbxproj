@@ -5,6 +5,7 @@
 	};
 	objectVersion = 46;
 	objects = {
+
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -285,6 +286,13 @@
 			remoteGlobalIDString = B5027B1B2237B30F00F1AABA;
 			remoteInfo = "RNCNetInfo-tvOS";
 		};
+		59D1A88E2291E4C900C1ED76 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2DE918304D884CC1821F48D7 /* SplashScreen.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 3D7682761D8E76B80014119E;
+			remoteInfo = SplashScreen;
+		};
 		59D7700F226DE606003B4734 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 146833FF1AC3E56700842450 /* React.xcodeproj */;
@@ -410,6 +418,7 @@
 		2D02E47B1E0B4A5D006451C7 /* QuizMe-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "QuizMe-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* QuizMe-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "QuizMe-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D16E6891FA4F8E400B85C8A /* libReact.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libReact.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		2DE918304D884CC1821F48D7 /* SplashScreen.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = SplashScreen.xcodeproj; path = "../node_modules/react-native-splash-screen/ios/SplashScreen.xcodeproj"; sourceTree = "<group>"; };
 		4F2FB73B96ED47789125F7B4 /* libReactNativeBiometrics.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libReactNativeBiometrics.a; sourceTree = "<group>"; };
 		5C785548F9084B518A7022BF /* libRNCNetInfo-tvOS.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = "libRNCNetInfo-tvOS.a"; sourceTree = "<group>"; };
 		5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
@@ -418,6 +427,7 @@
 		7FE38898E24948DB899669F9 /* libRNSVG-tvOS.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = "libRNSVG-tvOS.a"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 		9AFFD37BF9814D0FB065E140 /* Lobster.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Lobster.ttf; path = ../assets/fonts/Lobster.ttf; sourceTree = "<group>"; };
+		A234ABB1685342AC833B5B51 /* libSplashScreen.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libSplashScreen.a; sourceTree = "<group>"; };
 		AAA8DC46030B4E65930CA8CC /* libRNCAsyncStorage.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNCAsyncStorage.a; sourceTree = "<group>"; };
 		ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTBlob.xcodeproj; path = "../node_modules/react-native/Libraries/Blob/RCTBlob.xcodeproj"; sourceTree = "<group>"; };
 		AEDC6719FB4B4154A817DC04 /* RNCNetInfo.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNCNetInfo.xcodeproj; path = "../node_modules/@react-native-community/netinfo/ios/RNCNetInfo.xcodeproj"; sourceTree = "<group>"; };
@@ -430,8 +440,6 @@
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
 		F4DDF1DB18B94D32B89CE6E9 /* RNCAsyncStorage.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNCAsyncStorage.xcodeproj; path = "../node_modules/@react-native-community/async-storage/ios/RNCAsyncStorage.xcodeproj"; sourceTree = "<group>"; };
 		F72D203CD2D3490280252249 /* libRNSVG.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNSVG.a; sourceTree = "<group>"; };
-		2DE918304D884CC1821F48D7 /* SplashScreen.xcodeproj */ = {isa = PBXFileReference; name = "SplashScreen.xcodeproj"; path = "../node_modules/react-native-splash-screen/ios/SplashScreen.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
-		A234ABB1685342AC833B5B51 /* libSplashScreen.a */ = {isa = PBXFileReference; name = "libSplashScreen.a"; path = "libSplashScreen.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -642,6 +650,14 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		59D1A88B2291E4C900C1ED76 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				59D1A88F2291E4C900C1ED76 /* libSplashScreen.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		59D76FE9226DE605003B4734 /* Recovered References */ = {
 			isa = PBXGroup;
 			children = (
@@ -653,6 +669,7 @@
 				EC3521E83D664D3BB14BB835 /* libRNCNetInfo.a */,
 				4F2FB73B96ED47789125F7B4 /* libReactNativeBiometrics.a */,
 				5C785548F9084B518A7022BF /* libRNCNetInfo-tvOS.a */,
+				A234ABB1685342AC833B5B51 /* libSplashScreen.a */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
@@ -964,6 +981,10 @@
 					ProductGroup = 59D77019226DE608003B4734 /* Products */;
 					ProjectRef = E3473345395147F5A2583544 /* RNSVG.xcodeproj */;
 				},
+				{
+					ProductGroup = 59D1A88B2291E4C900C1ED76 /* Products */;
+					ProjectRef = 2DE918304D884CC1821F48D7 /* SplashScreen.xcodeproj */;
+				},
 			);
 			projectRoot = "";
 			targets = (
@@ -1191,6 +1212,13 @@
 			fileType = archive.ar;
 			path = "libRNCNetInfo-tvOS.a";
 			remoteRef = 59AEECF32282335800580351 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		59D1A88F2291E4C900C1ED76 /* libSplashScreen.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libSplashScreen.a;
+			remoteRef = 59D1A88E2291E4C900C1ED76 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		59D77010226DE606003B4734 /* libjsi.a */ = {
