@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import { Animated, View } from 'react-native';
+import SplashScreen from 'react-native-splash-screen';
 import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
@@ -55,6 +56,7 @@ export default class App extends Component {
   }
 
   async componentDidMount() {
+    SplashScreen.hide();
     await this.retrieveItem('gameSettings', initGameSettings);
     await this.retrieveItem('userSettings', initUserSettings);
     utils.animate(this.state.opacity, 0, null, () => {
@@ -68,9 +70,7 @@ export default class App extends Component {
     if (!state.isReady) {
       return (
         <View style={[styles.f1, styles.center, { backgroundColor: colours.primary }]}>
-          <Animated.View style={{opacity: state.opacity}}>
-            <Text bold={true} size={24} colour={colours.white}>Reticulating Splines...</Text>
-          </Animated.View>
+          <Animated.View style={{opacity: 1}} />
         </View>
       );
     }
