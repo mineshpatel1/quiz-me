@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Platform, ScrollView, View, } from 'react-native';
-import launchMailApp from "react-native-mail-launcher";
 
 import { Container, Text, Button, Input, SnackBar } from '../components/Core';
 import { setSession, checkSession } from '../actions/SessionActions';
@@ -97,12 +96,6 @@ class Activate extends Component {
               }</Text>
             </View>
             <View style={[styles.f1, { padding: 20, paddingTop: 40}]}>
-              {
-                Platform.OS == 'android' && 
-                <Button
-                label="Check Mail" icon="envelope"
-                onPress={() => { launchMailApp(); }} />
-              }
               <Button
                 label="Resend Link" icon="link" style={[styles.mt15]}
                 onPress={() => this.resetToken()}

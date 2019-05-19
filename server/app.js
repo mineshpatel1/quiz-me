@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 global.config = require(__dirname + '/../.config/config.json');
 
 const fs = require('fs');

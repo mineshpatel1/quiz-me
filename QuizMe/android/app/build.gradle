@@ -172,7 +172,6 @@ android {
 }
 
 dependencies {
-    implementation project(':react-native-mail-launcher')
     implementation project(':react-native-biometrics')
     implementation project(':@react-native-community_netinfo')
     implementation project(':@react-native-community_async-storage')

@@ -1,8 +1,7 @@
 import { Platform } from 'react-native';
 import { validators } from './utils';
 
-const loopback = Platform.OS == 'android' ? '10.0.2.2' : '127.0.0.1';
-export const server = { host: loopback, port: 3000, secure: false };
+export const server = { host: 'quiz-me.co.uk', port: 3000, secure: true };
 export const animationDuration = 300;
 export const waitTime = 0.5;
 

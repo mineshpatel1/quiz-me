@@ -51,6 +51,17 @@ git clone https://github.com/mineshpatel1/quiz-me.git
 
 cd quiz-me/server
 npm install
+
+git config credential.helper store
+git push
+# Enter username
+# Enter personal access token
+```
+
+## Install PSQL
+
+```bash
+sudo yum install postgresql
 ```
 
 ## Set up `.config/config.json`
@@ -66,7 +77,6 @@ npm install
     "server": {
         "host": "10.0.2.2",  // Android Development Loopback
         "port": 3000,
-        "https": true,
         "certPath": "path/to/certificates"
     },
     "pg": {
@@ -99,16 +109,24 @@ psql quizme < schema/tables.sql
 psql quizme < schema/functions.sql
 ```
 
-# Configure IP routing
+## Configure IP routing
 
-Routes web traffic directly 
+Routes HTTPS web traffic directly 
 
 ```bash
 sudo iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 80 -j REDIRECT --to-port 3000
 sudo iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 443 -j REDIRECT --to-port 3000
 ```
 
-# Configure Let's Encrypt
+### Deleting Routes
+
+```bash
+sudo iptables -t nat -v -L PREROUTING -n --line-number  # View routes
+sudo iptables -t nat -D PREROUTING <line_number>        # Delete specific route
+```
+
+
+## Configure Let's Encrypt
 
 Useful [guide](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/SSL-on-an-instance.html#letsencrypt) on configuring this for Amazon Linux.
 
@@ -126,6 +144,10 @@ sudo yum install -y certbot
 sudo certbot certonly --manual
 
 # Follow instructions, enter e-maial address, make the key available publicly and get PEM files
+
+# 1. Enter your domain.
+# 2. Run the Node server on HTTP, make sure the port is externally available and place the 
+#    security challenge in server/assets/cert.
 
 sudo chown root:wheel -R /etc/letsencrypt/archive
 sudo chmod 770 -R /etc/letsencrypt/archive

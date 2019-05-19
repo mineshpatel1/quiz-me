@@ -1,6 +1,4 @@
 rootProject.name = 'QuizMe'
-include ':react-native-mail-launcher'
-project(':react-native-mail-launcher').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-mail-launcher/android')
 include ':react-native-biometrics'
 project(':react-native-biometrics').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-biometrics/android')
 include ':@react-native-community_netinfo'

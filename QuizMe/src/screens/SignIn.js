@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { View } from 'react-native';
-import launchMailApp from "react-native-mail-launcher";
 import Biometrics from 'react-native-biometrics';
 
 import { Container, Text, Button, Form, SnackBar, Icon } from '../components/Core';
@@ -136,8 +135,8 @@ class SignIn extends Component {
           this.setState({loading: false})
         }} />
         <SnackBar 
-          ref="forgotten" success={true} actionText="Check Mail"
-          onAction={() => launchMailApp()}
+          ref="forgotten" success={true} actionText="OK"
+          onAction={() => {}}
         />
       </Container>
     );
