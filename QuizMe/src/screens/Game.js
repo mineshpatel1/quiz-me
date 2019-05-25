@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Platform, Animated, View } from 'react-native';
+import { Platform, Animated, ScrollView, View } from 'react-native';
 
 import HandleBack from '../components/HandleBack';
 import Option from '../components/Option';
@@ -206,10 +206,12 @@ class Game extends Component {
             ref={(x) => { this.progressBar = x; }} onFinish={this.outOfTime}
           />
         </Animated.View>
-        <View style={[styles.f1, styles.row, styles.aCenter]}>
-          <Text colour={colours.white} size={qTextSize} align={'center'}>
-            {props.question.question}
-          </Text>
+        <View style={[styles.f1, styles.row, styles.aCenter, { paddingTop: 10, paddingBottom: 10 }]}>
+          <ScrollView contentContainerStyle={[styles.aCenter]}>
+            <Text colour={colours.white} size={qTextSize} align={'center'}>
+              {props.question.question}
+            </Text>
+          </ScrollView>
         </View>
         <Animated.View style={[styles.f1, styles.col, styles.center, {opacity: state.hudOpacity}]} >
           <View style={[styles.row, optionStyle]}>
