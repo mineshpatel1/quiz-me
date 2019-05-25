@@ -63,3 +63,5 @@ router.post('/session/login/fingerprint', (req, res, next) => {
     })
     .catch(next);
 });
+
+module.exports = router;

@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const email = require(__dirname + '/api/email.js');
+const email = require(__dirname + '/../api/email.js');
 const users = require(__dirname + '/../models/users.js');
 
 router.post('/user/register', (req, res, next) => {
@@ -131,3 +131,5 @@ router.delete('/user', (req, res, next) => {
     })
     .catch(next);
 });
+
+module.exports = router;
