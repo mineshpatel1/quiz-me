@@ -24,26 +24,12 @@ try {
 }
 
 const utils = require(__dirname + '/api/utils.js');
-const pg = require(__dirname + '/api/pg.js');
 
 const app = express();
 app.use(bodyParser.json());
 
 app.use('/images', express.static(__dirname + '/assets/images/'));
 app.use('/.well-known/acme-challenge/', express.static(__dirname + '/assets/cert/'));
-
-// Configure sessionisation with PostgreSQL
-app.use(session({
-  store: new (require('connect-pg-simple')(session))({
-    pool: pg.pool,
-    tableName: 'sessions',
-  }),
-  secret: global.config.session_secret,
-  resave: false,
-  saveUninitialized: false,
-  cookie : { httpOnly: true, maxAge: 28 * 24 * 60 * 60 * 1000 },  // 28 Days
-  unset: 'destroy',
-}));
 
 app.use(require(__dirname + '/routes/general.js'));
 app.use(require(__dirname + '/routes/session.js'));

@@ -1,7 +1,23 @@
 const express = require('express');
+const session = require('express-session');
 const router = express.Router();
 
+const pg = require(__dirname + '/../api/pg.js');
 const users = require(__dirname + '/../models/users.js');
+const utils = require(__dirname + '/../api/utils.js');
+
+// Configure sessionisation with PostgreSQL
+router.use(session({
+  store: new (require('connect-pg-simple')(session))({
+    pool: pg.pool,
+    tableName: 'sessions',
+  }),
+  secret: global.config.session_secret,
+  resave: false,
+  saveUninitialized: false,
+  cookie : { httpOnly: true, maxAge: 28 * 24 * 60 * 60 * 1000 },  // 28 Days
+  unset: 'destroy',
+}));
 
 router.get('/session', (req, res) => {
   if (req.unconfirmed && req.unconfirmed.expiry_time < utils.now()) {
@@ -20,12 +36,6 @@ router.get('/session', (req, res) => {
   });
 });
 
-router.get('/session/logout', (req, res, next) => {
-  utils.endSession(req)
-    .then(() => res.send({ ok: true }))
-    .catch(next);
-});
-
 router.post('/session/login', (req, res, next) => {
   let data = req.body;
   if (!data.email) return next(new Error("Email is required."));
@@ -42,6 +52,12 @@ router.post('/session/login', (req, res, next) => {
         })
         .catch(next);
     })
+    .catch(next);
+});
+
+router.get('/session/logout', (req, res, next) => {
+  utils.endSession(req)
+    .then(() => res.send({ ok: true }))
     .catch(next);
 });
 

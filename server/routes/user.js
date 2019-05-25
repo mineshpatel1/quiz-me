@@ -3,6 +3,9 @@ const router = express.Router();
 
 const email = require(__dirname + '/../api/email.js');
 const users = require(__dirname + '/../models/users.js');
+const utils = require(__dirname + '/../api/utils.js');
+
+router.use(require(__dirname + '/../routes/session.js'));
 
 router.post('/user/register', (req, res, next) => {
   let data = req.body;
