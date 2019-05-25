@@ -1,14 +1,17 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import { Platform, View, YellowBox } from 'react-native';
 import Spinner from 'react-native-loading-spinner-overlay';
 import NetInfo from "@react-native-community/netinfo";
 
 import Header from './Header';
 import StatusBar from './StatusBar';
+import { setConnection } from '../../actions/SessionActions';
 import { styles, colours } from '../../styles';
 import { utils } from '../../utils';
 
-export default class Container extends Component {
+class Container extends Component {
   static defaultProps = {
     bgColour: colours.white,
     spinner: false,
@@ -30,7 +33,7 @@ export default class Container extends Component {
   componentDidMount() {
     if (this.props.onConnectionChange) {
       NetInfo.addEventListener('connectionChange', (info) => {
-        this.props.onConnectionChange(info, this.online(info));
+        this.onConnectionChange(info, this.is_online(info));
       });
     }
   }
@@ -38,13 +41,18 @@ export default class Container extends Component {
   componentWillUnmount() {
     if (this.props.onConnectionChange) {
       NetInfo.removeEventListener('connectionChange', (info) => {
-        this.props.onConnectionChange(info, this.online(info));
+        this.onConnectionChange(info, this.is_online(info));
       });
     }
   }
 
-  online(info) {
+  is_online(info) {
     return ['none', 'unknown'].indexOf(info.type) == -1;
+  }
+
+  onConnectionChange(info, online) {
+    this.props.setConnection(online);
+    this.props.onConnectionChange(info, online);
   }
 
   render() {
@@ -60,7 +68,6 @@ export default class Container extends Component {
     if (utils.isDark(statusColour)) {
       statusColour = utils.alterBrightness(statusColour, +50);
     } else {
-      console.log(utils.alterBrightness(statusColour, -50));
       statusColour = utils.alterBrightness(statusColour, -50);
     }
 
@@ -77,3 +84,15 @@ export default class Container extends Component {
     )
   }
 }
+
+const mapStateToProps = (state) => {
+  return {
+    online: state.session.online,
+  }
+};
+
+const mapDispatchToProps = dispatch => (
+  bindActionCreators({setConnection}, dispatch)
+);
+
+export default connect(mapStateToProps, mapDispatchToProps)(Container);

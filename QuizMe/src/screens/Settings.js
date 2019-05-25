@@ -21,13 +21,18 @@ class Settings extends Component {
     if (props.session.user) {
       menu.push({label: 'Sign Out', icon: 'sign-out-alt', onPress: () => props.signOut() });
     } else {
-      menu.push({label: 'Sign In', icon: 'sign-in-alt', onPress: () => { 
-        if (props.session.unconfirmed) {
-          props.navigation.navigate('Activate');
-        } else {
-          props.navigation.navigate('SignIn');
+      menu.push({
+        label: 'Sign In',  icon: 'sign-in-alt', 
+        disabled: !props.session.online,
+        
+        onPress: () => { 
+          if (props.session.unconfirmed) {
+            props.navigation.navigate('Activate');
+          } else {
+            props.navigation.navigate('SignIn');
+          }
         }
-      } })
+      })
     }
 
     return (

@@ -13,7 +13,6 @@ class Activate extends Component {
     super(props);
 
     this.state = {
-      offline: false,
       loading: false,
       token: '123456789A',
       valid: false,
@@ -56,7 +55,7 @@ class Activate extends Component {
 
   connectionChange(online) {
     if (online) this.props.checkSession();
-    this.setState({ offline: !online, loading: false });
+    this.setState({ loading: false });
   }
 
   validateToken(val) {
@@ -112,7 +111,7 @@ class Activate extends Component {
                 onPress={() => { this.setState({ loading: true }, () => {
                   this.activate(state.token);
                 }) }}
-                disabled={!state.valid || (state.offline || state.loading)}
+                disabled={!state.valid || ((!props.session.online) || state.loading)}
               />
             </View>
           </ScrollView>

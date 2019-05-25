@@ -1,4 +1,4 @@
-import { SET_SESSION } from '../types';
+import { SET_SESSION, SET_CONNECTION } from '../types';
 import { api } from '../utils';
 
 export const setSession = session => ({
@@ -7,6 +7,11 @@ export const setSession = session => ({
   unconfirmed: session && session.unconfirmed,
   resetPassword: session && session.resetPassword,
 });
+
+export const setConnection = online => ({
+  type: SET_CONNECTION,
+  online: online,
+})
 
 export const checkSession = () => {
   return function(dispatch) {

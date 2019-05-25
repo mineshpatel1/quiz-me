@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Platform, Animated, View, Image, Linking } from 'react-native';
 
-import { Container, Button, Icon, Text } from '../components/Core';
+import { Container, Button, Icon } from '../components/Core';
 import { checkSession, signOut } from '../actions/SessionActions';
 import { colours, styles } from '../styles';
 import { utils } from '../utils';
@@ -56,7 +56,6 @@ class Home extends Component {
 
   connectionChange(online) {
     if (online) this.props.checkSession().catch(err => console.log('Session check error: ', err));
-    this.setState({ online: online })
   }
 
   render() {
@@ -73,15 +72,13 @@ class Home extends Component {
           <View style={[styles.f1, styles.row, styles.center, {paddingLeft: 10, paddingRight: 10}]}>
             <Image style={[styles.f1]} resizeMode="contain" source={require('../../assets/images/title.png')} />
           </View>
-          
-
           <View style={[styles.f1, styles.center]}>
             <Button
               label="Single Player" icon="user"
               onPress={() => { props.navigation.navigate('NewGame') }}
             />
             <Button
-              label="Head to Head" icon="user-friends" style={styles.mt15} disabled={!state.online}
+              label="Head to Head" icon="user-friends" style={styles.mt15} disabled={!props.session.online}
               onPress={() => {
                 if (props.session.user) {
                   console.log("I am logged in!!!!");

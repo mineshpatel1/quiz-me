@@ -77,14 +77,14 @@ class ResetPassword extends Component {
     return (
       <Container 
         spinner={state.loading} header="Reset Password"
-        onConnectionChange={(_info, online) => {this.setState({ offline: !online, loading: false })}}
+        onConnectionChange={() => {this.setState({ loading: false })}}
       >
         <View style={[styles.f1, styles.col, styles.aCenter]}>
           <Form 
             fields={fields}
             onCancel={() => { this.props.navigation.navigate('Home') }}
             onSuccess={values => {this.post(values)}}
-            disabled={state.loading || state.offline}
+            disabled={state.loading || (!props.session.online)}
           />
         </View>
         <SnackBar ref="error" error={true} onAction={() => {

@@ -14,7 +14,6 @@ class SignIn extends Component {
     super(props);
     this.state = { 
       loading: false,
-      offline: false,
       email: {
         value: null,
         valid: false,
@@ -94,12 +93,10 @@ class SignIn extends Component {
       },
     }
 
-    console.log(props.fingerprint);
-
     return (
       <Container
         spinner={state.loading} header={'Sign In'}
-        onConnectionChange={(_info, online) => {this.setState({ offline: !online, loading: false })}}
+        onConnectionChange={() => {this.setState({ loading: false })}}
       >
         <View style={[styles.f1, styles.col, styles.aCenter]}>
           <View style={[styles.center, styles.mt15]}>
@@ -120,14 +117,14 @@ class SignIn extends Component {
           <Form
             fields={fields} width={200} successIcon={'sign-in-alt'}
             onSuccess={values => {this.signIn(values)}} ref={'form'}
-            disabled={state.loading || state.offline}
+            disabled={state.loading || (!props.session.online)}
             onChange={(values, valid) => this.setState({ 
               email: {value: values.email, valid: valid.email} 
             })}
           >
             <Button
               label="Forgot Password" icon="question" onPress={() => this.forgottenPassword()} 
-              style={styles.mt15} disabled={!state.email.valid}
+              style={styles.mt15} disabled={!state.email.valid || !props.session.online}
             />
           </Form>
         </View>

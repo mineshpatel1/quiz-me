@@ -13,7 +13,6 @@ class Register extends Component {
     super(props);
     this.state = { 
       loading: false,
-      offline: false,
     };
   }
 
@@ -39,7 +38,7 @@ class Register extends Component {
   }
 
   render() {
-    let { state } = this;
+    let { props, state } = this;
     let fields = {
       email: {
         label: "Email",
@@ -83,18 +82,18 @@ class Register extends Component {
     return (
       <Container 
         spinner={state.loading} header="Register"
-        onConnectionChange={(_info, online) => {this.setState({ offline: !online, loading: false })}}
+        onConnectionChange={() => {this.setState({ loading: false })}}
       >
         <View style={[styles.f1, styles.col, styles.aCenter]}>
           <Form 
             fields={fields}
             onCancel={() => { this.props.navigation.goBack() }}
             onSuccess={values => {this.post(values)}}
-            disabled={state.loading || state.offline}
+            disabled={state.loading || (!props.session.online)}
           />
         </View>
         <SnackBar ref="error" error={true} onAction={() => {
-          this.setState({loading: false})
+          this.setState({loading: false});
         }} />
         <SnackBar 
           ref="success" success={true} 
