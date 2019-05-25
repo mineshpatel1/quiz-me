@@ -72,12 +72,16 @@ class api {
 
   /** Signs in a user. */
   static async signIn(data) {
-    return _post('user/auth', data);
+    return _post('session/login', data);
   }
 
   /** Signs out of a QuizMe session. */
   static async signOut() {
     return _get('session/logout');
+  }
+
+  static async verifyFingerprint(payload, signature) {
+    return _post('session/login/fingerprint', { payload, signature });
   }
 
   /** Creates a new QuizMe user. */
@@ -121,10 +125,6 @@ class api {
 
   static async disableFingerprint(publicKey) {
     return _post('user/disableFingerprint', { publicKey });
-  }
-
-  static async verifyFingerprint(payload, signature) {
-    return _post('user/auth/fingerprint', { payload, signature });
   }
 }
 

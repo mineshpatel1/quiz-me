@@ -4,7 +4,7 @@ const router = express.Router();
 const email = require(__dirname + '/api/email.js');
 const users = require(__dirname + '/../models/users.js');
 
-app.post('/user/register', (req, res, next) => {
+router.post('/user/register', (req, res, next) => {
   let data = req.body;
   if (!data.email) return next(new Error("Email is required."));
   if (!data.password) return next(new Error("Password is required."));
@@ -28,7 +28,7 @@ app.post('/user/register', (req, res, next) => {
     .catch(next);
 });
 
-app.post('/user/activate', (req, res, next) => {
+router.post('/user/activate', (req, res, next) => {
   let data = req.body;
   if (!req.session.unconfirmed) return next(new Error("Session is not in an unconfirmed state."));
   if (!data.email) return next(new Error("Email is required."));
@@ -43,7 +43,7 @@ app.post('/user/activate', (req, res, next) => {
     .catch(next);
 });
 
-app.post('/user/resetToken', (req, res, next) => {
+router.post('/user/resetToken', (req, res, next) => {
   let data = req.body;
   if (!req.session.unconfirmed) return next(new Error("Session is not in an unconfirmed state."));
   if (!data.email) return next(new Error("Email is required."));
@@ -57,7 +57,7 @@ app.post('/user/resetToken', (req, res, next) => {
     .catch(next);
 });
 
-app.post('/user/changePassword', (req, res, next) => {
+router.post('/user/changePassword', (req, res, next) => {
   let data = req.body;
   if (!req.session.user) return next(new Error("Session is not active."));
   if (!data.password) return next(new Error("Password is required."));
@@ -67,7 +67,7 @@ app.post('/user/changePassword', (req, res, next) => {
     .catch(next);
 });
 
-app.post('/user/forgottenPassword', (req, res, next) => {
+router.post('/user/forgottenPassword', (req, res, next) => {
   let data = req.body;
   if (!data.email) return next(new Error("Email is required."));
   users.forgottenPassword(data.email)
@@ -80,7 +80,7 @@ app.post('/user/forgottenPassword', (req, res, next) => {
     .catch(next);
 });
 
-app.post('/user/resetPassword', (req, res, next) => {
+router.post('/user/resetPassword', (req, res, next) => {
   let data = req.body;
   if (!req.session.resetPassword) return next(new Error("Session is not in an password reset state."));
   if (!data.email) return next(new Error("Email is required."));
@@ -96,7 +96,7 @@ app.post('/user/resetPassword', (req, res, next) => {
     .catch(next);
 });
 
-app.post('/user/enableFingerprint', (req, res, next) => {
+router.post('/user/enableFingerprint', (req, res, next) => {
   let data = req.body;
   if (!req.session.user) return next(new Error("Session is not active."));
   if (!data.publicKey) return next(new Error("Public Key is required."));
@@ -108,7 +108,7 @@ app.post('/user/enableFingerprint', (req, res, next) => {
     .catch(next);
 });
 
-app.post('/user/disableFingerprint', (req, res, next) => {
+router.post('/user/disableFingerprint', (req, res, next) => {
   let data = req.body;
   if (!req.session.user) return next(new Error("Session is not active."));
   users.disableFingerprint(req.session.user.id)
@@ -119,7 +119,7 @@ app.post('/user/disableFingerprint', (req, res, next) => {
     .catch(next);
 });
 
-app.delete('/user', (req, res, next) => {
+router.delete('/user', (req, res, next) => {
   let email = req.session.user.email;
   if (!email) return next(new Error("User does not have an active session."));
   

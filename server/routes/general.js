@@ -7,7 +7,7 @@ router.get('/', (_req, res, next) => {
   res.send(utils.serverUrl())
 });
 
-app.get('/appRedirect/:path/:token', (req, res, _next) => {
+router.get('/appRedirect/:path/:token', (req, res, _next) => {
   res.redirect('quizme://quizme/' + req.params.path + '/' + req.params.token);
 });
 
