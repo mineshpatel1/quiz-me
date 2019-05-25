@@ -87,10 +87,12 @@ class Settings extends Component {
       { label: 'Change Password', icon: 'lock', onPress: () => props.navigation.navigate('ResetPassword') },
     ];
 
-    if (state.supportsFingerprint && props.session.user && !props.session.user.fingerprint_enabled) {
-      menu.push({ label: 'Enable Fingerprint Login', icon: 'fingerprint', onPress: () => this.enableFingerprint() })
-    } else {
-      menu.push({ label: 'Disable Fingerprint Login', icon: 'fingerprint', onPress: () => this.disableFingerprint() })
+    if (state.supportsFingerprint) {
+      if (props.session.user && !props.session.user.fingerprint_enabled) {
+        menu.push({ label: 'Enable Fingerprint Login', icon: 'fingerprint', onPress: () => this.enableFingerprint() })
+      } else {
+        menu.push({ label: 'Disable Fingerprint Login', icon: 'fingerprint', onPress: () => this.disableFingerprint() })
+      }
     }
 
     menu.push({ label: 'Delete Account', icon: 'times', onPress: () => this.setState({deleteModal: true}) });

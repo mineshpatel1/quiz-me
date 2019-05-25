@@ -155,3 +155,12 @@ sudo chown root:wheel -R /etc/letsencrypt/live
 sudo chmod 770 -R /etc/letsencrypt/live
 ```
 
+# Server Management
+
+```bash
+cd /opt/quiz-me/server
+pm2 start app.js
+pm2 log
+pm2 monit
+pm2 stop app
+```
