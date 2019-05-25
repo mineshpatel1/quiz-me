@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Platform, Animated, View, Image, Linking } from 'react-native';
 
-import { Container, Button, Icon } from '../components/Core';
+import { Container, Button, Icon, Text } from '../components/Core';
 import { checkSession, signOut } from '../actions/SessionActions';
 import { colours, styles } from '../styles';
 import { utils } from '../utils';
@@ -62,35 +62,18 @@ class Home extends Component {
   render() {
     let { props, state } = this;
     let statusColour = props.session.user ? colours.success : colours.error;
-    let iosRightAdjust = Platform.OS == 'ios' ? 25 : 10;
+    let iosAdjust = Platform.OS == 'ios' ? 15: 0;
 
     return (
       <Container
         bgColour={colours.primary} style={[styles.center]}
         onConnectionChange={(_info, online) => this.connectionChange(online)}
       >
-        <Animated.View style={{opacity: state.opacity}}>
-          <View style={[styles.row, {
-            height: 35, alignItems: 'center', justifyContent: 'flex-end', 
-            marginRight: iosRightAdjust
-          }]}>
-            <View style={[styles.aCenter, styles.row, {
-              height: 35, marginLeft: 10, marginTop: 15, marginRight: 10,
-            }]}>
-              <View style={{
-                backgroundColor: statusColour, height: 15, width: 15, borderRadius: 15,
-                borderColor: colours.light, borderWidth: 2,
-              }} />
-            </View>
-            <Icon
-              style={[styles.center, {height: 35, width: 26, marginTop: 15}]}  
-              onPress={() => props.navigation.navigate('Settings')}
-              size={26} icon="cog" colour={colours.white}
-            />
+        <Animated.View style={[styles.f1, styles.col, {width: '100%', opacity: state.opacity}]}>
+          <View style={[styles.f1, styles.row, styles.center, {paddingLeft: 10, paddingRight: 10}]}>
+            <Image style={[styles.f1]} resizeMode="contain" source={require('../../assets/images/title.png')} />
           </View>
-          <View style={[styles.f1, {justifyContent: 'flex-end', alignItems: 'center'}]}>
-            <Image style={{width: 400, height: 150}} source={require('../../assets/images/title.png')} />
-          </View>
+          
 
           <View style={[styles.f1, styles.center]}>
             <Button
@@ -108,6 +91,15 @@ class Home extends Component {
                   props.navigation.navigate('SignIn');
                 }
               }}
+            />
+          </View>
+          <View style={[styles.row, styles.center, { 
+            height: 50 + iosAdjust, borderTopWidth: 1, paddingBottom: iosAdjust,
+            borderColor: colours.primaryLight,
+          }]}>
+            <Icon
+              onPress={() => props.navigation.navigate('Settings')}
+              size={26} icon="cog" colour={colours.white}
             />
           </View>
         </Animated.View>

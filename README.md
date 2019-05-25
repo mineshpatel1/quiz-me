@@ -1,6 +1,13 @@
 # Quiz Me
 
-Quiz app for Android and iOS.
+Quiz app for Android and iOS. Install the base packages from `QuizMe`.
+
+```
+npm install
+react-native link
+```
+
+# Build for Android
 
 ## Configure Build
 
