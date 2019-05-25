@@ -48,3 +48,11 @@ CREATE TABLE IF NOT EXISTS forgotten_password_tokens (
     expiry_time BIGINT NOT NULL
 );
 CREATE INDEX forgotten_password_tokens_email_idx ON forgotten_password_tokens (email);
+
+-- User Friend Assoc
+CREATE TABLE IF NOT EXISTS user_friends (
+    user_id BIGINT REFERENCES users(id) ON UPDATE RESTRICT ON DELETE CASCADE,
+    friend_id BIGINT
+);
+CREATE INDEX user_friends_user_id_idx ON user_friends (user_id);
+ALTER TABLE user_friends ADD CONSTRAINT user_friends_assoc_key UNIQUE (user_id, friend_id);

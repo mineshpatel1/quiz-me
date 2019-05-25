@@ -21,6 +21,7 @@ class Settings extends Component {
   componentDidMount() {
     Biometrics.isSensorAvailable()
       .then((biometryType) => {
+        console.log(biometryType);
         if (biometryType === Biometrics.TouchID) {
           this.setState({ supportsFingerprint: true });
         }
@@ -38,33 +39,35 @@ class Settings extends Component {
   }
 
   enableFingerprint() {
-    this.setState({ loading: true });
-    Biometrics.createKeys('Confirm fingerprint')
-      .then(publicKey => {
-        api.enableFingerprint(publicKey)
-          .then(res => { 
-            this.props.setSession(res);
-            this.props.saveUserSettings({ fingerprint: this.props.session.user.id });
-            this.showSuccess("Registered fingerprint.");
-          })
-          .catch(err => this.showError(err));
-      })
+    this.setState({ loading: true }, () => {
+      Biometrics.createKeys('Confirm fingerprint')
+        .then(publicKey => {
+          api.enableFingerprint(publicKey)
+            .then(res => { 
+              this.props.setSession(res);
+              this.props.saveUserSettings({ fingerprint: this.props.session.user.id });
+              this.showSuccess("Registered fingerprint.");
+            })
+            .catch(err => this.showError(err));
+        });
+    });
   }
 
   disableFingerprint() {
-    this.setState({ loading: true });
-    Biometrics.deleteKeys()
-      .then(success => {
-        if (!success) return this.showError("Could not delete fingerprint keys.");
-        api.disableFingerprint()
-          .then(res => {
-            this.props.setSession(res);
-            this.props.saveUserSettings({ fingerprint: null });
-            this.showSuccess("Disabled fingerprint.");
-          })
-          .catch(err => this.showError(err));
-      })
-      .catch(err => this.showError(err));
+    this.setState({ loading: true }, () => {
+      Biometrics.deleteKeys()
+        .then(success => {
+          if (!success) return this.showError("Could not delete fingerprint keys.");
+          api.disableFingerprint()
+            .then(res => {
+              this.props.setSession(res);
+              this.props.saveUserSettings({ fingerprint: null });
+              this.showSuccess("Disabled fingerprint.");
+            })
+            .catch(err => this.showError(err));
+        })
+        .catch(err => this.showError(err));
+    });
   }
 
   cancelDelete() {
@@ -98,7 +101,7 @@ class Settings extends Component {
     menu.push({ label: 'Delete Account', icon: 'times', onPress: () => this.setState({deleteModal: true}) });
 
     return (
-      <Container header="Settings">
+      <Container header="Settings" spinner={state.loading}>
         <ConfirmModal 
           isVisible={state.deleteModal}
           onSuccess={() => this.deleteAccount()}
@@ -108,11 +111,8 @@ class Settings extends Component {
           }
         />
         <Menu menu={menu} />
-        <SnackBar ref="error" error={true} onAction={() => this.setState({loading: false})} />
-        <SnackBar 
-          ref="success" success={true} 
-          onAction={() => this.setState({loading: false})}
-        />
+        <SnackBar ref="error" error={true} />
+        <SnackBar ref="success" success={true} />
       </Container>
     );
   }

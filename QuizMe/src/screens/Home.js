@@ -63,6 +63,11 @@ class Home extends Component {
     let statusColour = props.session.user ? colours.success : colours.error;
     let iosAdjust = Platform.OS == 'ios' ? 15: 0;
 
+    let bottomLinks = [
+      { icon: 'cog', link: 'Settings', margin: 0 },
+      { icon: 'user-friends', link: props.session.user ? 'Friends' : 'SignIn' },
+    ]
+
     return (
       <Container
         bgColour={colours.primary} style={[styles.center]}
@@ -94,10 +99,15 @@ class Home extends Component {
             height: 50 + iosAdjust, borderTopWidth: 1, paddingBottom: iosAdjust,
             borderColor: colours.primaryLight,
           }]}>
-            <Icon
-              onPress={() => props.navigation.navigate('Settings')}
-              size={26} icon="cog" colour={colours.white}
-            />
+            {
+              bottomLinks.map((link, i) => (
+                <Icon
+                  key={i} onPress={() => props.navigation.navigate(link.link)}
+                  size={26} icon={link.icon} colour={colours.white}
+                  style={{ marginLeft: link.margin || 15 }}
+                />
+              ))
+            }
           </View>
         </Animated.View>
       </Container>
