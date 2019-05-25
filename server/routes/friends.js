@@ -11,3 +11,5 @@ router.get('/friends', (req, res, next) => {
       return res.send({ ok: true, friends: friends });
     }).catch(next);
 });
+
+module.exports = router;

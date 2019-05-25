@@ -34,6 +34,7 @@ app.use('/.well-known/acme-challenge/', express.static(__dirname + '/assets/cert
 app.use(require(__dirname + '/routes/general.js'));
 app.use(require(__dirname + '/routes/session.js'));
 app.use(require(__dirname + '/routes/user.js'));
+app.use(require(__dirname + '/routes/friends.js'));
 
 app.use(utils.errorHandler);
 
