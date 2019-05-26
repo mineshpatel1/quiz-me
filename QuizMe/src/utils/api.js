@@ -135,12 +135,12 @@ class api {
     return _post('friends/request', { email });
   }
 
-  static async confirmFriend(id) {
-    return _post('friends/confirm', { id });
+  static async confirmFriend(friendId) {
+    return _post('friends/confirm', { friendId });
   }
 
-  static async rejectFriend(id) {
-    return _post('friends/reject', { id });
+  static async rejectFriend(friendId) {
+    return _post('friends/unfriend', { friendId });
   }
 }
 

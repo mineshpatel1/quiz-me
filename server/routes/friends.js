@@ -32,4 +32,22 @@ router.post('/friends/request', (req, res, next) => {
     .catch(next);
 });
 
+router.post('/friends/confirm', (req, res, next) => {
+  let data = req.body;
+  if (!req.session.user) return next(new Error("User is not logged in."));
+  if (!data.friendId) return next(new Error("Friend's ID must be specified."));
+  friends.confirm(req.session.user.id, data.friendId)
+    .then(() => { return utils.response(res) })
+    .catch(next)
+});
+
+router.post('/friends/unfriend', (req, res, next) => {
+  let data = req.body;
+  if (!req.session.user) return next(new Error("User is not logged in."));
+  if (!data.friendId) return next(new Error("Friend's ID must be specified."));
+  friends.unfriend(req.session.user.id, data.friendId)
+    .then(() => { return utils.response(res) })
+    .catch(next)
+});
+
 module.exports = router;

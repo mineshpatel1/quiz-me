@@ -63,8 +63,28 @@ exports.request = (userId, friendId) => {
     `, [userId, friendId])
       .then(() => {
         utils.log("Friend request made from " + userId.toString() + " to " + friendId.toString());
-        return utils.response(res);
+        return resolve();
       })
       .catch(reject)
     });
+}
+
+exports.confirm = (userId, friendId) => {
+  return new Promise((resolve, reject) => {
+    pg.query(`
+      UPDATE user_friends SET is_confirmed = FALSE 
+      WHERE user_id = $1::integer AND friend_id = $2::integer
+    `, [userId, friendId])
+      .then(resolve).catch(reject);
+  })
+}
+
+exports.unfriend = (userId, friendId) => {
+  return new Promise((resolve, reject) => {
+    pg.query(`
+      DELETE FROM user_friends WHERE
+      WHERE user_id = $1::integer AND friend_id = $2::integer
+    `, [userId, friendId])
+      .then(resolve).catch(reject);
+  })
 }
