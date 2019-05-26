@@ -71,20 +71,30 @@ exports.request = (userId, friendId) => {
 
 exports.confirm = (userId, friendId) => {
   return new Promise((resolve, reject) => {
-    pg.query(`
-      UPDATE user_friends SET is_confirmed = FALSE 
+    let q1 = pg.query(`
+      UPDATE user_friends SET is_confirmed = TRUE 
       WHERE user_id = $1::integer AND friend_id = $2::integer
-    `, [userId, friendId])
-      .then(resolve).catch(reject);
+    `, [friendId, userId]);
+    
+    // Create reverse association
+    let q2 = pg.query(`
+      INSERT INTO user_friends (user_id, friend_id, is_confirmed)
+      VALUES ($1::integer, $2::integer, TRUE)
+    `, [userId, friendId]);
+
+    Promise.all([q1, q2]).then(resolve).catch(reject);
   })
 }
 
 exports.unfriend = (userId, friendId) => {
   return new Promise((resolve, reject) => {
     pg.query(`
-      DELETE FROM user_friends WHERE
-      WHERE user_id = $1::integer AND friend_id = $2::integer
-    `, [userId, friendId])
+      DELETE FROM user_friends
+      WHERE (
+        (user_id = $1::integer AND friend_id = $2::integer) OR
+        (user_id = $2::integer AND friend_id = $1::integer)
+      )
+    `, [friendId, userId])
       .then(resolve).catch(reject);
-  })
+  });
 }

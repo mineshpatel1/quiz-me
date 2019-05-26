@@ -139,7 +139,7 @@ class api {
     return _post('friends/confirm', { friendId });
   }
 
-  static async rejectFriend(friendId) {
+  static async unfriend(friendId) {
     return _post('friends/unfriend', { friendId });
   }
 }
