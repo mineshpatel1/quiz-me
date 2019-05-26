@@ -11,7 +11,7 @@ router.get('/friends', (req, res, next) => {
   let _getRequests = friends.getRequests(req.session.user.id);
 
   Promise.all([_getFriends, _getRequests])
-    .then([_friends, _requests] => { 
+    .then(([_friends, _requests]) => { 
       return utils.response(res, { friends: _friends, requests: _requests });
     })
     .catch(next);
