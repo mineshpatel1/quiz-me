@@ -62,9 +62,13 @@ class Home extends Component {
     let { props, state } = this;
     let iosAdjust = Platform.OS == 'ios' ? 15: 0;
 
+    friendLink = 'Friends';
+    if (!props.session.user) friendLink = 'SignIn';
+    if (props.session.unconfirmed) friendLink = 'Activate';
+
     let bottomLinks = [
-      { icon: 'cog', nav: 'Settings', },
-      { icon: 'user-friends', nav: props.session.user ? 'Friends' : 'SignIn', },
+      { icon: 'cog', nav: 'Settings' },
+      { icon: 'user-friends', nav: friendLink },
     ]
 
     return (
