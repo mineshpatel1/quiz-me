@@ -2,16 +2,11 @@ import React, { Component } from 'react';
 import { View } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-// import { TabView, TabBar, SceneMap } from 'react-native-tab-view';
 
-import { Container, TabView, Modal, Form, SnackBar, Button, Input, Text } from '../components/Core';
+import { Container, TabView, Modal, Form, SnackBar, Button, Text } from '../components/Core';
 import { checkSession, signOut } from '../actions/SessionActions';
 import { colours, styles } from '../styles';
-import { utils, api, validators } from '../utils';
-
-const SecondRoute = () => (
-  <View style={[styles.f1, { backgroundColor: '#ffffff' }]} />
-);
+import { api, validators } from '../utils';
 
 class Friends extends Component {
   constructor(props) {
@@ -41,6 +36,12 @@ class Friends extends Component {
   showError(err) {
     this.setState({ loading: false });
     this.refs.error.show(err, 0);
+  }
+
+  addFriend = email => {
+    this.setState({ addFriend: false, loading: true }, () => {
+      
+    });
   }
 
   openAddFriend = () => {
@@ -113,7 +114,7 @@ class Friends extends Component {
             <Form 
               fields={fields}
               onCancel={this.cancel}
-              onSuccess={values => {console.log("HEERE")}}
+              onSuccess={values => this.addFriend(values.email)}
               disabled={state.loading || (!props.session.online)}
               inputWidth={250} btnWidth={100} divider={false}
             />

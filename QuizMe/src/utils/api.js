@@ -130,6 +130,10 @@ class api {
   static async getFriends() {
     return _get('friends');
   }
+
+  static async friendRequest(email) {
+    return _post('friends/request', { email });
+  }
 }
 
 export default api;
