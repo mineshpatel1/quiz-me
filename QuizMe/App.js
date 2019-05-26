@@ -8,11 +8,11 @@ import { createAppContainer } from 'react-navigation';
 import AsyncStorage from '@react-native-community/async-storage';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import {
-  faAnkh, faArrowLeft, faAtom, faBook, faBookOpen, faBrain, faCaretDown, faChartPie,
-  faCheck, faChevronLeft, faChevronRight, faClock, faCog, faEnvelope, faFilm, faFingerprint, 
-  faFutbol, faGlobeAmericas, faHome, faHashtag, faHourglassHalf, faLandmark, faLink, faLock, 
-  faMusic,  faPaw, faPlay, faQuestion, faQuoteRight, faSignInAlt, faSignOutAlt, faTh, faTimes, 
-  faTv, faUser, faUserFriends, faUserPlus,
+  faAddressBook, faAnkh, faArrowLeft, faAtom, faBook, faBookOpen, faBrain, faCaretDown, 
+  faChartPie, faCheck, faChevronLeft, faChevronRight, faClock, faCog, faEnvelope, faFilm, 
+  faFingerprint, faFutbol, faGlobeAmericas, faHome, faHashtag, faHourglassHalf, faLandmark, 
+  faLink, faLock, faMusic,  faPaw, faPlay, faQuestion, faQuoteRight, faSignInAlt, faSignOutAlt, 
+  faTh, faTimes, faTv, faUser, faUserFriends, faUserPlus,
 } from '@fortawesome/free-solid-svg-icons';
 
 import AppNavigator from './src/nav/AppNavigator';
@@ -23,11 +23,11 @@ import { utils } from './src/utils';
 import { initGameSettings, initUserSettings } from './src/actions/SettingActions';
 
 library.add(
-  faAnkh, faArrowLeft, faAtom, faBook, faBookOpen, faBrain, faCaretDown, faChartPie,
-  faCheck, faChevronLeft, faChevronRight, faClock, faCog, faEnvelope, faFilm, faFingerprint, 
-  faFutbol, faGlobeAmericas, faHome, faHashtag, faHourglassHalf, faLandmark, faLink, faLock, 
-  faMusic,  faPaw, faPlay, faQuestion, faQuoteRight, faSignInAlt, faSignOutAlt, faTh, faTimes, 
-  faTv, faUser, faUserFriends, faUserPlus,
+  faAddressBook, faAnkh, faArrowLeft, faAtom, faBook, faBookOpen, faBrain, faCaretDown, 
+  faChartPie, faCheck, faChevronLeft, faChevronRight, faClock, faCog, faEnvelope, faFilm, 
+  faFingerprint, faFutbol, faGlobeAmericas, faHome, faHashtag, faHourglassHalf, faLandmark, 
+  faLink, faLock, faMusic,  faPaw, faPlay, faQuestion, faQuoteRight, faSignInAlt, faSignOutAlt, 
+  faTh, faTimes, faTv, faUser, faUserFriends, faUserPlus,
 );
 
 const AppContainer = createAppContainer(AppNavigator);

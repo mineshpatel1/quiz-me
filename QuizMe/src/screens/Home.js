@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Platform, Animated, View, Image, Linking } from 'react-native';
 
-import { Container, Button, Icon } from '../components/Core';
+import { Container, Button, IconSet } from '../components/Core';
 import { checkSession, signOut } from '../actions/SessionActions';
 import { colours, styles } from '../styles';
 import { utils } from '../utils';
@@ -60,12 +60,11 @@ class Home extends Component {
 
   render() {
     let { props, state } = this;
-    let statusColour = props.session.user ? colours.success : colours.error;
     let iosAdjust = Platform.OS == 'ios' ? 15: 0;
 
     let bottomLinks = [
-      { icon: 'cog', link: 'Settings', margin: 0 },
-      { icon: 'user-friends', link: props.session.user ? 'Friends' : 'SignIn' },
+      { icon: 'cog', nav: 'Settings', },
+      { icon: 'user-friends', nav: props.session.user ? 'Friends' : 'SignIn', },
     ]
 
     return (
@@ -95,20 +94,7 @@ class Home extends Component {
               }}
             />
           </View>
-          <View style={[styles.row, styles.center, { 
-            height: 50 + iosAdjust, borderTopWidth: 1, paddingBottom: iosAdjust,
-            borderColor: colours.primaryLight,
-          }]}>
-            {
-              bottomLinks.map((link, i) => (
-                <Icon
-                  key={i} onPress={() => props.navigation.navigate(link.link)}
-                  size={26} icon={link.icon} colour={colours.white}
-                  style={{ marginLeft: link.margin || 15 }}
-                />
-              ))
-            }
-          </View>
+          <IconSet colour={colours.white} borderColour={colours.primaryLight} links={bottomLinks} />
         </Animated.View>
       </Container>
     );

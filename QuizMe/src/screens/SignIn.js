@@ -128,13 +128,8 @@ class SignIn extends Component {
             />
           </Form>
         </View>
-        <SnackBar ref="error" error={true} onAction={() => {
-          this.setState({loading: false})
-        }} />
-        <SnackBar 
-          ref="forgotten" success={true} actionText="OK"
-          onAction={() => {}}
-        />
+        <SnackBar ref="error" error={true} />
+        <SnackBar ref="forgotten" success={true} actionText="OK" />
       </Container>
     );
   }

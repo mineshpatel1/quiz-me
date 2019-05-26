@@ -15,8 +15,10 @@ export default class Form extends Component {
     disabled: false,
     successIcon: 'check',
     cancelIcon: 'times',
-    width: 120,
     onChange: null,
+    inputWidth: 300,
+    btnWidth: 120,
+    divider: true,
   }
 
   constructor(props) {
@@ -58,7 +60,7 @@ export default class Form extends Component {
             return field.validator(val, state.values);
           }} label={field.label} secure={field.secure}
           onChange={(val, valid) => {this.update(field.param, val, valid)}}
-          format={field.format}
+          format={field.format} width={field.width}
         />
       )
     }
@@ -69,7 +71,7 @@ export default class Form extends Component {
           key={i} style={[{marginBottom: 15}]} icon={field.icon}
           value={state.values[field.param]} options={field.options}
           onChange={(val) => {this.update(field.param, val, true)}}
-          format={field.format}
+          format={field.format} width={field.width}
         />
       )
     }
@@ -78,6 +80,7 @@ export default class Form extends Component {
     for (param in props.fields) {
       let field = props.fields[param];
       field.param = param;
+      field.width = props.inputWidth;
       if (field.inputType == 'text') {
         fields.push(textInput(i, field));
       } else if (field.inputType == 'picker') {
@@ -86,11 +89,12 @@ export default class Form extends Component {
       i += 1;
     }
     let valid = Object.values(state.valid).every((x) => {return x});
+    let borderBottomWidth = props.divider ? 2 : 0;
 
     return (
       <View style={[styles.f1, {width: '100%'}]}>
         <View style={[
-          styles.f1, {borderBottomWidth: 2, borderColor: colours.light}
+          styles.f1, {borderBottomWidth: borderBottomWidth, borderColor: colours.light}
         ]}>
           <ScrollView contentContainerStyle={{alignItems: 'center', paddingTop: 15}}>
             {
@@ -117,7 +121,7 @@ export default class Form extends Component {
             disabled={!valid || props.disabled}
             successIcon={props.successIcon}
             cancelIcon={props.cancelIcon}
-            width={props.width}
+            width={props.btnWidth}
           />
         </View>
       </View>

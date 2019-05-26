@@ -126,6 +126,10 @@ class api {
   static async disableFingerprint(publicKey) {
     return _post('user/disableFingerprint', { publicKey });
   }
+
+  static async getFriends() {
+    return _get('friends');
+  }
 }
 
 export default api;

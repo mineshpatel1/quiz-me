@@ -79,7 +79,7 @@ class Activate extends Component {
   }
   
   render() {
-    let { state } = this;
+    let { props, state } = this;
     return (
       <Container 
         bgColour={colours.primary} iosAdjust={true} spinner={state.loading}
