@@ -36,6 +36,7 @@ export default class IconSet extends Component {
               key={i} onPress={() => this.action(link)}
               size={26} icon={link.icon} colour={props.colour}
               style={{ marginLeft: i == 0 ? 0 : 15 }}
+              badge={link.badge}
             />
           ))
         }
