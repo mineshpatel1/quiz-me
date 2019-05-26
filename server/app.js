@@ -9,6 +9,8 @@ const express = require('express');
 const session = require('express-session');
 const bodyParser = require('body-parser');
 
+const utils = require(__dirname + '/api/utils.js');
+
 // Certificate
 var credentials;
 try {
@@ -19,11 +21,9 @@ try {
   };
   global.secure = true;
 } catch {
-  console.warn('Did not find security certificates.');
+  utils.warn('Did not find security certificates.');
   global.secure = false;
 }
-
-const utils = require(__dirname + '/api/utils.js');
 
 const app = express();
 app.use(bodyParser.json());
@@ -46,4 +46,4 @@ if (global.secure) {
   httpServer.listen(global.config.server.port);
 }
 
-console.log('Listening on ' + utils.serverUrl());
+utils.log('Server started on ' + utils.serverUrl());

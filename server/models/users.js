@@ -42,7 +42,7 @@ exports.getFromEmail = (email, activated=true) => {
 }
 
 exports.delete = (email) => {
-  console.log('Deleting user ' + email + '...');
+  utils.log('Deleting user ' + email + '...');
   return new Promise((resolve, reject) => {
     pg.query(`DELETE FROM users WHERE email = $1::text`, [email])
       .then(resolve)
@@ -61,7 +61,7 @@ exports.auth = (email, password) => {
       [email, password],
     ).then(result => {
       if (result.length == 1) {
-        console.log(email + ' logged in...');
+        utils.log(email + ' logged in...');
         return resolve(true);
       }
       if (result.length == 0) return reject(new Error("Invalid password.")); 
@@ -85,7 +85,7 @@ exports.resetActivationToken = email => {
               WHERE email = $3::text;`,
               [token, expiry_time, email],
             ).then(() => {
-              console.log('Reset activation token for ' + email + '.');
+              utils.log('Reset activation token for ' + email + '.');
               return resolve([user, token, expiry_time]);
             }).catch(reject);
           })
@@ -112,7 +112,7 @@ exports.forgottenPassword = email => {
                 expiry_time = $3::bigint`,
               [user.email, token, expiry_time],
             ).then(() => {
-              console.log('Sent password reset link to ' + email + '.');
+              utils.log('Sent password reset link to ' + email + '.');
               return resolve([user, token, expiry_time]);
             }).catch(reject);
           }).catch(reject);
@@ -143,7 +143,7 @@ exports.resetPassword = (email, token, password) => {
             pg.query(
               `DELETE FROM forgotten_password_tokens WHERE email = $1::text`, [user.email]
             ).then(() => {
-              console.log('Password reset for ' + email + '.');
+              utils.log('Password reset for ' + email + '.');
               resolve(user);
             }).catch(reject);
           }).catch(reject);
@@ -153,7 +153,7 @@ exports.resetPassword = (email, token, password) => {
 }
 
 exports.new = (user, password) => {
-  console.log('Creating new user ' + user.email + '...');
+  utils.log('Creating new user ' + user.email + '...');
   return new Promise((resolve, reject) => {
     pg.query(
       `INSERT INTO users(email, name, created_time) 
@@ -174,7 +174,7 @@ exports.new = (user, password) => {
                 VALUES ($1::text, $2::text, $3::bigint)`,
                 [token, user.email, expiry_time],
               ).then(() => {
-                console.log('Successfully created user: ' + user.email);
+                utils.log('Successfully created user: ' + user.email);
                 return resolve([token, expiry_time]);
               }).catch(reject);
             }).catch(reject);
@@ -184,7 +184,7 @@ exports.new = (user, password) => {
 }
 
 exports.activate = (email, token) => {
-  console.log('Activating user ' + email + '...');
+  utils.log('Activating user ' + email + '...');
   return new Promise((resolve, reject) => {
     exports.getFromEmail(email, false)
       .then(user => {
@@ -204,7 +204,7 @@ exports.activate = (email, token) => {
             pg.query(
               `DELETE FROM confirm_tokens WHERE email = $1::text`, [user.email]
             ).then(() => {
-              console.log('Activated user ' + user.email + '.');
+              utils.log('Activated user ' + user.email + '.');
               user.is_activated = true;
               return resolve(user);
             }).catch(reject);
@@ -223,7 +223,7 @@ exports.enableFingerprint = (id, publicKey) => {
           [publicKey, user.id]
         ).then(() => {
           user.fingerprint_enabled = true;
-          console.log('Enabled fingerprint for user ' + id + '.');
+          utils.log('Enabled fingerprint for user ' + id + '.');
           return resolve(user);
         }).catch(reject);
       }).catch(reject);
@@ -239,7 +239,7 @@ exports.disableFingerprint = id => {
           [user.id]
         ).then(() => {
           user.fingerprint_enabled = false;
-          console.log('Disabled fingerprint for user ' + id + '.');
+          utils.log('Disabled fingerprint for user ' + id + '.');
           return resolve(user);
         }).catch(reject);
       }).catch(reject);
