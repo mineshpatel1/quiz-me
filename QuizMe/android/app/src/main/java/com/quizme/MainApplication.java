@@ -3,6 +3,7 @@ package com.quizme;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.swmansion.reanimated.ReanimatedPackage;
 import org.devio.rn.splashscreen.SplashScreenReactPackage;
 import com.rnbiometrics.ReactNativeBiometricsPackage;
 import com.reactnativecommunity.netinfo.NetInfoPackage;
@@ -29,6 +30,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new ReanimatedPackage(),
             new SplashScreenReactPackage(),
             new ReactNativeBiometricsPackage(),
             new NetInfoPackage(),

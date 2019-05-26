@@ -11,6 +11,7 @@ ALTER TABLE "sessions" ADD CONSTRAINT "session_pkey" PRIMARY KEY ("sid") NOT DEF
 -- Drops
 DROP TABLE IF EXISTS forgotten_password_tokens;
 DROP TABLE IF EXISTS confirm_tokens;
+DROP TABLE IF EXISTS user_friends;
 DROP TABLE IF EXISTS user_auth;
 DROP TABLE IF EXISTS users;
 
@@ -51,8 +52,10 @@ CREATE INDEX forgotten_password_tokens_email_idx ON forgotten_password_tokens (e
 
 -- User Friend Assoc
 CREATE TABLE IF NOT EXISTS user_friends (
-    user_id BIGINT REFERENCES users(id) ON UPDATE RESTRICT ON DELETE CASCADE,
-    friend_id BIGINT
+    user_id BIGINT NOT NULL REFERENCES users(id) ON UPDATE RESTRICT ON DELETE CASCADE,
+    friend_id BIGINT NOT NULL REFERENCES users(id) ON UPDATE RESTRICT ON DELETE CASCADE,
+    is_confirmed BOOLEAN
 );
 CREATE INDEX user_friends_user_id_idx ON user_friends (user_id);
+CREATE INDEX user_friends_friend_id_idx ON user_friends (friend_id);
 ALTER TABLE user_friends ADD CONSTRAINT user_friends_assoc_key UNIQUE (user_id, friend_id);

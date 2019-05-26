@@ -14,6 +14,7 @@ import _ProgressBar from './ProgressBar';
 import _ProgressCircle from './ProgressCircle';
 import _SnackBar from './SnackBar';
 import _StatusBar from './StatusBar';
+import _TabView from './TabView';
 import _Text from './Text';
 import _Timer from './Timer';
 
@@ -33,5 +34,6 @@ export const ProgressBar = _ProgressBar;
 export const ProgressCircle = _ProgressCircle;
 export const SnackBar = _SnackBar;
 export const StatusBar = _StatusBar;
+export const TabView = _TabView;
 export const Text = _Text;
 export const Timer = _Timer;

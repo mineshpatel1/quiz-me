@@ -25,6 +25,7 @@ class Container extends Component {
     // TODO: Remove this when react-navigation is updated
     // This will fire continually for Transitioner in react-navigation
     YellowBox.ignoreWarnings([
+      'Warning: componentWillMount is deprecated',
       'Warning: componentWillReceiveProps is deprecated',
       'Warning: componentWillUpdate is deprecated',
     ]);
