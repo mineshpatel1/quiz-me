@@ -20,7 +20,7 @@ exports.get = id => {
       .then(result => {
         let friends = [];
         result.forEach(row => {
-          friends.push(new User(row));
+          friends.push(new users.User(row));
         });
         return resolve(friends);
       })
@@ -45,8 +45,9 @@ exports.getRequests = id => {
     `, [id])
       .then(result => {
         let requests = [];
+        new users.User({ id: 3 });
         result.forEach(row => {
-          requests.push(new User(row));
+          requests.push(new users.User(row));
         });
         return resolve(requests);
       })

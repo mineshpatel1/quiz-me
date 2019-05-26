@@ -264,3 +264,5 @@ exports.verifyFingerprint = (id, signature, payload) => {
     })
   });
 }
+
+module.exports.User = User;
