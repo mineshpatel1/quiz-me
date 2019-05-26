@@ -11,13 +11,19 @@ export default class ConfirmModal extends Component {
     isVisible: false,
     onSuccess: null,
     onCancel: null,
+    onReject: null,
     message: "",
     fontSize: 24,
+    btnWidth: 120,
+    width: 350,
   }
 
   render() {
     let { props } = this;
-    let { isVisible, onSuccess, onCancel, message, fontSize, ...otherProps} = props;
+    let { 
+      isVisible, onSuccess, onCancel, onReject, 
+      message, fontSize, ...otherProps
+    } = props;
 
     return (
       <Modal
@@ -26,13 +32,17 @@ export default class ConfirmModal extends Component {
       >
         <View style={[styles.col]}>
           <View style={[styles.f1, styles.center]} >
-            <Text size={props.fontSize}>{props.message}</Text>
+            <Text size={props.fontSize} align="center">{props.message}</Text>
           </View>
-          <View style={{ marginBottom: 10 }}>
+          <View style={{ marginBottom: 10, width: props.width - 70 }}>
             <ConfirmButtons
               justify="space-between"
               onSuccess={() => onSuccess()}
-              onCancel={() => onCancel()}
+              onCancel={() => {
+                if (onReject) return onReject();
+                onCancel();
+              }}
+              width={props.btnWidth}
             />
           </View>
         </View>

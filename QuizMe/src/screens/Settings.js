@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { View } from 'react-native';
 
 import { signOut } from '../actions/SessionActions';
-import { Container, Menu } from '../components/Core';
+import { Container, Menu, Text } from '../components/Core';
+import { colours, styles } from '../styles';
 
 class Settings extends Component {
   constructor(props) {
@@ -13,6 +15,7 @@ class Settings extends Component {
   render() {
     let { props, state } = this;
 
+    let user = props.session.user;
     let menu = [
       { label: 'Account Settings', icon: 'user', onPress: () => { props.navigation.navigate('UserSettings'); }, disabled: (props.session.user ? false : true) },
       { label: 'Game Settings', icon: 'cog', onPress: () => { props.navigation.navigate('GameSettings'); }},
@@ -37,6 +40,12 @@ class Settings extends Component {
 
     return (
       <Container header="Settings">
+        {
+          user &&
+          <View style={[styles.mt15, styles.pb15, styles.borderBottom]}>
+            <Text bold={true} align="center">{user.name || user.email}</Text>
+          </View>
+        }
         <Menu menu={menu} />
       </Container>
     );

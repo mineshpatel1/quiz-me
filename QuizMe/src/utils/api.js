@@ -134,6 +134,14 @@ class api {
   static async friendRequest(email) {
     return _post('friends/request', { email });
   }
+
+  static async confirmFriend(id) {
+    return _post('friends/confirm', { id });
+  }
+
+  static async rejectFriend(id) {
+    return _post('friends/reject', { id });
+  }
 }
 
 export default api;

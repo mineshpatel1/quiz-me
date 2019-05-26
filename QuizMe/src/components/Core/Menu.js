@@ -37,7 +37,14 @@ export default class Menu extends Component {
             >
               <View style={containerStyle}>
                 <Text colour={colour}>{item.label}</Text>
-                <Icon colour={colour} icon={item.icon} />
+                {
+                  item.subLabel &&
+                  <Text colour={colours.lightGrey} size={14}>{item.subLabel}</Text>
+                }
+                {
+                  item.icon &&
+                  <Icon colour={colour} icon={item.icon} />
+                }
               </View>
             </TouchableNativeFeedback>
           </View>

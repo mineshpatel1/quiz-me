@@ -3,7 +3,7 @@ import { View } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { Container, TabView, Modal, Form, SnackBar, Button, Text } from '../components/Core';
+import { Container, TabView, ConfirmModal, Modal, Form, SnackBar, Menu, Button, Text } from '../components/Core';
 import { checkSession, signOut } from '../actions/SessionActions';
 import { colours, styles } from '../styles';
 import { api, validators } from '../utils';
@@ -13,8 +13,10 @@ class Friends extends Component {
     super(props);
     this.state = {
       loading: false,
-      friends: null,
+      friends: [],
+      requests: [],
       addFriend: false,
+      confirmFriend: false,
     };
   }
 
@@ -25,7 +27,6 @@ class Friends extends Component {
           this.setState({ 
             loading: false, 
             friends: result.friends,
-            pending: result.pending,
             requests: result.requests,
           });
         })
@@ -33,13 +34,34 @@ class Friends extends Component {
     })
   }
 
-  showError(err) {
+  showError = err => {
     this.setState({ loading: false });
     this.refs.error.show(err, 0);
   }
 
+  showSuccess = msg => {
+    this.setState({ loading: false });
+    this.refs.success.show(msg, 3);
+  }
+
   addFriend = email => {
     this.setState({ addFriend: false, loading: true }, () => {
+      api.friendRequest(email)
+        .then(() => {
+          this.showSuccess("Sent friend request.")
+        })
+        .catch(this.showError);
+    });
+  }
+
+  confirmFriend = id => {
+    this.setState({ confirmFriend: false, loading: true }, () => {
+      
+    });
+  }
+
+  rejectFriend = id => {
+    this.setState({ confirmFriend: false, loading: true }, () => {
       
     });
   }
@@ -54,6 +76,14 @@ class Friends extends Component {
 
   render() {
     let { props, state } = this;
+
+    let requests = [];
+    state.requests.forEach((req, i) => {
+      requests.push({ 
+        label: req.name || req.email, subLabel: req.name ? req.email : null,
+        onPress: () => { this.setState({ confirmFriend: req.id }) }
+      });
+    });
 
     let fields = {
       email: {
@@ -100,6 +130,10 @@ class Friends extends Component {
             <Text bold={true} align="center">You have no oustanding friend requests.</Text>
           </View>
         )
+      } else {
+        return (
+          <Menu menu={requests} />
+        )
       }
     }
 
@@ -120,6 +154,13 @@ class Friends extends Component {
             />
           </View>
         </Modal>
+        <ConfirmModal 
+          isVisible={this.state.confirmFriend > 0}
+          message={"Confirm or reject friend request?"}
+          onCancel={() => { this.setState({ confirmFriend: false }) }}
+          onSuccess={() => { console.log(state.confirmFriend) }}
+          onReject={() => { this.rejectFriend(state.confirmFriend); }}
+        />
         <TabView
           scenes={{
             'Friends': Friends,
@@ -127,6 +168,7 @@ class Friends extends Component {
           }}
         />
         <SnackBar ref="error" error={true} />
+        <SnackBar ref="success" success={true} />
       </Container>
     )
   }
