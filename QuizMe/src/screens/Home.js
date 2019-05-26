@@ -60,7 +60,6 @@ class Home extends Component {
 
   render() {
     let { props, state } = this;
-    let iosAdjust = Platform.OS == 'ios' ? 15: 0;
 
     friendLink = 'Friends';
     if (!props.session.user) friendLink = 'SignIn';

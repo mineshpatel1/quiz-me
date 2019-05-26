@@ -32,19 +32,15 @@ class Container extends Component {
   }
 
   componentDidMount() {
-    if (this.props.onConnectionChange) {
-      NetInfo.addEventListener('connectionChange', (info) => {
-        this.onConnectionChange(info, this.is_online(info));
-      });
-    }
+    NetInfo.addEventListener('connectionChange', (info) => {
+      this.onConnectionChange(info, this.is_online(info));
+    });
   }
 
   componentWillUnmount() {
-    if (this.props.onConnectionChange) {
-      NetInfo.removeEventListener('connectionChange', (info) => {
-        this.onConnectionChange(info, this.is_online(info));
-      });
-    }
+    NetInfo.removeEventListener('connectionChange', (info) => {
+      this.onConnectionChange(info, this.is_online(info));
+    });
   }
 
   is_online(info) {
@@ -53,7 +49,9 @@ class Container extends Component {
 
   onConnectionChange(info, online) {
     this.props.setConnection(online);
-    this.props.onConnectionChange(info, online);
+    if (this.props.onConnectionChange) {
+      this.props.onConnectionChange(info, online);
+    }
   }
 
   render() {

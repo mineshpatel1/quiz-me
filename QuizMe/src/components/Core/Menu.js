@@ -43,7 +43,10 @@ export default class Menu extends Component {
                 }
                 {
                   item.icon &&
-                  <Icon colour={colour} icon={item.icon} />
+                  <Icon 
+                    colour={item.iconColour || colour} 
+                    icon={item.icon} onPress={item.iconAction} 
+                  />
                 }
               </View>
             </TouchableNativeFeedback>

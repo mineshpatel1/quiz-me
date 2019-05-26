@@ -13,25 +13,31 @@ class Friends extends Component {
     super(props);
     this.state = {
       loading: false,
+      init: false,
       friends: [],
       requests: [],
       addFriend: false,
       confirmFriend: false,
+      unfriend: false,
     };
   }
 
   componentDidMount() {
+    this.fetchFriends();
+  }
+
+  fetchFriends = () => {
     this.setState({ loading: true }, () => {
       api.getFriends()
         .then(result => {
           this.setState({ 
-            loading: false, 
+            loading: false, init: true,
             friends: result.friends,
             requests: result.requests,
           });
         })
         .catch(err => this.showError(err));
-    })
+    });
   }
 
   showError = err => {
@@ -47,22 +53,28 @@ class Friends extends Component {
   addFriend = email => {
     this.setState({ addFriend: false, loading: true }, () => {
       api.friendRequest(email)
-        .then(() => {
-          this.showSuccess("Sent friend request.")
-        })
+        .then(() => this.showSuccess("Sent friend request."))
         .catch(this.showError);
     });
   }
 
   confirmFriend = id => {
     this.setState({ confirmFriend: false, loading: true }, () => {
-      
+      api.confirmFriend(id)
+        .then(() => this.fetchFriends())
+        .catch(this.showError);
     });
   }
 
-  rejectFriend = id => {
-    this.setState({ confirmFriend: false, loading: true }, () => {
-      
+  unfriend = id => {
+    this.setState({ 
+      confirmFriend: false, 
+      unfriend: false, 
+      loading: true
+    }, () => {
+      api.unfriend(id)
+        .then(() => this.fetchFriends())
+        .catch(this.showError);
     });
   }
 
@@ -85,6 +97,14 @@ class Friends extends Component {
       });
     });
 
+    let friends = [];
+    state.friends.forEach((friend, i) => {
+      friends.push({
+        label: friend.name || friend.email, subLabel: friend.name ? friend.email : null,
+        iconColour: colours.error, icon: 'times', iconAction: () => { this.setState({ unfriend: friend.id }) },
+      });
+    });
+
     let fields = {
       email: {
         label: "Email",
@@ -97,7 +117,9 @@ class Friends extends Component {
     }
 
     let Friends = () => {
-      if (!state.friends || state.friends.length == 0) {
+      if (!state.init) {
+        return (<View/>)
+      } else if (!state.friends || state.friends.length == 0) {
         return (
           <View style={[styles.f1, styles.center, { padding: 30 }]}>
             <Text bold={true} align="center">Aww, it seems you don't have any friends.</Text>
@@ -119,7 +141,7 @@ class Friends extends Component {
           </View>
         )
       } else {
-        return (<View><Text>TODO: Build UI for Friends</Text></View>)
+        return (<Menu menu={friends} />)
       }
     }
 
@@ -131,9 +153,7 @@ class Friends extends Component {
           </View>
         )
       } else {
-        return (
-          <Menu menu={requests} />
-        )
+        return (<Menu menu={requests} />)
       }
     }
 
@@ -158,8 +178,14 @@ class Friends extends Component {
           isVisible={this.state.confirmFriend > 0}
           message={"Confirm or reject friend request?"}
           onCancel={() => { this.setState({ confirmFriend: false }) }}
-          onSuccess={() => { console.log(state.confirmFriend) }}
-          onReject={() => { this.rejectFriend(state.confirmFriend); }}
+          onSuccess={() => { this.confirmFriend(state.confirmFriend); }}
+          onReject={() => { this.unfriend(state.confirmFriend); }}
+        />
+        <ConfirmModal 
+          isVisible={this.state.unfriend > 0}
+          message={"Unfriend this player?"}
+          onCancel={() => { this.setState({ unfriend: false }) }}
+          onSuccess={() => { this.unfriend(state.unfriend); }}
         />
         <TabView
           scenes={{
