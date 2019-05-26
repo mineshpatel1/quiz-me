@@ -62,8 +62,15 @@ exports.getToken = async () => {
   return uidgen.generate();
 }
 
+/** Standard handle for successful responses. */
+exports.response = (res, payload) => {
+  payload = payload || {};
+  payload.ok = true;
+  res.send(payload);
+}
+
 /** Route handler for errors. */
-exports.errorHandler = async (err, _req, res, _next) => {
+exports.errorHandler = (err, _req, res, _next) => {
   let _err;
   if (err instanceof Error) _err = err.message;
   else _err = err.toString();

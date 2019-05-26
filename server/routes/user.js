@@ -24,7 +24,7 @@ router.post('/user/register', (req, res, next) => {
         .then(([token, expiry_time]) => {
           req.session.unconfirmed = { email: newUser.email, expiry_time: expiry_time };
           email.activate(newUser, token)
-            .then(() => res.send({ ok: true, unconfirmed: newUser.email }))
+            .then(() => utils.response({  unconfirmed: newUser.email }))
             .catch(next);
         })
     })
@@ -41,7 +41,7 @@ router.post('/user/activate', (req, res, next) => {
     .then(user => {
       req.session.unconfirmed = null;
       req.session.user = user;
-      res.send({ ok: true, user: user });
+      return utils.response({ user });
     })
     .catch(next);
 });
@@ -54,7 +54,7 @@ router.post('/user/resetToken', (req, res, next) => {
     .then(([user, token, expiry_time]) => {
       req.session.unconfirmed = { email: user.email, expiry_time: expiry_time };
       email.activate(user, token)
-        .then(() => res.send({ ok: true, unconfirmed: user.email }))
+        .then(() => utils.response({ unconfirmed: user.email }))
         .catch(next);
     })
     .catch(next);
@@ -66,7 +66,7 @@ router.post('/user/changePassword', (req, res, next) => {
   if (!data.password) return next(new Error("Password is required."));
 
   users.changePassword(req.session.user.email, data.password)
-    .then(() => res.send({ ok: true }))
+    .then(() => utils.response())
     .catch(next);
 });
 
@@ -77,7 +77,7 @@ router.post('/user/forgottenPassword', (req, res, next) => {
     .then(([user, token, expiry_time]) => {
       req.session.resetPassword = { email: user.email, expiry_time: expiry_time };
       email.resetPassword(user, token)
-        .then(() => res.send({ ok: true, resetPassword: user.email }))
+        .then(() => utils.response({ resetPassword: user.email }))
         .catch(next);
     })
     .catch(next);
@@ -94,7 +94,7 @@ router.post('/user/resetPassword', (req, res, next) => {
     .then(user => {
       req.session.resetPassword = null;
       req.session.user = user;
-      res.send({ ok: true, user: user });
+      return utils.response({ user });
     })
     .catch(next);
 });
@@ -106,7 +106,7 @@ router.post('/user/enableFingerprint', (req, res, next) => {
   users.enableFingerprint(req.session.user.id, data.publicKey)
     .then(user => {
       req.session.user = user;
-      return res.send({ ok: true, user: user });
+      return utils.response({ user });
     })
     .catch(next);
 });
@@ -117,7 +117,7 @@ router.post('/user/disableFingerprint', (req, res, next) => {
   users.disableFingerprint(req.session.user.id)
     .then(user => {
       req.session.user = user;
-      return res.send({ ok: true, user: user });
+      return utils.response({ user });
     })
     .catch(next);
 });
@@ -129,7 +129,7 @@ router.delete('/user', (req, res, next) => {
   utils.endSession(req)
     .then(() => {
       users.delete(email)
-        .then(() => { return res.send({ ok: true }) })
+        .then(() => { return utils.response() })
         .catch(next)
     })
     .catch(next);

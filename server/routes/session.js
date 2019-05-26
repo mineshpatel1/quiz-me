@@ -48,7 +48,7 @@ router.post('/session/login', (req, res, next) => {
       users.auth(data.email, data.password)
         .then(() => {
           req.session.user = user;  // Activate session
-          return res.send({ ok: true, user: user });
+          return utils.response({ user });
         })
         .catch(next);
     })
@@ -73,7 +73,7 @@ router.post('/session/login/fingerprint', (req, res, next) => {
       users.verifyFingerprint(data.payload.id, data.signature, JSON.stringify(data.payload))
         .then(() => {
           req.session.user = user;  // Activate session
-          return res.send({ ok: true, user: user });
+          return utils.response({ user });
         })
         .catch(next);
     })

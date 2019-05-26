@@ -54,14 +54,14 @@ exports.getRequests = id => {
   });
 }
 
-exports.friendRequest = (userId, friendId) => {
+exports.request = (userId, friendId) => {
   return new Promise((resolve, reject) => {
     pg.query(`
       INSERT INTO user_friends (user_id, friend_id, is_confirmed)
       VALUES ($1::integer, $2::integer, FALSE)
     `, [userId, friendId])
       .then(() => {
-        utils.log("Friend request from " + userId.toString() + " to " _ friendId.toString());
+        utils.log("Friend request made from " + userId.toString() + " to " + friendId.toString());
       })
       .catch(reject)
     });
