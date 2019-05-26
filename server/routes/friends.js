@@ -13,10 +13,12 @@ router.get('/friends', (req, res, next) => {
 });
 
 router.post('/friends/request', (req, res, next) => {
+  let data = req.body;
   if (!req.session.user) return next(new Error("User is not logged in."));
-  if (!req.data.email) return next(new Error("Friend's Email must be specified."));
-  users.getFromEmail(req.data.email)
-    .then(friend => { 
+  if (!data.email) return next(new Error("Friend's Email must be specified."));
+  users.getFromEmail(data.email)
+    .then(friend => {
+      if (!friend) return next(new Error(data.email + " doesn't play QuizMe."))
       friends.request(req.session.user.id, friend.id)
         .then(() => { return utils.response(res) })
         .catch(next);

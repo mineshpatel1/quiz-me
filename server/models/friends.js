@@ -62,6 +62,7 @@ exports.request = (userId, friendId) => {
     `, [userId, friendId])
       .then(() => {
         utils.log("Friend request made from " + userId.toString() + " to " + friendId.toString());
+        return utils.response(res);
       })
       .catch(reject)
     });
