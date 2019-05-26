@@ -28,8 +28,7 @@ router.get('/session', (req, res) => {
     req.session.resetPassword  = undefined;
   }
 
-  return res.send({
-    ok: true,
+  return utils.response(res, {
     user: req.session.user,
     unconfirmed: req.session.unconfirmed,
     resetPassword: req.session.resetPassword,
@@ -48,7 +47,7 @@ router.post('/session/login', (req, res, next) => {
       users.auth(data.email, data.password)
         .then(() => {
           req.session.user = user;  // Activate session
-          return utils.response({ user });
+          return utils.response(res, { user });
         })
         .catch(next);
     })
@@ -57,7 +56,7 @@ router.post('/session/login', (req, res, next) => {
 
 router.get('/session/logout', (req, res, next) => {
   utils.endSession(req)
-    .then(() => res.send({ ok: true }))
+    .then(() => utils.response(res))
     .catch(next);
 });
 
@@ -73,7 +72,7 @@ router.post('/session/login/fingerprint', (req, res, next) => {
       users.verifyFingerprint(data.payload.id, data.signature, JSON.stringify(data.payload))
         .then(() => {
           req.session.user = user;  // Activate session
-          return utils.response({ user });
+          return utils.response(res, { user });
         })
         .catch(next);
     })
