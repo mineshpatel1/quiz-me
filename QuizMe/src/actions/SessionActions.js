@@ -1,4 +1,4 @@
-import { SET_SESSION, SET_CONNECTION } from '../types';
+import { SET_SESSION, SET_CONNECTION, SET_REQUEST_COUNT } from '../types';
 import { api } from '../utils';
 
 export const setSession = session => ({
@@ -7,6 +7,11 @@ export const setSession = session => ({
   unconfirmed: session && session.unconfirmed,
   resetPassword: session && session.resetPassword,
 });
+
+export const setRequestCount = count => ({
+  type: SET_REQUEST_COUNT,
+  count: count,
+})
 
 export const setConnection = online => ({
   type: SET_CONNECTION,

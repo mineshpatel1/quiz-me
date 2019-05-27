@@ -6,7 +6,7 @@ import { Platform, Animated, View, Image, Linking } from 'react-native';
 import { Container, Button, Checkbox, IconSet } from '../components/Core';
 import { checkSession, signOut } from '../actions/SessionActions';
 import { colours, styles } from '../styles';
-import { utils } from '../utils';
+import { utils, api } from '../utils';
 
 class Home extends Component {
   constructor(props) {
@@ -16,6 +16,7 @@ class Home extends Component {
       online: false,
       loggedIn: false,
       modal: false,
+      requestCount: null,
     }
   }
 
@@ -54,10 +55,6 @@ class Home extends Component {
     }
   }
 
-  connectionChange(online) {
-    if (online) this.props.checkSession().catch(err => console.log('Session check error: ', err));
-  }
-
   render() {
     let { props, state } = this;
 
@@ -67,13 +64,12 @@ class Home extends Component {
 
     let bottomLinks = [
       { icon: 'cog', nav: 'Settings' },
-      { icon: 'user-friends', nav: friendLink },
+      { icon: 'user-friends', nav: friendLink, badge: props.session.requestCount },
     ]
 
     return (
       <Container
         bgColour={colours.primary} style={[styles.center]}
-        onConnectionChange={(_info, online) => this.connectionChange(online)}
       >
         <Animated.View style={[styles.f1, styles.col, {width: '100%', opacity: state.opacity}]}>
           <View style={[styles.f1, styles.row, styles.center, {paddingLeft: 10, paddingRight: 10}]}>

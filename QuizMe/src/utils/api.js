@@ -131,8 +131,12 @@ class api {
     return _get('friends');
   }
 
-  static async friendRequest(email) {
-    return _post('friends/request', { email });
+  static async getFriendRequestCount() {
+    return _get('friends/requestCount');
+  }
+
+  static async friendRequests(emails) {
+    return _post('friends/requests', { emails });
   }
 
   static async confirmFriend(friendId) {
@@ -141,6 +145,10 @@ class api {
 
   static async unfriend(friendId) {
     return _post('friends/unfriend', { friendId });
+  }
+
+  static async getPossibleFriends(emails) {
+    return _post('friends/possible', { emails });
   }
 }
 

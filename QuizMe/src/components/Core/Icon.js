@@ -16,6 +16,7 @@ export default class Icon extends Component {
   }
   render() {
     let { props } = this;
+    let showBadge = props.badge > 0;
     return (
       <View style={props.style}>
         {
@@ -29,7 +30,7 @@ export default class Icon extends Component {
           </TouchableOpacity>
         }
         {
-          props.badge &&
+          showBadge &&
           <View style={{
             position: 'absolute',
             top: -5,

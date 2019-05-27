@@ -70,7 +70,7 @@ const AppNavigator = createStackNavigator({
   UserSettings: { screen: UserSettings },
 },
 {
-  initialRouteName: "Friends",
+  initialRouteName: "Home",
   transitionConfig: (nav) => slideFromRight(nav),
   defaultNavigationOptions: {
     header: null,

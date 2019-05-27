@@ -9,3 +9,4 @@ export const CHOOSE_ANSWER = 'CHOOSE_ANSWER';
 
 export const SET_SESSION = 'SET_SESSION';
 export const SET_CONNECTION = 'SET_CONNECTION';
+export const SET_REQUEST_COUNT = 'SET_REQUEST_COUNT';

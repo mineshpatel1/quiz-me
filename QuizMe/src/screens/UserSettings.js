@@ -21,7 +21,6 @@ class Settings extends Component {
   componentDidMount() {
     Biometrics.isSensorAvailable()
       .then((biometryType) => {
-        console.log(biometryType);
         if (biometryType === Biometrics.TouchID) {
           this.setState({ supportsFingerprint: true });
         }

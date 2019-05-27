@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import { Platform, ScrollView, View, } from 'react-native';
 
 import { Container, Text, Button, Input, SnackBar } from '../components/Core';
-import { setSession, checkSession } from '../actions/SessionActions';
+import { setSession } from '../actions/SessionActions';
 import { styles, colours } from '../styles';
 import { validators, api } from '../utils';
 
@@ -53,11 +53,6 @@ class Activate extends Component {
         .catch(err => this.showError(err));
   }
 
-  connectionChange(online) {
-    if (online) this.props.checkSession();
-    this.setState({ loading: false });
-  }
-
   validateToken(val) {
     if (!val) return false;
     return val.length == 10 && validators.isAlphaNumeric(val);
@@ -83,7 +78,7 @@ class Activate extends Component {
     return (
       <Container 
         bgColour={colours.primary} iosAdjust={true} spinner={state.loading}
-        onConnectionChange={(_info, online) => this.connectionChange(online)}
+        onConnectionChange={(_info) => this.setState({ loading: false })}
       >
         <View style={[styles.f1]}>
           <ScrollView 
@@ -135,10 +130,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = dispatch => (
-  bindActionCreators({
-    setSession,
-    checkSession,
-  }, dispatch)
+  bindActionCreators({ setSession }, dispatch)
 );
 
 export default connect(mapStateToProps, mapDispatchToProps)(Activate);

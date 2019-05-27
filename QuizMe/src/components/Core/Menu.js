@@ -21,7 +21,8 @@ export default class Menu extends Component {
 
       let containerStyle = [
         styles.row, styles.aCenter, {
-          height: props.height, width: '100%', justifyContent: 'space-between', paddingLeft: 15, paddingRight: 15
+          height: props.height, width: '100%', justifyContent: 'space-between',
+          paddingLeft: 15, paddingRight: 15,
         }
       ];
 
@@ -43,7 +44,7 @@ export default class Menu extends Component {
                 }
                 {
                   item.icon &&
-                  <Icon 
+                  <Icon
                     colour={item.iconColour || colour} 
                     icon={item.icon} onPress={item.iconAction} 
                   />

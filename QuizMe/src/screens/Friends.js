@@ -6,9 +6,9 @@ import Contacts from 'react-native-contacts';
 
 import { 
   Container, TabView, ConfirmModal, Modal, Form, SnackBar, Menu, 
-  MultiPickerModal, IconSet, Button, Text,
+  MultiPickerModal, IconSet, Text,
 } from '../components/Core';
-import { checkSession, signOut } from '../actions/SessionActions';
+import { setRequestCount } from '../actions/SessionActions';
 import { colours, styles } from '../styles';
 import { utils, api, validators } from '../utils';
 
@@ -42,6 +42,7 @@ class Friends extends Component {
             friends: result.friends,
             requests: result.requests,
           });
+          this.props.setRequestCount(result.requests.length);
         })
         .catch(err => this.showError(err));
     });
@@ -59,8 +60,16 @@ class Friends extends Component {
 
   addFriend = email => {
     this.setState({ addFriend: false, loading: true }, () => {
-      api.friendRequest(email)
-        .then(() => this.showSuccess("Sent friend request."))
+      api.friendRequests([email])
+        .then(() => this.showSuccess("Sent friend request to " + email))
+        .catch(this.showError);
+    });
+  }
+
+  requestFriends = emails => {
+    this.setState({ contactModal: false, loading: true }, () => {
+      api.friendRequests(emails)
+        .then(() => this.showSuccess("Sent " + emails.length + " friend requests."))
         .catch(this.showError);
     });
   }
@@ -110,9 +119,16 @@ class Friends extends Component {
               });
             });
             emails = utils.unique(emails);  // Unique
-            this.refs.contactList.update(utils.clone(emails));
-            this.setState({ loading: false, emails: emails, contactModal: true });
-            // this.showSuccess("Synced " + emails.length + " QuizMe players from contacts");
+
+            api.getPossibleFriends(emails)
+              .then(result => {
+                let users = result.users;
+                if (users.length == 0) return this.showError("None of your friends play QuizMe");
+                emails = users.map(u => u.email);
+                this.refs.contactList.update(utils.clone(emails));
+                this.setState({ loading: false, emails: emails, contactModal: true });
+              })
+              .catch(this.showError);
           })
         }).catch(this.showError);
     });
@@ -123,7 +139,7 @@ class Friends extends Component {
 
     let requests = [];
     if (state.requests) {
-      state.requests.forEach((req, i) => {
+      state.requests.forEach((req) => {
         requests.push({ 
           label: req.name || req.email, subLabel: req.name ? req.email : null,
           onPress: () => { this.setState({ confirmFriend: req.id }) }
@@ -133,7 +149,7 @@ class Friends extends Component {
     
     let friends = [];
     if (state.friends) {
-      state.friends.forEach((friend, i) => {
+      state.friends.forEach((friend) => {
         friends.push({
           label: friend.name || friend.email, subLabel: friend.name ? friend.email : null,
           iconColour: colours.error, icon: 'times', iconAction: () => { this.setState({ unfriend: friend.id }) },
@@ -220,7 +236,7 @@ class Friends extends Component {
         />
         <MultiPickerModal
           isVisible={this.state.contactModal} options={state.emails}
-          onSuccess={values => { console.log(values)}}
+          onSuccess={values => { this.requestFriends(values) }}
           onCancel={() => this.setState({ contactModal: false })}
           fontSize={14} bold={false} padding={5}
           ref="contactList"
@@ -245,9 +261,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = dispatch => (
-  bindActionCreators({
-    checkSession, signOut,
-  }, dispatch)
+  bindActionCreators({ setRequestCount }, dispatch)
 );
 
 export default connect(mapStateToProps, mapDispatchToProps)(Friends);

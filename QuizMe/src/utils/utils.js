@@ -53,6 +53,7 @@ class utils {
 
   /** Removes a specific element from array by value. */
   static removeFromArray = (_array, val) => {
+    if (_array.indexOf(val) == -1 ) return _array;
     _array.splice(_array.indexOf(val), 1);
     return _array;
   }

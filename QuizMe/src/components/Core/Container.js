@@ -7,9 +7,9 @@ import NetInfo from "@react-native-community/netinfo";
 
 import Header from './Header';
 import StatusBar from './StatusBar';
-import { setConnection } from '../../actions/SessionActions';
+import { checkSession, setConnection, setRequestCount } from '../../actions/SessionActions';
 import { styles, colours } from '../../styles';
-import { utils } from '../../utils';
+import { utils, api } from '../../utils';
 
 class Container extends Component {
   static defaultProps = {
@@ -33,25 +33,30 @@ class Container extends Component {
 
   componentDidMount() {
     NetInfo.addEventListener('connectionChange', (info) => {
-      this.onConnectionChange(info, this.is_online(info));
+      this.onConnectionChange(info, this.isOnline(info));
     });
   }
 
   componentWillUnmount() {
     NetInfo.removeEventListener('connectionChange', (info) => {
-      this.onConnectionChange(info, this.is_online(info));
+      this.onConnectionChange(info, this.isOnline(info));
     });
   }
 
-  is_online(info) {
+  isOnline(info) {
     return ['none', 'unknown'].indexOf(info.type) == -1;
   }
 
   onConnectionChange(info, online) {
+    let prevOnline = this.props.session.online;
     this.props.setConnection(online);
-    if (this.props.onConnectionChange) {
-      this.props.onConnectionChange(info, online);
+    if (!prevOnline && online) {
+      this.props.checkSession().catch(err => console.log('Session check error: ', err));
+      api.getFriendRequestCount()
+        .then(count => this.props.setRequestCount(count.requestCount))
+        .catch(err => console.log('Request Count fetch error: ', err))
     }
+    if (this.props.onConnectionChange) this.props.onConnectionChange(info, online);
   }
 
   render() {
@@ -86,12 +91,12 @@ class Container extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    online: state.session.online,
+    session: state.session,
   }
 };
 
 const mapDispatchToProps = dispatch => (
-  bindActionCreators({setConnection}, dispatch)
+  bindActionCreators({setConnection, checkSession, setRequestCount}, dispatch)
 );
 
 export default connect(mapStateToProps, mapDispatchToProps)(Container);
