@@ -4,6 +4,7 @@ const router = express.Router();
 
 const pg = require(__dirname + '/../api/pg.js');
 const users = require(__dirname + '/../models/users.js');
+const friends = require(__dirname + '/../models/friends.js');
 const utils = require(__dirname + '/../api/utils.js');
 
 // Configure sessionisation with PostgreSQL
@@ -19,7 +20,7 @@ router.use(session({
   unset: 'destroy',
 }));
 
-router.get('/session', (req, res) => {
+router.get('/session', (req, res, next) => {
   if (req.unconfirmed && req.unconfirmed.expiry_time < utils.now()) {
     req.session.unconfirmed = undefined;
   }
@@ -28,11 +29,12 @@ router.get('/session', (req, res) => {
     req.session.resetPassword  = undefined;
   }
 
-  return utils.response(res, {
+  let payload = {
     user: req.session.user,
     unconfirmed: req.session.unconfirmed,
     resetPassword: req.session.resetPassword,
-  });
+  };
+  return utils.response(res, payload);
 });
 
 router.post('/session/login', (req, res, next) => {

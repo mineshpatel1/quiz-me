@@ -1,3 +1,5 @@
+const format = require('pg-format');
+
 const pg = require(__dirname + '/../api/pg.js');
 const utils = require(__dirname + '/../api/utils.js');
 
@@ -55,14 +57,38 @@ exports.getRequests = id => {
   });
 }
 
-exports.request = (userId, friendId) => {
+exports.getPotentialFriends = (userId, emails) => {
   return new Promise((resolve, reject) => {
     pg.query(`
-      INSERT INTO user_friends (user_id, friend_id, is_confirmed)
-      VALUES ($1::integer, $2::integer, FALSE)
-    `, [userId, friendId])
+    SELECT
+      u.id, u.email, u.name,
+      uf.user_id
+    FROM
+      users u
+      LEFT JOIN user_friends uf ON
+        u.id = uf.friend_id
+        AND uf.user_id = $1::integer
+    WHERE
+      u.email = ANY($2::text[])
+      AND u.is_activated 
+      AND uf.friend_id IS NULL
+    `, [userId, emails])
+      .then(result => {
+        let _users = result.map(u => new users.User(u));
+        return resolve(_users);
+      })
+      .catch(reject);
+  });
+}
+
+exports.request = (idPairs) => {
+  return new Promise((resolve, reject) => {
+    let values = idPairs.map(val => [val[0], val[1], false]);
+    pg.query(format(`
+      INSERT INTO user_friends (user_id, friend_id, is_confirmed) VALUES %L
+    `, values))
       .then(() => {
-        utils.log("Friend request made from " + userId.toString() + " to " + friendId.toString());
+        utils.log(idPairs.length + " friend request made from " + idPairs[0][0].toString());
         return resolve();
       })
       .catch(reject)
@@ -80,6 +106,8 @@ exports.confirm = (userId, friendId) => {
     let q2 = pg.query(`
       INSERT INTO user_friends (user_id, friend_id, is_confirmed)
       VALUES ($1::integer, $2::integer, TRUE)
+      ON CONFLICT ON CONSTRAINT user_friends_assoc_key DO
+        UPDATE SET is_confirmed = TRUE
     `, [userId, friendId]);
 
     Promise.all([q1, q2]).then(resolve).catch(reject);

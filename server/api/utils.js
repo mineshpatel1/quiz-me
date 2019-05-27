@@ -18,6 +18,13 @@ exports.formatTime = time => {
   return [h, m, s].join(':');
 }
 
+/** Removes a specific element from array by value. */
+exports.removeFromArray = (_array, val) => {
+  if (_array.indexOf(val) == -1) return _array;
+  _array.splice(_array.indexOf(val), 1);
+  return _array;
+}
+
 /** Formats log message */
 exports.formatLog = (msg, level) => {
   let dt = new Date();

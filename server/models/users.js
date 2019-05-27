@@ -41,6 +41,17 @@ exports.getFromEmail = (email, activated=true) => {
   });
 }
 
+exports.getMultipleFromEmail = (emails) => {
+  return new Promise((resolve, reject) => {
+    pg.query(`SELECT * FROM users WHERE email = ANY($1::text[]) AND is_activated`, [emails])
+      .then(result => {
+        let users = result.map(u => new User(u));
+        return resolve(users);
+      })
+      .catch(reject);
+  });
+}
+
 exports.delete = (email) => {
   utils.log('Deleting user ' + email + '...');
   return new Promise((resolve, reject) => {

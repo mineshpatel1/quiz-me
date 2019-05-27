@@ -17,15 +17,28 @@ router.get('/friends', (req, res, next) => {
     .catch(next);
 });
 
-router.post('/friends/request', (req, res, next) => {
+router.get('/friends/requestCount', (req, res, next) => {
+  if (!req.session.user) return next(new Error("User is not logged in."));
+  friends.getRequests(req.session.user.id)
+    .then(requests => {
+      return utils.response(res, { requestCount: requests.length });
+    })
+    .catch(next)
+});
+
+router.post('/friends/requests', (req, res, next) => {
   let data = req.body;
   if (!req.session.user) return next(new Error("User is not logged in."));
-  if (!data.email) return next(new Error("Friend's Email must be specified."));
-  if (req.session.user.email == data.email) return next(new Error("Can't be friends with yourself."));
-  users.getFromEmail(data.email)
-    .then(friend => {
-      if (!friend) return next(new Error(data.email + " doesn't play QuizMe."))
-      friends.request(req.session.user.id, friend.id)
+  if (!data.emails) return next(new Error("Friend's Emails must be specified."));
+  let emails = utils.removeFromArray(data.emails, req.session.user.email);
+  if (emails.length == 0) return next(new Error("None of the requested people play QuizMe."));
+
+  friends.getPotentialFriends(req.session.user.id, emails)
+    .then(_friends => {
+      if (_friends.length == 0) return next(new Error("None of the requested people play QuizMe."));
+      let idPairs = _friends.map(friend => [req.session.user.id, friend.id]);
+      console.log(idPairs);
+      friends.request(idPairs)
         .then(() => { return utils.response(res) })
         .catch(next);
     })
@@ -47,6 +60,16 @@ router.post('/friends/unfriend', (req, res, next) => {
   if (!data.friendId) return next(new Error("Friend's ID must be specified."));
   friends.unfriend(req.session.user.id, data.friendId)
     .then(() => { return utils.response(res) })
+    .catch(next)
+});
+
+router.post('/friends/possible', (req, res, next) => {
+  let data = req.body;
+  if (!req.session.user) return next(new Error("User is not logged in."));
+  if (!data.emails) return next(new Error("Friend's emails must be specified."));
+  let emails = utils.removeFromArray(data.emails, req.session.user.email);
+  friends.getPotentialFriends(req.session.user.id, emails)
+    .then(_users => { return utils.response(res, { users: _users }) })
     .catch(next)
 });
 
