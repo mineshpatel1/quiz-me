@@ -12,7 +12,7 @@ import {
 import { styles, colours } from '../styles';
 import { utils } from '../utils';
 import { waitTime, animationDuration } from '../config';
-import { nextTurn, chooseAnswer } from '../actions/GameActions';
+import { newGame, nextTurn, chooseAnswer } from '../actions/GameActions';
 
 class Game extends Component {
   constructor(props) {
@@ -244,7 +244,17 @@ class Game extends Component {
         </View>
         <View style={[styles.center, styles.mt15]}>
           <Button
-            label="Review" icon="book-open"
+            label="Play Again" icon="redo"
+            onPress={() => {
+              props.newGame(props.game.settings);
+              props.navigation.navigate({
+                routeName: 'Game',
+                key: Math.random() * 100,
+              });
+            }}
+          />
+          <Button
+            label="Review" icon="book-open" style={styles.mt15}
             onPress={() => { props.navigation.navigate('GameSummary') }}
           />
           <Button
@@ -294,7 +304,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = dispatch => (
-  bindActionCreators({ nextTurn, chooseAnswer }, dispatch)
+  bindActionCreators({ nextTurn, chooseAnswer, newGame }, dispatch)
 );
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);

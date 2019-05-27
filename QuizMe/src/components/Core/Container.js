@@ -28,6 +28,7 @@ class Container extends Component {
       'Warning: componentWillMount is deprecated',
       'Warning: componentWillReceiveProps is deprecated',
       'Warning: componentWillUpdate is deprecated',
+      'Warning: ViewPagerAndroid has been extracted',
     ]);
   }
 
