@@ -3,7 +3,7 @@ import { View, TouchableOpacity } from 'react-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 
 import Text from './Text';
-import { colours } from '../../styles';
+import { styles, colours } from '../../styles';
 
 export default class Icon extends Component {
   static defaultProps = {
@@ -31,17 +31,11 @@ export default class Icon extends Component {
         }
         {
           showBadge &&
-          <View style={{
+          <View style={[styles.badge, {
             position: 'absolute',
             top: -5,
             right: -5,
-            minWidth: 15,
-            height: 15,
-            borderRadius: 15,
-            alignItems: 'center',
-            justifyContent: 'center',
-            backgroundColor: colours.error,
-          }}>
+          }]}>
             <Text colour={colours.white} size={10}>{props.badge}</Text>
           </View>
         }

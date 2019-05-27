@@ -242,10 +242,8 @@ class Friends extends Component {
           ref="contactList"
         />
         <TabView
-          scenes={{
-            'Friends': Friends,
-            'Requests': Requests,
-          }}
+          scenes={{ 'Friends': Friends, 'Requests': Requests }}
+          badges={{ 'Requests': requests.length }}
         />
         <SnackBar ref="error" error={true} />
         <SnackBar ref="success" success={true} />

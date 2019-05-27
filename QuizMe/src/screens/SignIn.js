@@ -4,8 +4,8 @@ import { bindActionCreators } from 'redux';
 import { View } from 'react-native';
 import Biometrics from 'react-native-biometrics';
 
-import { Container, Text, Button, Form, SnackBar, Icon } from '../components/Core';
-import { setSession } from '../actions/SessionActions';
+import { Container, Text, Button, Form, SnackBar } from '../components/Core';
+import { setSession, setRequestCount } from '../actions/SessionActions';
 import { styles } from '../styles';
 import { utils, api, validators } from '../utils';
 
@@ -21,7 +21,7 @@ class SignIn extends Component {
     };
   }
 
-  showError(err) {
+  showError = err => {
     this.setState({ loading: false });
     this.refs.error.show(err, 0);
   }
@@ -31,10 +31,15 @@ class SignIn extends Component {
       api.signIn(values)
         .then(res => {
           this.props.setSession(res);
-          this.setState({ loading: false });
-          this.props.navigation.navigate('Home');
+          api.getFriendRequestCount()
+            .then(result => {
+              this.props.setRequestCount(result.requestCount);
+              this.setState({ loading: false });
+              this.props.navigation.navigate('Home');
+            })
+            .catch(this.showError)
         })
-        .catch(err => this.showError(err));
+        .catch(this.showError);
     });
   }
 
@@ -47,7 +52,7 @@ class SignIn extends Component {
           this.setState({ loading: false });
           this.refs.forgotten.show("Password reset token sent to " + email, 0);
         })
-        .catch(err => this.showError(err));
+        .catch(this.showError);
     });
   }
 
@@ -59,13 +64,18 @@ class SignIn extends Component {
             api.verifyFingerprint(payload, signature)
               .then(res => {
                 this.props.setSession(res);
-                this.setState({ loading: false });
-                this.props.navigation.navigate('Home');
+                api.getFriendRequestCount()
+                  .then(result => {
+                    this.props.setRequestCount(result.requestCount);
+                    this.setState({ loading: false });
+                    this.props.navigation.navigate('Home');
+                  })
+                  .catch(this.showError);
               })
-              .catch(err => this.showError(err));
+              .catch(this.showError);
           });
         })
-        .catch(err => this.showError(err));
+        .catch(this.showError);
   }
 
   render() {
@@ -143,9 +153,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = dispatch => (
-  bindActionCreators({
-    setSession,
-  }, dispatch)
+  bindActionCreators({ setSession, setRequestCount }, dispatch)
 );
 
 export default connect(mapStateToProps, mapDispatchToProps)(SignIn);

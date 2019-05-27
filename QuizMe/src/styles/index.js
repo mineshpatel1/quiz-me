@@ -108,4 +108,12 @@ export const styles = StyleSheet.create({
     paddingTop: 15, 
     paddingBottom: 15,
   },
+  badge: {
+    minWidth: 15,
+    height: 15,
+    borderRadius: 15,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: colours.error,
+  }
 });
