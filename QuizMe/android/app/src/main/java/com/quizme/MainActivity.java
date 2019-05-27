@@ -1,5 +1,10 @@
 package com.quizme;
 
+import android.graphics.Color;
+import android.os.Build;
+import android.view.View;
+import android.view.Window;
+
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
 import com.facebook.react.ReactRootView;
@@ -12,6 +17,15 @@ public class MainActivity extends ReactActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // Sets navigation bar colour and theme on Android
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+          Window window = getWindow();
+          int flags = window.getDecorView().getSystemUiVisibility();
+          int colourInt = Color.parseColor("#000000");
+          flags &= ~View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
+          window.getDecorView().setSystemUiVisibility(flags);
+          window.setNavigationBarColor(colourInt);
+        }
         SplashScreen.show(this, R.style.SplashScreenTheme);
         super.onCreate(savedInstanceState);
     }
