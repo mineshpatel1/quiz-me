@@ -4,7 +4,7 @@ import { View, ScrollView, TouchableOpacity } from 'react-native';
 import Text from './Text';
 import Icon from './Icon';
 import Modal from './Modal';
-import { styles, fonts, colours } from '../../styles';
+import { styles, colours } from '../../styles';
 
 export default class Picker extends Component {
   static defaultProps = {

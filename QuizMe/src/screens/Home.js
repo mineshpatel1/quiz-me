@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Platform, Animated, View, Image, Linking } from 'react-native';
 
-import { Container, Button, IconSet } from '../components/Core';
+import { Container, Button, Checkbox, IconSet } from '../components/Core';
 import { checkSession, signOut } from '../actions/SessionActions';
 import { colours, styles } from '../styles';
 import { utils } from '../utils';

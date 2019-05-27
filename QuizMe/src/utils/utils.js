@@ -3,12 +3,27 @@ import NetInfo from "@react-native-community/netinfo";
 import { Animated, Easing, Platform, PermissionsAndroid } from 'react-native';
 import { animationDuration } from '../config';
 
+const _typeOf = value => {
+  var s = typeof value;
+  if (s === 'object') {
+    if (value) {
+      if (value instanceof Array) s = 'array';
+    } else s = 'null';
+  }
+  return s;
+}
+
 const _sleep = (ms) => {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 const _clone = (_orig) => {
-  return Object.assign( Object.create( Object.getPrototypeOf(_orig)), _orig);
+  if (_typeOf(_orig) == 'object') {
+    return Object.assign( Object.create( Object.getPrototypeOf(_orig)), _orig);
+  } else if (_typeOf(_orig) == 'array') {
+    return _orig.slice(0);
+  }
+  
 }
 
 var _titleCase = (str) => {
@@ -22,6 +37,8 @@ var _titleCase = (str) => {
 class utils {
   constructor() {}
 
+  static typeOf = _typeOf;
+
   /** Returns current UNIX timestamp. */
   static now = () => {
     return Math.ceil(Date.now() / 1000);
@@ -32,6 +49,12 @@ class utils {
   */
   static indexOfArray = (_array, _key, val) => {
     return _array.map((x) => x[_key]).indexOf(val);
+  }
+
+  /** Removes a specific element from array by value. */
+  static removeFromArray = (_array, val) => {
+    _array.splice(_array.indexOf(val), 1);
+    return _array;
   }
 
   /** Returns a unique array from a non-unique array. */

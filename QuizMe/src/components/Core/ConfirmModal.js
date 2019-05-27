@@ -4,7 +4,7 @@ import { View } from 'react-native';
 import Text from './Text';
 import Modal from './Modal';
 import ConfirmButtons from './ConfirmButtons';
-import { styles, colours } from '../../styles';
+import { styles } from '../../styles';
 
 export default class ConfirmModal extends Component {
   static defaultProps = {

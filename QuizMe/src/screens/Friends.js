@@ -4,7 +4,10 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Contacts from 'react-native-contacts';
 
-import { Container, TabView, ConfirmModal, Modal, Form, SnackBar, Menu, IconSet, Button, Text } from '../components/Core';
+import { 
+  Container, TabView, ConfirmModal, Modal, Form, SnackBar, Menu, 
+  MultiPickerModal, IconSet, Button, Text,
+} from '../components/Core';
 import { checkSession, signOut } from '../actions/SessionActions';
 import { colours, styles } from '../styles';
 import { utils, api, validators } from '../utils';
@@ -17,9 +20,12 @@ class Friends extends Component {
       init: false,
       friends: [],
       requests: [],
+      emails: [],
+      contactModal: false,
       addFriend: false,
       confirmFriend: false,
       unfriend: false,
+
     };
   }
 
@@ -91,7 +97,6 @@ class Friends extends Component {
     this.setState({ loading: true }, () => {
       utils.getPermission('READ_CONTACTS', 'QuizMe wants to find other players from your contacts.')
         .then(() => {
-          console.log('Permission Received')
           Contacts.getAll((err, contacts) => {
             if (err) {
               if (err == 'denied') err = 'Read Contacts permission denied.' // For iOS
@@ -105,11 +110,12 @@ class Friends extends Component {
               });
             });
             emails = utils.unique(emails);  // Unique
-            console.log(emails);
-            this.showSuccess("Synced " + emails.length + " QuizMe players from contacts");
+            this.refs.contactList.update(utils.clone(emails));
+            this.setState({ loading: false, emails: emails, contactModal: true });
+            // this.showSuccess("Synced " + emails.length + " QuizMe players from contacts");
           })
         }).catch(this.showError);
-    })
+    });
   }
 
   render() {
@@ -211,6 +217,13 @@ class Friends extends Component {
           message={"Unfriend this player?"}
           onCancel={() => { this.setState({ unfriend: false }) }}
           onSuccess={() => { this.unfriend(state.unfriend); }}
+        />
+        <MultiPickerModal
+          isVisible={this.state.contactModal} options={state.emails}
+          onSuccess={values => { console.log(values)}}
+          onCancel={() => this.setState({ contactModal: false })}
+          fontSize={14} bold={false} padding={5}
+          ref="contactList"
         />
         <TabView
           scenes={{
