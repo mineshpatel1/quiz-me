@@ -2,11 +2,12 @@ import React, { Component } from 'react';
 import { View } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import Contacts from 'react-native-contacts';
 
-import { Container, TabView, ConfirmModal, Modal, Form, SnackBar, Menu, Button, Text } from '../components/Core';
+import { Container, TabView, ConfirmModal, Modal, Form, SnackBar, Menu, IconSet, Button, Text } from '../components/Core';
 import { checkSession, signOut } from '../actions/SessionActions';
 import { colours, styles } from '../styles';
-import { api, validators } from '../utils';
+import { utils, api, validators } from '../utils';
 
 class Friends extends Component {
   constructor(props) {
@@ -47,7 +48,7 @@ class Friends extends Component {
 
   showSuccess = msg => {
     this.setState({ loading: false });
-    this.refs.success.show(msg, 3);
+    this.refs.success.show(msg, 2000);
   }
 
   addFriend = email => {
@@ -86,24 +87,53 @@ class Friends extends Component {
     this.setState({ addFriend: false });
   }
 
+  syncContacts = () => {
+    this.setState({ loading: true }, () => {
+      utils.getPermission('READ_CONTACTS', 'QuizMe wants to find other players from your contacts.')
+        .then(() => {
+          console.log('Permission Received')
+          Contacts.getAll((err, contacts) => {
+            if (err) {
+              if (err == 'denied') err = 'Read Contacts permission denied.' // For iOS
+              return this.showError(err);
+            }
+            
+            let emails = [];
+            contacts.forEach(contact => {
+              contact.emailAddresses.forEach(email => {
+                emails.push(email.email);
+              });
+            });
+            emails = utils.unique(emails);  // Unique
+            console.log(emails);
+            this.showSuccess("Synced " + emails.length + " QuizMe players from contacts");
+          })
+        }).catch(this.showError);
+    })
+  }
+
   render() {
     let { props, state } = this;
 
     let requests = [];
-    state.requests.forEach((req, i) => {
-      requests.push({ 
-        label: req.name || req.email, subLabel: req.name ? req.email : null,
-        onPress: () => { this.setState({ confirmFriend: req.id }) }
+    if (state.requests) {
+      state.requests.forEach((req, i) => {
+        requests.push({ 
+          label: req.name || req.email, subLabel: req.name ? req.email : null,
+          onPress: () => { this.setState({ confirmFriend: req.id }) }
+        });
       });
-    });
-
+    }
+    
     let friends = [];
-    state.friends.forEach((friend, i) => {
-      friends.push({
-        label: friend.name || friend.email, subLabel: friend.name ? friend.email : null,
-        iconColour: colours.error, icon: 'times', iconAction: () => { this.setState({ unfriend: friend.id }) },
+    if (state.friends) {
+      state.friends.forEach((friend, i) => {
+        friends.push({
+          label: friend.name || friend.email, subLabel: friend.name ? friend.email : null,
+          iconColour: colours.error, icon: 'times', iconAction: () => { this.setState({ unfriend: friend.id }) },
+        });
       });
-    });
+    }
 
     let fields = {
       email: {
@@ -117,44 +147,39 @@ class Friends extends Component {
     }
 
     let Friends = () => {
-      if (!state.init) {
-        return (<View/>)
-      } else if (!state.friends || state.friends.length == 0) {
-        return (
-          <View style={[styles.f1, styles.center, { padding: 30 }]}>
-            <Text bold={true} align="center">Aww, it seems you don't have any friends.</Text>
-            <Button 
-              style={styles.mt15}
-              btnColour={colours.success} 
-              fontColour={colours.white} 
-              label="Add Friend" icon="user-plus" 
-              onPress={() => { this.openAddFriend() }} 
-            />
-
-            <Button 
-              style={styles.mt15}
-              btnColour={colours.success} 
-              fontColour={colours.white} 
-              label="Sync Contacts" icon="address-book" 
-              onPress={() => { this.showError("Sync Contacts") }} 
-            />
-          </View>
-        )
-      } else {
-        return (<Menu menu={friends} />)
-      }
+      return (
+        <View style={[styles.f1, styles.center]}>
+          {
+            state.init && friends.length == 0 &&
+            <Text style={{padding: 30}} bold={true} align="center">
+              { "Aww, it seems you don't have any friends." }
+            </Text>
+          }
+          <Menu menu={friends} />
+          <IconSet links={[
+            { icon: "sync-alt", onPress: () => this.fetchFriends() },
+            { icon: "user-plus", onPress: () => this.openAddFriend() },
+            { icon: "address-book", onPress: () => this.syncContacts() }
+          ]} />
+        </View>
+      )
     }
 
     let Requests = () => {
-      if (!state.requests || state.requests.length == 0) {
-        return (
-          <View style={[styles.f1, styles.center, { padding: 30 }]}>
-            <Text bold={true} align="center">You have no oustanding friend requests.</Text>
-          </View>
-        )
-      } else {
-        return (<Menu menu={requests} />)
-      }
+      return (
+        <View style={[styles.f1, styles.center]}>
+          {
+            state.init && requests.length == 0 &&
+            <Text style={{padding: 30}} bold={true} align="center">
+              { "You have no oustanding friend requests." }
+            </Text>
+          }
+          <Menu menu={requests} />
+          <IconSet links={[
+            { icon: "sync-alt", onPress: () => this.fetchFriends() },
+          ]} />
+        </View>
+      )
     }
 
     return (
@@ -170,7 +195,7 @@ class Friends extends Component {
               onCancel={this.cancel}
               onSuccess={values => this.addFriend(values.email)}
               disabled={state.loading || (!props.session.online)}
-              inputWidth={250} btnWidth={100} divider={false}
+              width={300} inputWidth={250} btnWidth={100} divider={false}
             />
           </View>
         </Modal>

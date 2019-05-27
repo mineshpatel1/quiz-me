@@ -115,7 +115,7 @@ class SignIn extends Component {
             </View>
           }
           <Form
-            fields={fields} width={200} successIcon={'sign-in-alt'}
+            fields={fields} successIcon={'sign-in-alt'}
             onSuccess={values => {this.signIn(values)}} ref={'form'}
             disabled={state.loading || (!props.session.online)}
             onChange={(values, valid) => this.setState({ 

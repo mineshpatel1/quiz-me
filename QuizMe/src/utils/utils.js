@@ -1,7 +1,6 @@
 import AsyncStorage from '@react-native-community/async-storage';
 import NetInfo from "@react-native-community/netinfo";
-import { Animated, Easing } from 'react-native';
-
+import { Animated, Easing, Platform, PermissionsAndroid } from 'react-native';
 import { animationDuration } from '../config';
 
 const _sleep = (ms) => {
@@ -12,19 +11,36 @@ const _clone = (_orig) => {
   return Object.assign( Object.create( Object.getPrototypeOf(_orig)), _orig);
 }
 
+var _titleCase = (str) => {
+  let words = [];
+  str.toLowerCase().split(' ').forEach(s => {
+    words = words.concat(s.split('_'));
+  });
+  return words.map(t => t.charAt(0).toUpperCase() + t.slice(1)).join(' ');
+}
+
 class utils {
   constructor() {}
 
+  /** Returns current UNIX timestamp. */
   static now = () => {
     return Math.ceil(Date.now() / 1000);
   }
 
   /**
-  Gets the index of an object array based on the value of a given key
+  Gets the index of an object array based on the value of a given key.
   */
   static indexOfArray = (_array, _key, val) => {
     return _array.map((x) => x[_key]).indexOf(val);
   }
+
+  /** Returns a unique array from a non-unique array. */
+  static unique = (_array) => {
+    return [...new Set(_array)];
+  }
+
+  /** Returns string as Title Case. */
+  static titleCase = _titleCase;
 
   /**
   Shuffles an array, randomising the order of elements in an array using
@@ -196,16 +212,16 @@ class utils {
   }
 
   /** Async function, sleeps for the given time in ms. */
-  static async sleep(ms, callback) {
+  static sleep = async (ms, callback) => {
     await _sleep(ms);
     callback();
   }
 
   /** Generic animation function. */
-  static animate(
+  static animate = (
     animatedValue, newVal, duration=null, callback=null, easing=Easing.ease,
     delay=0,
-  ) {
+  ) => {
     if (!duration && duration != 0) duration = animationDuration;
     Animated.timing(
       animatedValue,
@@ -219,7 +235,7 @@ class utils {
   }
 
   /** Converts polar coordinates to Cartesian coordinates. */
-  static polarToCartesian(centerX, centerY, radius, angleInDegrees) {
+  static polarToCartesian = (centerX, centerY, radius, angleInDegrees) => {
     var angleInRadians = ((angleInDegrees - 90) * Math.PI) / 180.0;
     return {
       x: centerX + radius * Math.cos(angleInRadians),
@@ -228,7 +244,7 @@ class utils {
   }
 
   /** Reduces text size for long strings. Crude and empirically derived. */
-  static scaleOptText(text, size) {
+  static scaleOptText = (text, size) => {
     if (text.length >= 100) {
       size -= 8;
     } else if (text.length >= 85) {
@@ -276,7 +292,7 @@ class utils {
   }
 
   /** Lighten or darken a colour given by a Hex value. */
-  static alterBrightness(col, amt) {
+  static alterBrightness = (col, amt) => {
     let usePound = false;
     
     if (col[0] == "#") {
@@ -302,7 +318,7 @@ class utils {
     return (usePound?"#":"") + (g | (b << 8) | (r << 16)).toString(16);
   }
 
-  static isDark(color) {
+  static isDark = (color) => {
     // Variables for red, green, blue values
     var r, g, b, hsp;
       
@@ -338,9 +354,28 @@ class utils {
   }
 
   /** Gets network connectivity info from the phone. */
-  static async getConnectionInfo() {
+  static getConnectionInfo = async () => {
     let connectionInfo = await NetInfo.getConnectionInfo();
     return connectionInfo;
+  }
+
+  /** Gets permission on Android/IOS */
+  static getPermission = (perm, msg, title) => {
+    title = title || _titleCase(perm);
+    return new Promise((resolve, reject) => {
+      if (Platform.OS == 'android') {
+        PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS[perm.toUpperCase()],
+          { 'title': title, 'message': msg },
+        ).then(granted => {
+          if (granted === PermissionsAndroid.RESULTS.GRANTED) return resolve()
+          else return reject(_titleCase(perm) + ' permission denied.');
+        }).catch(reject);
+      } else if (Platform.OS == 'ios') {
+        console.log('IOS Permission!');
+        return resolve();
+      }
+    });
   }
 }
 

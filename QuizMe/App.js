@@ -12,7 +12,7 @@ import {
   faChartPie, faCheck, faChevronLeft, faChevronRight, faClock, faCog, faEnvelope, faFilm, 
   faFingerprint, faFutbol, faGlobeAmericas, faHome, faHashtag, faHourglassHalf, faLandmark, 
   faLink, faLock, faMusic,  faPaw, faPlay, faQuestion, faQuoteRight, faSignInAlt, faSignOutAlt, 
-  faTh, faTimes, faTv, faUser, faUserFriends, faUserPlus,
+  faSyncAlt, faTh, faTimes, faTv, faUser, faUserFriends, faUserPlus,
 } from '@fortawesome/free-solid-svg-icons';
 
 import AppNavigator from './src/nav/AppNavigator';
@@ -27,7 +27,7 @@ library.add(
   faChartPie, faCheck, faChevronLeft, faChevronRight, faClock, faCog, faEnvelope, faFilm, 
   faFingerprint, faFutbol, faGlobeAmericas, faHome, faHashtag, faHourglassHalf, faLandmark, 
   faLink, faLock, faMusic,  faPaw, faPlay, faQuestion, faQuoteRight, faSignInAlt, faSignOutAlt, 
-  faTh, faTimes, faTv, faUser, faUserFriends, faUserPlus,
+  faSyncAlt, faTh, faTimes, faTv, faUser, faUserFriends, faUserPlus,
 );
 
 const AppContainer = createAppContainer(AppNavigator);

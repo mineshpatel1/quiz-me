@@ -16,6 +16,7 @@ export default class Form extends Component {
     successIcon: 'check',
     cancelIcon: 'times',
     onChange: null,
+    width: '100%',
     inputWidth: 300,
     btnWidth: 120,
     divider: true,
@@ -92,7 +93,7 @@ export default class Form extends Component {
     let borderBottomWidth = props.divider ? 2 : 0;
 
     return (
-      <View style={[styles.f1, {width: '100%'}]}>
+      <View style={[styles.f1, {width: props.width}]}>
         <View style={[
           styles.f1, {borderBottomWidth: borderBottomWidth, borderColor: colours.light}
         ]}>

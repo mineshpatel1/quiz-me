@@ -8,8 +8,8 @@ import { styles, colours } from '../../styles';
 export default class IconSet extends Component {
   static defaultProps = {
     links: [],
-    colour: colours.grey,
-    borderColour: colours.grey,
+    colour: colours.midGrey,
+    borderColour: colours.softGrey,
     bottom: true,
   }
   
@@ -27,7 +27,7 @@ export default class IconSet extends Component {
 
     return (
       <View style={[styles.row, styles.center, { 
-        height: 50 + iosAdjust, paddingBottom: iosAdjust,
+        width: '100%', height: 50 + iosAdjust, paddingBottom: iosAdjust,
         borderTopWidth: 1, borderColor: props.borderColour,
       }]}>
         {
