@@ -4,8 +4,8 @@
         android:drawable="@color/primary"/>
 
     <item
-        android:width="400dp"
-        android:height="200dp"
+        android:width="300dp"
+        android:height="150dp"
         android:drawable="@mipmap/title"
         android:gravity="center" />
 
