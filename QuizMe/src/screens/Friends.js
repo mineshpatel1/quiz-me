@@ -170,7 +170,7 @@ class Friends extends Component {
 
     let Friends = () => {
       return (
-        <View style={[styles.f1, styles.center]}>
+        <View style={[styles.f1]}>
           {
             state.init && friends.length == 0 &&
             <Text style={{padding: 30}} bold={true} align="center">
@@ -189,7 +189,7 @@ class Friends extends Component {
 
     let Requests = () => {
       return (
-        <View style={[styles.f1, styles.center]}>
+        <View style={[styles.f1]}>
           {
             state.init && requests.length == 0 &&
             <Text style={{padding: 30}} bold={true} align="center">

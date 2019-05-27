@@ -37,16 +37,18 @@ export default class Menu extends Component {
               background={TouchableNativeFeedback.Ripple(colours.lightGrey, true)}
             >
               <View style={containerStyle}>
-                <Text colour={colour}>{item.label}</Text>
+                <Text style={styles.f1} colour={colour} size={16}>{item.label}</Text>
                 {
                   item.subLabel &&
-                  <Text colour={colours.lightGrey} size={14}>{item.subLabel}</Text>
+                  <Text style={styles.f2} colour={colours.lightGrey} size={14}>{item.subLabel}</Text>
                 }
                 {
                   item.icon &&
                   <Icon
+                    style={{width: 25}}
+                    size={25}
                     colour={item.iconColour || colour} 
-                    icon={item.icon} onPress={item.iconAction} 
+                    icon={item.icon}
                   />
                 }
               </View>
