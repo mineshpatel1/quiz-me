@@ -48,7 +48,7 @@ export default class Menu extends Component {
                     style={{width: 25}}
                     size={25}
                     colour={item.iconColour || colour} 
-                    icon={item.icon}
+                    icon={item.icon} onPress={item.iconAction}
                   />
                 }
               </View>
