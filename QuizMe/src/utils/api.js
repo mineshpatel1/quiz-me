@@ -89,6 +89,10 @@ class api {
     return _post('user/register', data);
   }
 
+  static async editUser(data) {
+    return _post('user', data);
+  }
+
   /** Deletes the currently active user's account. */
   static async deleteUser() {
     return _delete('user');

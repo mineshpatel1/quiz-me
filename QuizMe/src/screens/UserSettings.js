@@ -86,6 +86,7 @@ class Settings extends Component {
     let { props, state } = this;
 
     let menu = [
+      { label: 'Edit Profile', icon: 'user', onPress: () => props.navigation.navigate('EditProfile') },
       { label: 'Change Password', icon: 'lock', onPress: () => props.navigation.navigate('ResetPassword') },
     ];
 

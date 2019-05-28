@@ -8,7 +8,7 @@ import { setSession } from '../actions/SessionActions';
 import { styles } from '../styles';
 import { validators, api } from '../utils';
 
-class ResetPassword extends Component {
+class EditProfile extends Component {
   constructor(props) {
     super(props);
     this.state = { 
@@ -27,59 +27,40 @@ class ResetPassword extends Component {
   }
 
   post = values => {
-    if (this.props.session.resetPassword) {
-      api.resetPassword(
-        this.props.session.resetPassword.email,
-        this.props.navigation.getParam('token'),
-        values.password,
-      )
+    this.setState({ loading: true });
+    api.editUser(values)
       .then(res => {
         this.props.setSession(res);
-        this.showSuccess('Reset password successfully.');
+        this.setState({ loading: false });
+        this.props.navigation.navigate('Home');
       })
       .catch(err => this.showError(err));
-    } else if (this.props.session.user) {
-      api.changePassword(values.password)
-        .then(() => this.showSuccess('Changed password successfully.'))
-        .catch(err => this.showError(err));
-    }
   }
 
   render() {
     let { props, state } = this;
 
     let fields = {
-      password: {
-        label: "New Password",
-        icon: "lock",
+      name: {
+        label: "Nickname",
+        icon: "user",
         type: "string",
         inputType: "text",
-        secure: true,
-        validator: (val) => {
-          if (!val) return false;
-          return (
-            validators.hasLower(val) && validators.hasUpper(val) &&
-            validators.hasNumeric(val) && !validators.hasSpace(val)
-          )
-        },
+        validator: (val) => { return validators.isAlphaNumeric(val)},
       },
-      confirmPassword: {
-        label: "Confirm Password",
-        icon: "lock",
-        type: "string",
-        inputType: "text",
-        secure: true,
-        validator: (val, formVals) => {return val && val == formVals.password},
-      },
+    }
+
+    let values = {
+      name: props.session.user.name,
     }
 
     return (
       <Container 
-        spinner={state.loading} header="Reset Password"
+        spinner={state.loading} header="Edit Profile"
       >
         <View style={[styles.f1, styles.col, styles.aCenter]}>
           <Form 
-            fields={fields}
+            fields={fields} values={values}
             onCancel={() => { this.props.navigation.navigate('Home') }}
             onSuccess={values => {this.post(values)}}
             disabled={state.loading || (!props.session.online)}
@@ -110,4 +91,4 @@ const mapDispatchToProps = dispatch => (
   }, dispatch)
 );
 
-export default connect(mapStateToProps, mapDispatchToProps)(ResetPassword);
+export default connect(mapStateToProps, mapDispatchToProps)(EditProfile);

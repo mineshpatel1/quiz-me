@@ -82,7 +82,6 @@ class Register extends Component {
     return (
       <Container 
         spinner={state.loading} header="Register"
-        onConnectionChange={() => {this.setState({ loading: false })}}
       >
         <View style={[styles.f1, styles.col, styles.aCenter]}>
           <Form 

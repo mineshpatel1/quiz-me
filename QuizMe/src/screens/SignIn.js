@@ -106,7 +106,6 @@ class SignIn extends Component {
     return (
       <Container
         spinner={state.loading} header={'Sign In'}
-        onConnectionChange={() => {this.setState({ loading: false })}}
       >
         <View style={[styles.f1, styles.col, styles.aCenter]}>
           <View style={[styles.center, styles.mt15]}>

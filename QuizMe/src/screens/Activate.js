@@ -78,7 +78,6 @@ class Activate extends Component {
     return (
       <Container 
         bgColour={colours.primary} iosAdjust={true} spinner={state.loading}
-        onConnectionChange={(_info) => this.setState({ loading: false })}
       >
         <View style={[styles.f1]}>
           <ScrollView 
