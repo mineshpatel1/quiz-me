@@ -7,6 +7,22 @@ const users = require(__dirname + '/../models/users.js');
 const friends = require(__dirname + '/../models/friends.js');
 const utils = require(__dirname + '/../api/utils.js');
 
+const getSession = (req) => {
+  if (req.unconfirmed && req.unconfirmed.expiry_time < utils.now()) {
+    req.session.unconfirmed = undefined;
+  }
+
+  if (req.resetPassword && req.resetPassword.expiry_time < utils.now()) {
+    req.session.resetPassword  = undefined;
+  }
+
+  return {
+    user: req.session.user,
+    unconfirmed: req.session.unconfirmed,
+    resetPassword: req.session.resetPassword,
+  };
+}
+
 // Configure sessionisation with PostgreSQL
 router.use(session({
   store: new (require('connect-pg-simple')(session))({
@@ -21,20 +37,21 @@ router.use(session({
 }));
 
 router.get('/session', (req, res, next) => {
-  if (req.unconfirmed && req.unconfirmed.expiry_time < utils.now()) {
-    req.session.unconfirmed = undefined;
-  }
+  return utils.response(res, getSession(req));
+});
 
-  if (req.resetPassword && req.resetPassword.expiry_time < utils.now()) {
-    req.session.resetPassword  = undefined;
+router.get('/session/load', (req, res, next) => {
+  let payload = getSession(req);
+  if (req.session.user) {
+    let p1 = users.get(id);
+    Promise.all([p1])
+      .then(([user]) => {
+        req.session.user = user;
+        payload.user = user;
+        return utils.response(res, payload);
+      })
+      .catch(next);
   }
-
-  let payload = {
-    user: req.session.user,
-    unconfirmed: req.session.unconfirmed,
-    resetPassword: req.session.resetPassword,
-  };
-  return utils.response(res, payload);
 });
 
 router.post('/session/login', (req, res, next) => {

@@ -18,6 +18,11 @@ exports.formatTime = time => {
   return [h, m, s].join(':');
 }
 
+/** Updates an old object with a new one, returning a completely new Object. */
+exports.update = (prev, next) => {
+  return Object.assign({}, prev, next);
+}
+
 /** Removes a specific element from array by value. */
 exports.removeFromArray = (_array, val) => {
   if (_array.indexOf(val) == -1) return _array;

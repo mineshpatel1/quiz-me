@@ -122,6 +122,18 @@ router.post('/user/disableFingerprint', (req, res, next) => {
     .catch(next);
 });
 
+router.post('/user', (req, res, next) => {
+  let data = req.body;
+  if (!req.session.user) return next(new Error("Session is not active."));
+  let fields = utils.update(req.session.user, data);
+  users.update(fields)
+    .then(user => {
+      req.session.user = user;
+      return utils.response(res, { user });
+    })
+    .catch(next);
+});
+
 router.delete('/user', (req, res, next) => {
   let email = req.session.user.email;
   if (!email) return next(new Error("User does not have an active session."));

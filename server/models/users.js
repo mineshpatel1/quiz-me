@@ -27,6 +27,14 @@ exports.get = id => {
   });
 }
 
+exports.update = (user) => {
+  return new Promise((resolve, reject) => {
+    pg.query(`UPDATE users SET name = $2::text WHERE id = $1::integer`, [user.id, user.name])
+    .then(() => resolve(new User(user)))
+    .catch(reject);
+  });
+}
+
 exports.getFromEmail = (email, activated=true) => {
   let query = `SELECT * FROM users WHERE email = $1::text`;
   if (activated) query += ' AND is_activated';
