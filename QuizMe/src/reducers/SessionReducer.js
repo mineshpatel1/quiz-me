@@ -1,4 +1,4 @@
-import { SET_SESSION, SET_CONNECTION, SET_REQUEST_COUNT } from '../types';
+import { SET_SESSION, SET_CONNECTION } from '../types';
 import utils from '../utils/utils';
 
 const INITIAL_STATE = {
@@ -6,7 +6,8 @@ const INITIAL_STATE = {
   unconfirmed: null,
   resetPassword: null,
   online: null,
-  requestCount: null,
+  friends: null,
+  requests: null,
 };
 
 const sessionReducer = (state = INITIAL_STATE, action) => {
@@ -15,8 +16,6 @@ const sessionReducer = (state = INITIAL_STATE, action) => {
       return utils.update(state, action);
     case SET_CONNECTION:
       return utils.update(state, { online: action.online });
-    case SET_REQUEST_COUNT:
-      return utils.update(state, { requestCount: action.count });
     default:
       return state;
   }

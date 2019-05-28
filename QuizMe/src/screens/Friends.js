@@ -8,7 +8,7 @@ import {
   Container, TabView, ConfirmModal, Modal, Form, SnackBar, Menu, 
   MultiPickerModal, IconSet, Text,
 } from '../components/Core';
-import { setRequestCount } from '../actions/SessionActions';
+import { setSession } from '../actions/SessionActions';
 import { colours, styles } from '../styles';
 import { utils, api, validators } from '../utils';
 
@@ -37,12 +37,16 @@ class Friends extends Component {
     this.setState({ loading: true }, () => {
       api.getFriends()
         .then(result => {
+          this.props.setSession({
+            user: this.props.session.user,
+            friends: result.friends,
+            requests: result.requests,
+          });
           this.setState({ 
             loading: false, init: true,
             friends: result.friends,
             requests: result.requests,
           });
-          this.props.setRequestCount(result.requests.length);
         })
         .catch(err => this.showError(err));
     });
@@ -138,8 +142,8 @@ class Friends extends Component {
     let { props, state } = this;
 
     let requests = [];
-    if (state.requests) {
-      state.requests.forEach((req) => {
+    if (props.session.requests) {
+      props.session.requests.forEach((req) => {
         requests.push({ 
           label: req.name || req.email, subLabel: req.name ? req.email : null,
           onPress: () => { this.setState({ confirmFriend: req.id }) }
@@ -148,8 +152,8 @@ class Friends extends Component {
     }
     
     let friends = [];
-    if (state.friends) {
-      state.friends.forEach((friend) => {
+    if (props.session.friends) {
+      props.session.friends.forEach((friend) => {
         friends.push({
           label: friend.name || friend.email, subLabel: friend.name ? friend.email : null,
           iconColour: colours.error, icon: 'times', iconAction: () => { this.setState({ unfriend: friend.id }) },
@@ -259,7 +263,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = dispatch => (
-  bindActionCreators({ setRequestCount }, dispatch)
+  bindActionCreators({ setSession }, dispatch)
 );
 
 export default connect(mapStateToProps, mapDispatchToProps)(Friends);

@@ -5,7 +5,7 @@ import { View } from 'react-native';
 import Biometrics from 'react-native-biometrics';
 
 import { Container, Text, Button, Form, SnackBar } from '../components/Core';
-import { setSession, setRequestCount } from '../actions/SessionActions';
+import { setSession } from '../actions/SessionActions';
 import { styles } from '../styles';
 import { utils, api, validators } from '../utils';
 
@@ -31,13 +31,8 @@ class SignIn extends Component {
       api.signIn(values)
         .then(res => {
           this.props.setSession(res);
-          api.getFriendRequestCount()
-            .then(result => {
-              this.props.setRequestCount(result.requestCount);
-              this.setState({ loading: false });
-              this.props.navigation.navigate('Home');
-            })
-            .catch(this.showError)
+          this.setState({ loading: false });
+          this.props.navigation.navigate('Home');
         })
         .catch(this.showError);
     });
@@ -64,13 +59,8 @@ class SignIn extends Component {
             api.verifyFingerprint(payload, signature)
               .then(res => {
                 this.props.setSession(res);
-                api.getFriendRequestCount()
-                  .then(result => {
-                    this.props.setRequestCount(result.requestCount);
-                    this.setState({ loading: false });
-                    this.props.navigation.navigate('Home');
-                  })
-                  .catch(this.showError);
+                this.setState({ loading: false });
+                this.props.navigation.navigate('Home');
               })
               .catch(this.showError);
           });
@@ -152,7 +142,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = dispatch => (
-  bindActionCreators({ setSession, setRequestCount }, dispatch)
+  bindActionCreators({ setSession }, dispatch)
 );
 
 export default connect(mapStateToProps, mapDispatchToProps)(SignIn);

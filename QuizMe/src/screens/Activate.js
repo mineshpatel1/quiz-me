@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Platform, ScrollView, View, } from 'react-native';
+import { ScrollView, View, } from 'react-native';
 
 import { Container, Text, Button, Input, SnackBar } from '../components/Core';
 import { setSession } from '../actions/SessionActions';

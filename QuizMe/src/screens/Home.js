@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Platform, Animated, View, Image, Linking } from 'react-native';
+import { Animated, View, Image, Linking } from 'react-native';
 
-import { Container, Button, Checkbox, IconSet } from '../components/Core';
+import { Container, Button, IconSet } from '../components/Core';
 import { checkSession, signOut } from '../actions/SessionActions';
 import { colours, styles } from '../styles';
-import { utils, api } from '../utils';
+import { utils } from '../utils';
 
 class Home extends Component {
   constructor(props) {
@@ -62,9 +62,10 @@ class Home extends Component {
     if (!props.session.user) friendLink = 'SignIn';
     if (props.session.unconfirmed) friendLink = 'Activate';
 
+    let requestCount = props.session.requests ? props.session.requests.length : null;
     let bottomLinks = [
       { icon: 'cog', nav: 'Settings' },
-      { icon: 'user-friends', nav: friendLink, badge: props.session.requestCount },
+      { icon: 'user-friends', nav: friendLink, badge: requestCount },
     ]
 
     return (

@@ -7,7 +7,7 @@ import NetInfo from "@react-native-community/netinfo";
 
 import Header from './Header';
 import StatusBar from './StatusBar';
-import { checkSession, setConnection, setRequestCount } from '../../actions/SessionActions';
+import { checkSession, setConnection } from '../../actions/SessionActions';
 import { styles, colours } from '../../styles';
 import { utils, api } from '../../utils';
 
@@ -53,9 +53,6 @@ class Container extends Component {
     this.props.setConnection(online);
     if (!prevOnline && online) {
       this.props.checkSession().catch(err => console.log('Session check error: ', err));
-      api.getFriendRequestCount()
-        .then(count => this.props.setRequestCount(count.requestCount))
-        .catch(err => console.log('Request Count fetch error: ', err))
     }
     if (this.props.onConnectionChange) this.props.onConnectionChange(info, online);
   }
@@ -97,7 +94,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = dispatch => (
-  bindActionCreators({setConnection, checkSession, setRequestCount}, dispatch)
+  bindActionCreators({setConnection, checkSession}, dispatch)
 );
 
 export default connect(mapStateToProps, mapDispatchToProps)(Container);

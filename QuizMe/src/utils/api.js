@@ -62,12 +62,9 @@ class api {
   static async delete(path) { return _delete(path) }
 
   /** Checks if a user already has an active session. */
-  static async checkSession() {
-    return _get('session')
-      .then(res => {
-        if (!res.user && !res.unconfirmed && !res.resetPassword) return null;
-        else return res;
-      });
+  static async checkSession(withData=true) {
+    if (withData) return _get('session/load');
+    else return _get('session');
   }
 
   /** Signs in a user. */
