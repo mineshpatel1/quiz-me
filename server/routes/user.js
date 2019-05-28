@@ -1,9 +1,10 @@
 const express = require('express');
 const router = express.Router();
 
-const email = require(__dirname + '/../api/email.js');
 const users = require(__dirname + '/../models/users.js');
 const utils = require(__dirname + '/../api/utils.js');
+const email = require(__dirname + '/../api/email.js');
+const session = require(__dirname + '/../api/session.js');
 
 router.use(require(__dirname + '/../routes/session.js'));
 
@@ -41,7 +42,9 @@ router.post('/user/activate', (req, res, next) => {
     .then(user => {
       req.session.unconfirmed = null;
       req.session.user = user;
-      return utils.response(res, { user });
+      session.sessionWithData(req)
+        .then(payload => utils.response(res, payload))
+        .catch(next);
     })
     .catch(next);
 });
@@ -94,7 +97,9 @@ router.post('/user/resetPassword', (req, res, next) => {
     .then(user => {
       req.session.resetPassword = null;
       req.session.user = user;
-      return utils.response(res, { user });
+      session.sessionWithData(req)
+        .then(payload => utils.response(res, payload))
+        .catch(next);
     })
     .catch(next);
 });
@@ -138,7 +143,7 @@ router.delete('/user', (req, res, next) => {
   let email = req.session.user.email;
   if (!email) return next(new Error("User does not have an active session."));
   
-  utils.endSession(req)
+  session.endSession(req)
     .then(() => {
       users.delete(email)
         .then(() => { return utils.response(res) })

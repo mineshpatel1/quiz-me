@@ -91,19 +91,6 @@ exports.errorHandler = (err, _req, res, _next) => {
   return res.send({ error: _err });
 }
 
-/** Ends a session, deleting cookies. */
-exports.endSession = async (req) => {
-  return new Promise((resolve, reject) => {
-    if (!req.session.user) return resolve();
-
-    exports.log('Logging out ' + req.session.user.email + '...');
-    req.session.destroy(err => {
-      if (err) return reject(err);
-      return resolve();
-    });
-  });
-}
-
 /** Returns a URL to the server. */
 exports.serverUrl = () => {
   let url = global.secure ? 'https' : 'http';

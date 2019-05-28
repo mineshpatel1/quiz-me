@@ -2,26 +2,11 @@ const express = require('express');
 const session = require('express-session');
 const router = express.Router();
 
-const pg = require(__dirname + '/../api/pg.js');
 const users = require(__dirname + '/../models/users.js');
 const friends = require(__dirname + '/../models/friends.js');
+const pg = require(__dirname + '/../api/pg.js');
 const utils = require(__dirname + '/../api/utils.js');
-
-const getSession = (req) => {
-  if (req.unconfirmed && req.unconfirmed.expiry_time < utils.now()) {
-    req.session.unconfirmed = undefined;
-  }
-
-  if (req.resetPassword && req.resetPassword.expiry_time < utils.now()) {
-    req.session.resetPassword  = undefined;
-  }
-
-  return {
-    user: req.session.user,
-    unconfirmed: req.session.unconfirmed,
-    resetPassword: req.session.resetPassword,
-  };
-}
+const sessionApi = require(__dirname + '/../api/session.js');
 
 // Configure sessionisation with PostgreSQL
 router.use(session({
@@ -37,21 +22,13 @@ router.use(session({
 }));
 
 router.get('/session', (req, res, next) => {
-  return utils.response(res, getSession(req));
+  return utils.response(res, sessionApi.getSession(req));
 });
 
 router.get('/session/load', (req, res, next) => {
-  let payload = getSession(req);
-  if (req.session.user) {
-    let p1 = users.get(id);
-    Promise.all([p1])
-      .then(([user]) => {
-        req.session.user = user;
-        payload.user = user;
-        return utils.response(res, payload);
-      })
-      .catch(next);
-  }
+  sessionApi.sessionWithData(req)
+    .then(payload => utils.response(res, payload))
+    .catch(next);
 });
 
 router.post('/session/login', (req, res, next) => {
@@ -66,16 +43,12 @@ router.post('/session/login', (req, res, next) => {
       users.auth(data.email, data.password)
         .then(() => {
           req.session.user = user;  // Activate session
-          return utils.response(res, { user });
+          sessionApi.sessionWithData(req)
+            .then(payload => utils.response(res, payload))
+            .catch(next);
         })
         .catch(next);
     })
-    .catch(next);
-});
-
-router.get('/session/logout', (req, res, next) => {
-  utils.endSession(req)
-    .then(() => utils.response(res))
     .catch(next);
 });
 
@@ -91,10 +64,18 @@ router.post('/session/login/fingerprint', (req, res, next) => {
       users.verifyFingerprint(data.payload.id, data.signature, JSON.stringify(data.payload))
         .then(() => {
           req.session.user = user;  // Activate session
-          return utils.response(res, { user });
+          sessionApi.sessionWithData(req)
+            .then(payload => utils.response(res, payload))
+            .catch(next);
         })
         .catch(next);
     })
+    .catch(next);
+});
+
+router.get('/session/logout', (req, res, next) => {
+  sessionApi.endSession(req)
+    .then(() => utils.response(res))
     .catch(next);
 });
 
