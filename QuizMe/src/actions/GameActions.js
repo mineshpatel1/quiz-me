@@ -1,8 +1,9 @@
 import { NEW_GAME, NEXT_TURN, CHOOSE_ANSWER } from '../types';
 
-export const newGame = settings => ({
+export const newGame = (settings, mode) => ({
   type: NEW_GAME,
   settings: settings,
+  mode: mode,
 });
 
 export const nextTurn = () => ({

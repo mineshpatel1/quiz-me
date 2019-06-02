@@ -19,6 +19,7 @@ class Settings extends Component {
     let menu = [
       { label: 'Account Settings', icon: 'user', onPress: () => { props.navigation.navigate('UserSettings'); }, disabled: (props.session.user ? false : true) },
       { label: 'Game Settings', icon: 'cog', onPress: () => { props.navigation.navigate('GameSettings'); }},
+      { label: 'Question Summary', icon: 'question', onPress: () => { props.navigation.navigate('Questions'); }},
     ]
 
     if (props.session.user) {

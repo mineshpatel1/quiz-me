@@ -1,27 +1,31 @@
-import os
+import html
 import json
 import types
 import queue
 import logging
+import requests
 import threading
 
 QUESTION_LIB = 'QuizMe/assets/data/questions.json'
 
 
 class CATEGORIES:
-    GENERAL = {'id': 1, 'name': 'General Knowledge'}
-    SPORTS = {'id': 2, 'name': 'Sports'}
-    SCIENCE = {'id': 3, 'name': 'Science'}
-    GEOGRAPHY = {'id': 4, 'name': 'Geography'}
-    HISTORY = {'id': 5, 'name': 'History'}
-    FILM = {'id': 6, 'name': 'Film'}
-    MUSIC = {'id': 7, 'name': 'Music'}
-    LITERATURE = {'id': 8, 'name': 'Literature'}
-    PEOPLE = {'id': 9, 'name': 'People & Quotes'}
-    MYTHS = {'id': 10, 'name': 'Faith & Mythology'}
-    TV = {'id': 11, 'name': 'TV'}
-    ANIMALS = {'id': 12, 'name': 'Animals'}
+    GENERAL = {'id': 1, 'name': 'General Knowledge', 'opendb_id': 9}
+    SPORTS = {'id': 2, 'name': 'Sports', 'opendb_id': 21}
+    SCIENCE = {'id': 3, 'name': 'Science', 'opendb_id': [17, 18, 19, 30]}
+    GEOGRAPHY = {'id': 4, 'name': 'Geography', 'opendb_id': 22}
+    HISTORY = {'id': 5, 'name': 'History', 'opendb_id': 23}
+    FILM = {'id': 6, 'name': 'Film', 'opendb_id': 11}
+    MUSIC = {'id': 7, 'name': 'Music', 'opendb_id': 12}
+    LITERATURE = {'id': 8, 'name': 'Literature', 'opendb_id': 10}
+    PEOPLE = {'id': 9, 'name': 'People & Quotes', 'opendb_id': 26}
+    MYTHS = {'id': 10, 'name': 'Faith & Mythology', 'opendb_id': 20}
+    TV = {'id': 11, 'name': 'TV', 'opendb_id': 14}
+    ANIMALS = {'id': 12, 'name': 'Animals', 'opendb_id': 27}
     BRAIN = {'id': 13, 'name': 'Puzzles & Riddles'}
+    ART = {'id': 14, 'name': 'Art', 'opendb_id': 25}
+    POLITICS = {'id': 15, 'name': 'Politics', 'opendb_id': 24}
+    VEHICLES = {'id': 16, 'name': 'Vehicles', 'opendb_id': 28}
 
 
 class Question:
@@ -234,6 +238,7 @@ def batch(_func):
 
 
 def read_from_opentriviaqa(category_id, fpath):
+    """Parses questions from files found in https://github.com/uberspot/OpenTriviaQA"""
     q_set = QuestionSet(load=True)
 
     question = None
@@ -269,13 +274,56 @@ def read_from_opentriviaqa(category_id, fpath):
                 if not line.startswith('#Q'):
                     question += ' ' + line
 
-
     # Add last question
     if question is not None:
         q_set.add(Question(question.strip(), options, answer, category_id=category_id))
         i += 1
 
     log.info('Parsed {} questions from {}'.format(i, fpath))
+    q_set.save()
+    return q_set
+
+
+def read_from_opentriviadb(category):
+    """Parses questions from OpenTriviaDB"""
+    q_set = QuestionSet(load=True)
+
+    base_url = "https://opentdb.com/"
+    r = requests.get(base_url + 'api_token.php?command=request')
+    token = r.json()['token']
+
+    q_count = 0
+
+    opendb_categories = category['opendb_id']
+    if not isinstance(opendb_categories, list):
+        opendb_categories = [opendb_categories]
+
+    for cat in opendb_categories:
+        fetch, amount = True, 50
+        while fetch:
+            r = requests.get(base_url + 'api.php?amount={}&category={}&token={}'.format(
+                amount, cat, token,
+            ))
+            results = r.json()
+            if results['response_code'] == 0:
+                for q in results['results']:
+                    question = html.unescape(q['question']).strip()
+                    answer = html.unescape(q['correct_answer'])
+                    options = [html.unescape(s) for s in q['incorrect_answers']] + [answer]
+                    q_set.add(Question(question, options, answer, category_id=category['id']))
+                    q_count += 1
+            elif results['response_code'] in [1, 4]:
+                if amount == 50:
+                    amount = 10
+                else:
+                    log.info('End of question set reached.')
+                    fetch = False
+            else:
+                log.info('Unexpected error: {}'.format(results['response_code']))
+                log.info(results)
+                fetch = False
+
+    log.info('Parsed {} questions.'.format(q_count))
     q_set.save()
     return q_set
 

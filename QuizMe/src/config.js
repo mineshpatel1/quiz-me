@@ -10,7 +10,7 @@ export const categories = {
   2:  {id: 2,  name: 'Sports', icon: 'futbol'},
   3:  {id: 3,  name: 'Science', icon: 'atom'},
   4:  {id: 4,  name: 'Geography', icon: 'globe-americas'},
-  5:  {id: 5,  name: 'History', icon: 'landmark'},
+  5:  {id: 5,  name: 'History', icon: 'monument'},
   6:  {id: 6,  name: 'Film', icon: 'film'},
   7:  {id: 7,  name: 'Music', icon: 'music'},
   8:  {id: 8,  name: 'Literature', icon: 'book'},
@@ -19,6 +19,9 @@ export const categories = {
   11: {id: 11, name: 'TV', icon: 'tv'},
   12: {id: 12, name: 'Animals', icon: 'paw'},
   13: {id: 13, name: 'Puzzles & Riddles', icon: 'brain'},
+  // 14: {id: 14, name: 'Art', icon: 'palette'},
+  // 15: {id: 15, name: 'Politics', icon: 'landmark'},
+  // 16: {id: 16, name: 'Vehicles', icon: 'car'},
 }
 
 export const defaultSettings = {

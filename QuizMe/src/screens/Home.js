@@ -79,7 +79,7 @@ class Home extends Component {
           <View style={[styles.f1, styles.center]}>
             <Button
               label="Single Player" icon="user"
-              onPress={() => { props.navigation.navigate('NewGame') }}
+              onPress={() => { props.navigation.navigate('NewGame', { mode: 'single' }) }}
             />
             <Button
               label="Head to Head" icon="user-friends" style={styles.mt15} disabled={!props.session.online}

@@ -23,7 +23,7 @@ class NewGame extends Component {
         <View style={[styles.f1, styles.col, styles.aCenter]}>
           <SettingsForm
             onSave={(values) => {
-              props.newGame(values);
+              props.newGame(values, props.navigation.getParam('mode'));
               props.navigation.navigate('Game');
             }}
             onCancel={() => { props.navigation.navigate('Home'); }}
