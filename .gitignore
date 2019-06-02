@@ -61,3 +61,6 @@ gradle.properties
 # QuizMe
 .config
 server/assets/cert
+
+# Push Notifications
+google-services.json

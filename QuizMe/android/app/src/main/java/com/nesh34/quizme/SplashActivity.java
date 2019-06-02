@@ -1,4 +1,4 @@
-package com.quizme;
+package com.nesh34.quizme;
 
 import android.content.Intent;
 import android.os.Bundle;

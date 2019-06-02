@@ -1,4 +1,4 @@
-package com.quizme;
+package com.nesh34.quizme;
 
 import android.graphics.Color;
 import android.os.Build;
