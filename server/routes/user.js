@@ -25,7 +25,7 @@ router.post('/user/register', (req, res, next) => {
         .then(([token, expiry_time]) => {
           req.session.unconfirmed = { email: newUser.email, expiry_time: expiry_time };
           email.activate(newUser, token)
-            .then(() => utils.response(res, {  unconfirmed: newUser.email }))
+            .then(() => utils.response(res, {  unconfirmed: {email: newUser.email} }))
             .catch(next);
         })
     })
