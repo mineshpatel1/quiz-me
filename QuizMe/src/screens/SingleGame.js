@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Platform, Animated, ScrollView, View } from 'react-native';
 
-import HandleBack from '../components/HandleBack';
+import PauseModal from '../components/PauseModal';
 import Option from '../components/Option';
 import {
   Container, Text, Button, Modal, Timer, ProgressBar, ProgressCircle,
@@ -14,7 +14,7 @@ import { utils } from '../utils';
 import { waitTime, animationDuration } from '../config';
 import { newGame, nextTurn, chooseAnswer } from '../actions/GameActions';
 
-class Game extends Component {
+class SingleGame extends Component {
   constructor(props) {
     super(props);
 
@@ -26,13 +26,11 @@ class Game extends Component {
       hudOpacity: new Animated.Value(0),
       disabled: true,
       chosen: null,
-      paused: false,
     }
   }
 
   componentDidMount() { this.mounted = true; }
   componentWillUnmount() { this.mounted = false; }
-  onBack = () => { this.pause(); return true; }
 
   fade = (val, callback=null) => {
     utils.animate(this.state.opacity, val, animationDuration, callback);
@@ -117,20 +115,6 @@ class Game extends Component {
         });
       }
     });
-  }
-
-  pause = () => {
-    let { state } = this;
-
-    if (state.gameOver) {
-      this.props.navigation.navigate('Home');
-    } else {
-      this.setState({paused: true});
-    }
-  }
-
-  unpause = () => {
-    this.setState({paused: false});
   }
 
   render() {
@@ -248,7 +232,7 @@ class Game extends Component {
             onPress={() => {
               props.newGame(props.game.settings);
               props.navigation.navigate({
-                routeName: 'Game',
+                routeName: 'SingleGame',
                 key: Math.random() * 100,
               });
             }}
@@ -266,32 +250,12 @@ class Game extends Component {
     )
 
     return (
-      <HandleBack onBack={this.onBack}>
-        <Container bgColour={colours.black} style={{padding: 30}}>
-          <Modal
-            theme={true} isVisible={this.state.paused} onCancel={this.unpause}
-            style={[styles.center]}
-          >
-            <View>
-              <Button
-                width={220} label="Resume" icon="play" onPress={() => {
-                  this.unpause();
-                }}
-              />
-              <Button
-                style={styles.mt15} width={220} label="Home" icon="home"
-                onPress={() => {
-                  this.unpause();
-                  this.props.navigation.navigate('Home');
-                }}
-              />
-            </View>
-          </Modal>
-          {state.preGame && preGame}
-          {!state.preGame && !state.gameOver && inGame}
-          {state.gameOver && gameOver}
-        </Container>
-      </HandleBack>
+      <Container bgColour={colours.black} style={{padding: 30}}>
+        <PauseModal disabled={state.gameOver} route="Home" />
+        {state.preGame && preGame}
+        {!state.preGame && !state.gameOver && inGame}
+        {state.gameOver && gameOver}
+      </Container>
     )
   }
 }
@@ -307,4 +271,4 @@ const mapDispatchToProps = dispatch => (
   bindActionCreators({ nextTurn, chooseAnswer, newGame }, dispatch)
 );
 
-export default connect(mapStateToProps, mapDispatchToProps)(Game);
+export default connect(mapStateToProps, mapDispatchToProps)(SingleGame);

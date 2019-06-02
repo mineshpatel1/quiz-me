@@ -41,7 +41,7 @@ class NewGame extends Component {
             onSave={(values) => {
               props.newGame(values, values.opponent);
               if (values.opponent) {
-                console.log('MULTIPLAYER HERE WE COME!!');
+                props.navigation.navigate('MultiGame');
               } else {
                 props.navigation.navigate('SingleGame');
               }

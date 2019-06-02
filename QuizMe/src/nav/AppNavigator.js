@@ -7,6 +7,7 @@ import Friends from '../screens/Friends';
 import GameSettings from '../screens/GameSettings';
 import GameSummary from '../screens/GameSummary';
 import Home from '../screens/Home';
+import MultiGame from '../screens/MultiGame';
 import NewGame from '../screens/NewGame';
 import Questions from '../screens/Questions';
 import Register from '../screens/Register';
@@ -62,6 +63,7 @@ const AppNavigator = createStackNavigator({
   GameSettings: { screen: GameSettings },
   GameSummary: { screen: GameSummary },
   Home: { screen: Home },
+  MultiGame: { screen: MultiGame },
   NewGame: { screen: NewGame },
   Questions: { screen: Questions },
   Register: { screen: Register },
