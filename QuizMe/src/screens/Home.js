@@ -85,7 +85,7 @@ class Home extends Component {
               label="Head to Head" icon="user-friends" style={styles.mt15} disabled={!props.session.online}
               onPress={() => {
                 if (props.session.user) {
-                  console.log("I am logged in!!!!");
+                  props.navigation.navigate('NewGame', { mode: 'multi' });
                 } else if (props.session.unconfirmed) {
                   props.navigation.navigate('Activate');
                 } else {

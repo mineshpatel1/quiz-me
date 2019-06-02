@@ -5,19 +5,23 @@ import { bindActionCreators } from 'redux';
 import { Form } from '../components/Core';
 import { saveGameSettings } from '../actions/SettingActions';
 import { defaultSettings } from '../config';
+import { utils } from '../utils';
 
 class SettingsForm extends Component {
   static defaultProps = {
     onSave: null,
     onCancel: null,
     save: true,
+    extraSettings: [],
   }
 
   render() {
     let { props, state } = this;
+    let settings = defaultSettings;
+    if (props.extraSettings) settings = utils.update(props.extraSettings, settings);
     return (
       <Form 
-        fields={defaultSettings} values={props.settings} 
+        fields={settings} values={props.settings} 
         onCancel={props.onCancel}
         onSuccess={(values) => {
           if (props.save) props.saveGameSettings(values);

@@ -11,23 +11,43 @@ import { styles } from '../styles';
 class NewGame extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      category: 'java',
-    }
   }
 
   render() {
     let { props } = this;
+
+    let extraSettings = null;
+    if (props.navigation.getParam('mode') == 'multi') {
+      extraSettings = {
+        opponent: {
+          label: "Choose Opponent",
+          icon: "user",
+          type: "string",
+          inputType: "picker",
+          options: props.session.friends,
+          displayFn: val => { return val.name ? val.name : val.email },
+          validator: val => {
+            if (!val) return false;
+            return Object.values(props.session.friends).map(f => { return f.id }).indexOf(val.id) > -1;
+          },
+        }
+      }
+    }
+
     return (
       <Container header={'New Game'}>
-        <View style={[styles.f1, styles.col, styles.aCenter]}>
+        <View style={[styles.f1, styles.col, styles.aCenter, styles.mt15]}>
           <SettingsForm
             onSave={(values) => {
-              props.newGame(values, props.navigation.getParam('mode'));
-              props.navigation.navigate('Game');
+              props.newGame(values, values.opponent);
+              if (values.opponent) {
+                console.log('MULTIPLAYER HERE WE COME!!');
+              } else {
+                props.navigation.navigate('SingleGame');
+              }
             }}
             onCancel={() => { props.navigation.navigate('Home'); }}
-            save={false}
+            save={false} extraSettings={extraSettings}
           />
         </View>
       </Container>
@@ -35,7 +55,12 @@ class NewGame extends Component {
   }
 }
 
-const mapStateToProps = (_state) => { return {} };
+const mapStateToProps = (state) => {
+  return {
+    session: state.session,
+  }
+};
+
 const mapDispatchToProps = dispatch => (
   bindActionCreators({ newGame }, dispatch)
 );

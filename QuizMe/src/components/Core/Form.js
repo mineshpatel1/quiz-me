@@ -72,7 +72,8 @@ export default class Form extends Component {
           key={i} style={[{marginBottom: 15}]} icon={field.icon}
           value={state.values[field.param]} options={field.options}
           onChange={(val) => {this.update(field.param, val, true)}}
-          format={field.format} width={field.width}
+          label={field.label} format={field.format} width={field.width}
+          displayFn={field.displayFn}
         />
       )
     }

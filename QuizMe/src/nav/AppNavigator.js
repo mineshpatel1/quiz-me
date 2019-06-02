@@ -4,7 +4,6 @@ import { createStackNavigator } from 'react-navigation';
 import Activate from '../screens/Activate';
 import EditProfile from '../screens/EditProfile';
 import Friends from '../screens/Friends';
-import Game from '../screens/Game';
 import GameSettings from '../screens/GameSettings';
 import GameSummary from '../screens/GameSummary';
 import Home from '../screens/Home';
@@ -14,6 +13,7 @@ import Register from '../screens/Register';
 import ResetPassword from '../screens/ResetPassword';
 import Settings from '../screens/Settings';
 import SignIn from '../screens/SignIn';
+import SingleGame from '../screens/SingleGame';
 import UserSettings from '../screens/UserSettings';
 
 import { animationDuration } from '../config';
@@ -59,7 +59,6 @@ const AppNavigator = createStackNavigator({
   Activate: { screen: Activate },
   EditProfile: { screen: EditProfile },
   Friends: { screen: Friends },
-  Game: { screen: Game },
   GameSettings: { screen: GameSettings },
   GameSummary: { screen: GameSummary },
   Home: { screen: Home },
@@ -69,6 +68,7 @@ const AppNavigator = createStackNavigator({
   ResetPassword: { screen: ResetPassword },
   Settings: { screen: Settings },
   SignIn: { screen: SignIn },
+  SingleGame: { screen: SingleGame },
   UserSettings: { screen: UserSettings },
 },
 {

@@ -2,12 +2,12 @@ import { defaultTeams } from './config';
 import { utils } from './utils';
 
 export class Game {
-  constructor(settings, mode=null) {
+  constructor(settings, opponent=null) {
     this.settings = settings;
     this.score = 0;
     this.turn = 0;
     this.questions = [];
-    this.mode = mode;
+    this.opponent = opponent;
   }
 
   increment() {
