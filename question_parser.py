@@ -4,6 +4,7 @@ import types
 import queue
 import logging
 import requests
+import psycopg2
 import threading
 
 QUESTION_LIB = 'QuizMe/assets/data/questions.json'
@@ -152,6 +153,16 @@ class QuestionSet:
             if (i + 1) != id:
                 return False
         return True
+
+    @property
+    def questions_ordered(self):
+        return sorted(self.questions, key=lambda x: x.id)
+
+
+def chunks(l, n):
+    """Yield successive n-sized chunks from l."""
+    for i in range(0, len(l), n):
+        yield l[i:i + n]
 
 
 def create_logger(name):
@@ -326,6 +337,53 @@ def read_from_opentriviadb(category):
     log.info('Parsed {} questions.'.format(q_count))
     q_set.save()
     return q_set
+
+
+def full_load_db_from_file(batch_size=10000):
+    """Truncates DB and loads questions from QUESTION_LIB JSON."""
+
+    q_set = QuestionSet(load=True)
+    with open('.config/config.json', 'r') as f:
+        config = json.load(f)
+        config = config['pg']
+
+    conn = psycopg2.connect(
+        host=config['host'],
+        database=config['db'],
+        user=config['user'],
+        password=config['password'],
+    )
+
+    i, values = 0, []
+    for q in q_set.questions_ordered:
+        values.append((
+            q.id,
+            q.question,
+            q.options,
+            q.answer,
+            q.category_id,
+        ))
+        i += 1
+
+    cur = conn.cursor()
+    cur.execute('TRUNCATE TABLE questions')
+    query = """
+            INSERT INTO questions (id, question, options, answer, category_id)
+            VALUES {}
+            """
+
+    j = 0
+    log.info("Writing {} questions to DB...".format(i))
+    for chunk in chunks(values, batch_size):
+        log.info('Batch {}...'.format(j + 1))
+        j += 1
+
+        args = ','.join(cur.mogrify("(%s, %s, %s, %s, %s)", v).decode("utf-8") for v in chunk)
+        cur.execute(query.format(args))
+        conn.commit()
+
+    log.info("Data transfer complete.")
+    cur.close()
 
 
 def main():
