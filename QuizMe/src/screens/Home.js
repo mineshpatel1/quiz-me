@@ -94,6 +94,26 @@ class Home extends Component {
                 }
               }}
             />
+            <Button 
+              label="Test" icon="ankh" style={styles.mt15}
+              onPress={() => {
+                firebase.messaging().getToken()
+                  .then(val => {
+                    console.log('my token', val);
+                  })
+                  .catch(err => {
+                    console.log('Error', err);
+                  })
+                firebase.messaging().hasPermission()
+                  .then(enabled => {
+                    if (enabled) {
+                      console.log('hasPermission');
+                    } else {
+                      console.log('hasNotPermission');
+                    } 
+                  });
+              }}
+            />
           </View>
           <IconSet colour={colours.white} borderColour={colours.primaryLight} links={bottomLinks} />
         </Animated.View>

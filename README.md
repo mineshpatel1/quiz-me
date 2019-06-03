@@ -45,6 +45,15 @@ RELEASE_MAC_KEYCHAIN=quizme_keystore
 MAC_ADMIN_USER=Nesh Patel
 ```
 
+## Increase Memory for Build
+
+If you experience the error `Expiring Daemon because JVM Tenured space is exhausted` when building the app, 
+add the followingto `gradle.properties`:
+
+```
+org.gradle.jvmargs=-Xmx2048M -XX\:MaxHeapSize\=10g`
+```
+
 ## Build App
 
 Once the configuration in the previous section is done, navigate to `QuizMe/android` and
