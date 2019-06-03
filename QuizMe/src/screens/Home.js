@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Animated, View, Image, Linking } from 'react-native';
+import firebase from 'react-native-firebase';
 
 import { Container, Button, IconSet } from '../components/Core';
 import { checkSession, signOut } from '../actions/SessionActions';

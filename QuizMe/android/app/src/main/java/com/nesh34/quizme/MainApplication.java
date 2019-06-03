@@ -3,6 +3,7 @@ package com.nesh34.quizme;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import io.invertase.firebase.RNFirebasePackage;
 import com.rt2zz.reactnativecontacts.ReactNativeContacts;
 import com.swmansion.reanimated.ReanimatedPackage;
 import org.devio.rn.splashscreen.SplashScreenReactPackage;
@@ -31,6 +32,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RNFirebasePackage(),
             new ReactNativeContacts(),
             new ReanimatedPackage(),
             new SplashScreenReactPackage(),
