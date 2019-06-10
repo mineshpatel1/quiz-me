@@ -20,7 +20,7 @@ exports.getSession = req => {
   };
 }
 
-exports.sessionWithData = req => {
+exports.sessionWithData = (req, pushToken) => {
   return new Promise((resolve, reject) => {
     let payload = exports.getSession(req);
     if (req.session.user) {
@@ -34,7 +34,14 @@ exports.sessionWithData = req => {
         payload.user = _user;
         payload.friends = _friends;
         payload.requests = _requests;
-        return resolve(payload);
+
+        if (pushToken && _user.push_tokens.indexOf(pushToken) == -1) {
+          users.addPushToken(_user.id, pushToken)
+            .then(() => { return resolve(payload) })
+            .catch(reject);
+        } else {
+          return resolve(payload);
+        }
       })
       .catch(reject);
     } else {

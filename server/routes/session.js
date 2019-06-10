@@ -43,7 +43,7 @@ router.post('/session/login', (req, res, next) => {
       users.auth(data.email, data.password)
         .then(() => {
           req.session.user = user;  // Activate session
-          sessionApi.sessionWithData(req)
+          sessionApi.sessionWithData(req, data.pushToken)
             .then(payload => utils.response(res, payload))
             .catch(next);
         })
@@ -64,7 +64,7 @@ router.post('/session/login/fingerprint', (req, res, next) => {
       users.verifyFingerprint(data.payload.id, data.signature, JSON.stringify(data.payload))
         .then(() => {
           req.session.user = user;  // Activate session
-          sessionApi.sessionWithData(req)
+          sessionApi.sessionWithData(req, data.pushToken)
             .then(payload => utils.response(res, payload))
             .catch(next);
         })

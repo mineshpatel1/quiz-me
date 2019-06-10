@@ -12,7 +12,7 @@ class User {
     this.name = row.name;
     this.is_activated = row.is_activated;
     this.fingerprint_enabled = row.fingerprint_key ? true: false;
-    this.push_token = row.push_token;
+    this.push_tokens = row.push_tokens;
     this.push_enabled = row.push_enabled;
   }
 }
@@ -221,9 +221,9 @@ exports.activate = (email, token, pushToken) => {
           pg.query(
             `UPDATE users SET 
               is_activated = TRUE,
-              push_token = $1::text
+              push_tokens = $1::text[]
             WHERE id = $2::integer`,
-            [pushToken, user.id],
+            [[pushToken], user.id],
           ).then(() => {
             pg.query(
               `DELETE FROM confirm_tokens WHERE email = $1::text`, [user.email]
@@ -287,6 +287,15 @@ exports.verifyFingerprint = (id, signature, payload) => {
       return reject(new Error("Could not verify identify with fingerprint"));
     })
   });
+}
+
+exports.addPushToken = (id, token) => {
+  return pg.query(
+    `UPDATE users SET 
+      push_tokens = ARRAY_APPEND(push_tokens, $1::varchar)
+    WHERE id = $2::integer`,
+    [token, id],
+  );
 }
 
 module.exports.User = User;

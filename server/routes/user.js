@@ -139,6 +139,15 @@ router.post('/user', (req, res, next) => {
     .catch(next);
 });
 
+router.post('/user/pushToken', (req, res, next) => {
+  let data = req.body;
+  if (!req.session.user) return next(new Error("Session is not active."));
+  if (!data.pushToken) return next(new Error("Push token is required."));
+  users.addPushToken(req.session.user.id, data.pushToken)
+    .then(() => utils.response(res))
+    .catch(next);
+});
+
 router.delete('/user', (req, res, next) => {
   let email = req.session.user.email;
   if (!email) return next(new Error("User does not have an active session."));
