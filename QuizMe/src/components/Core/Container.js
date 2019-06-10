@@ -52,7 +52,14 @@ class Container extends Component {
     let prevOnline = this.props.session.online;
     this.props.setConnection(online);
     if (!prevOnline && online) {
-      this.props.checkSession().catch(err => console.log('Session check error: ', err));
+      this.props.checkSession()
+        .then(session => {
+          if (session.user) {
+            api.addPushToken(session.user)
+              .catch(err => console.log('Push token error: ', err));
+          }
+        })
+        .catch(err => console.log('Session check error: ', err));
     }
     if (this.props.onConnectionChange) this.props.onConnectionChange(info, online);
   }

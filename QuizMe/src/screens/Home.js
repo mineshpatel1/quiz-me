@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Animated, View, Image, Linking } from 'react-native';
-import firebase from 'react-native-firebase';
 
 import { Container, Button, IconSet } from '../components/Core';
 import { checkSession, signOut } from '../actions/SessionActions';
@@ -59,15 +58,19 @@ class Home extends Component {
   render() {
     let { props, state } = this;
 
-    friendLink = 'Friends';
-    if (!props.session.user) friendLink = 'SignIn';
-    if (props.session.unconfirmed) friendLink = 'Activate';
-
     let requestCount = props.session.requests ? props.session.requests.length : null;
     let bottomLinks = [
       { icon: 'cog', nav: 'Settings' },
-      { icon: 'user-friends', nav: friendLink, badge: requestCount },
     ]
+
+    if (props.session.user) {
+      bottomLinks.push({ icon: 'user-friends', nav: 'Friends', badge: requestCount });
+    } else {
+      bottomLinks.push({ 
+        icon: 'sign-in-alt', 
+        nav: props.session.unconfirmed ? 'Activate': 'SignIn'
+      });
+    }
 
     return (
       <Container
@@ -97,21 +100,13 @@ class Home extends Component {
             <Button 
               label="Test" icon="ankh" style={styles.mt15}
               onPress={() => {
-                firebase.messaging().getToken()
+                utils.getPushToken()
                   .then(val => {
                     console.log('my token', val);
                   })
                   .catch(err => {
                     console.log('Error', err);
                   })
-                firebase.messaging().hasPermission()
-                  .then(enabled => {
-                    if (enabled) {
-                      console.log('hasPermission');
-                    } else {
-                      console.log('hasNotPermission');
-                    } 
-                  });
               }}
             />
           </View>

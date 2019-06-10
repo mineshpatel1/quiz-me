@@ -1,6 +1,7 @@
 import AsyncStorage from '@react-native-community/async-storage';
 import NetInfo from "@react-native-community/netinfo";
 import { Animated, Easing, Platform, PermissionsAndroid } from 'react-native';
+import firebase from 'react-native-firebase';
 import { animationDuration } from '../config';
 
 const _typeOf = value => {
@@ -400,6 +401,11 @@ class utils {
         return resolve();
       }
     });
+  }
+
+  /** Gets the user's Firebase Cloud Messaging push token. */
+  static getPushToken = () => {
+    return firebase.messaging().getToken();
   }
 }
 
