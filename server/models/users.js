@@ -12,6 +12,8 @@ class User {
     this.name = row.name;
     this.is_activated = row.is_activated;
     this.fingerprint_enabled = row.fingerprint_key ? true: false;
+    this.push_token = row.push_token;
+    this.push_enabled = row.push_enabled;
   }
 }
 
@@ -202,7 +204,7 @@ exports.new = (user, password) => {
   });
 }
 
-exports.activate = (email, token) => {
+exports.activate = (email, token, pushToken) => {
   utils.log('Activating user ' + email + '...');
   return new Promise((resolve, reject) => {
     exports.getFromEmail(email, false)
@@ -217,8 +219,11 @@ exports.activate = (email, token) => {
         ).then(result => {
           if (result.length == 0) return reject(new Error("Invalid activation token."));
           pg.query(
-            `UPDATE users SET is_activated = TRUE WHERE id = $1::integer`,
-            [user.id],
+            `UPDATE users SET 
+              is_activated = TRUE,
+              push_token = $1::text
+            WHERE id = $2::integer`,
+            [pushToken, user.id],
           ).then(() => {
             pg.query(
               `DELETE FROM confirm_tokens WHERE email = $1::text`, [user.email]

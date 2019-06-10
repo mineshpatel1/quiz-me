@@ -38,7 +38,7 @@ router.post('/user/activate', (req, res, next) => {
   if (!data.email) return next(new Error("Email is required."));
   if (!data.token) return next(new Error("Token is required."));
 
-  users.activate(data.email, data.token)
+  users.activate(data.email, data.token, data.pushToken)
     .then(user => {
       req.session.unconfirmed = null;
       req.session.user = user;
