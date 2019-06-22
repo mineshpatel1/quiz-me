@@ -2,6 +2,7 @@ import { Animated, Easing } from 'react-native';
 import { createStackNavigator } from 'react-navigation';
 
 import Activate from '../screens/Activate';
+import AddFriend from '../screens/AddFriend';
 import EditProfile from '../screens/EditProfile';
 import Friends from '../screens/Friends';
 import GameSettings from '../screens/GameSettings';
@@ -57,6 +58,7 @@ const slideFromRight = () => {
 }
 
 const AppNavigator = createStackNavigator({
+  AddFriend: { screen: AddFriend },
   Activate: { screen: Activate },
   EditProfile: { screen: EditProfile },
   Friends: { screen: Friends },

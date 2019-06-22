@@ -185,7 +185,7 @@ class Friends extends Component {
           <Menu menu={friends} />
           <IconSet links={[
             { icon: "sync-alt", onPress: () => this.fetchFriends() },
-            { icon: "user-plus", onPress: () => this.openAddFriend() },
+            { icon: "user-plus", onPress: () => this.props.navigation.navigate('AddFriend') },
             { icon: "address-book", onPress: () => this.syncContacts() }
           ]} />
         </View>
@@ -213,7 +213,7 @@ class Friends extends Component {
       <Container header="Friends" spinner={state.loading}>
         <Modal
           isVisible={this.state.addFriend} onCancel={this.cancel}
-          style={[styles.center]} height={245}
+          style={[styles.center]} height={245} closeBtn={false}
           animationIn={'fadeInUp'} animationOut={'fadeOutDown'}
         >
           <View>
@@ -228,14 +228,14 @@ class Friends extends Component {
           </View>
         </Modal>
         <ConfirmModal 
-          isVisible={this.state.confirmFriend > 0}
+          isVisible={this.state.confirmFriend > 0} closeBtn={false}
           message={"Confirm or reject friend request?"}
           onCancel={() => { this.setState({ confirmFriend: false }) }}
           onSuccess={() => { this.confirmFriend(state.confirmFriend); }}
           onReject={() => { this.unfriend(state.confirmFriend); }}
         />
         <ConfirmModal 
-          isVisible={this.state.unfriend > 0}
+          isVisible={this.state.unfriend > 0} closeBtn={false}
           message={"Unfriend this player?"}
           onCancel={() => { this.setState({ unfriend: false }) }}
           onSuccess={() => { this.unfriend(state.unfriend); }}
