@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 import { Platform, View, YellowBox } from 'react-native';
 import Spinner from 'react-native-loading-spinner-overlay';
 import NetInfo from "@react-native-community/netinfo";
+import firebase from 'react-native-firebase';
 
 import Header from './Header';
 import StatusBar from './StatusBar';
@@ -35,12 +36,22 @@ class Container extends Component {
     NetInfo.isConnected.addEventListener('connectionChange', isOnline => {
       this.onConnectionChange(isOnline);
     });
+    this.removeNotificationListener = firebase.notifications().onNotification((notification) => {
+      console.log('notificationReceived');
+      console.log(notification);
+    });
+    this.removeNotificationOpenedListener = firebase.notifications().onNotificationOpened((notificationOpen) => {
+        console.log('notificationOpened');
+        console.log(notificationOpen);
+    });
   }
 
   componentWillUnmount = () => {
     NetInfo.isConnected.removeEventListener('connectionChange', isOnline => {
       this.onConnectionChange(isOnline);
     });
+    this.removeNotificationListener();
+    this.removeNotificationOpenedListener();
   }
 
   onConnectionChange(isOnline) {

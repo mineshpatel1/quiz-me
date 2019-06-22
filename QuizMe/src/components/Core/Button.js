@@ -23,6 +23,7 @@ export default class Button extends Component {
     rippleHighlight: -40,
     borderWidth: 1,
     borderColour: colours.softGrey,
+    flex: false,
   }
 
   render() {
@@ -84,7 +85,9 @@ export default class Button extends Component {
             activeOpacity={activeOpacity} onPress={onPress}
             background={TouchableNativeFeedback.Ripple(rippleColour)}
           >
-            <View style={[styles.f1, styles.center, { borderRadius: props.borderRadius, backgroundColor: btnColour }]}>
+            <View style={[styles.f1, styles.center, { 
+              borderRadius: props.borderRadius, backgroundColor: btnColour 
+            }]}>
               <Icon icon={props.icon} size={props.iconSize} colour={fontColour} />
             </View>
           </TouchableNativeFeedback>
@@ -119,7 +122,11 @@ export default class Button extends Component {
 
       iconBtn = (
         <TouchableOpacity {...touchableProps}>
-          <View style={[styles.center, {width: props.width - (props.padding * 2)}]}>
+          <View style={[
+            styles.center, {
+              width: props.width - (props.padding * 2),
+            }, props.style,
+          ]}>
             <Icon icon={props.icon} size={props.iconSize} colour={fontColour} />
           </View>
         </TouchableOpacity>
@@ -135,10 +142,10 @@ export default class Button extends Component {
         }, props.style
       ]}>
         {
-          props.label && props.icon && labelBtn
+          props.label && labelBtn
         }
         {
-          !props.label && props.icon && iconBtn
+          !props.label && iconBtn
         }
       </View>
     )

@@ -11,19 +11,19 @@
       android:icon="@mipmap/ic_launcher"
       android:roundIcon="@mipmap/ic_launcher_round"
       android:allowBackup="false"
-      android:theme="@style/AppTheme">
+      android:theme="@style/SplashTheme">
       <meta-data
         android:name="com.google.firebase.messaging.default_notification_icon"
         android:resource="@drawable/ic_notif_q" />
-      <activity
-          android:name=".SplashActivity"
-          android:theme="@style/SplashTheme"
-          android:label="@string/app_name">
-          <intent-filter>
-              <action android:name="android.intent.action.MAIN" />
-              <category android:name="android.intent.category.LAUNCHER" />
-          </intent-filter>
-      </activity>
+      <!--<activity-->
+          <!--android:name=".SplashActivity"-->
+          <!--android:theme="@style/SplashTheme"-->
+          <!--android:label="@string/app_name">-->
+          <!--<intent-filter>-->
+              <!--<action android:name="android.intent.action.MAIN" />-->
+              <!--<category android:name="android.intent.category.LAUNCHER" />-->
+          <!--</intent-filter>-->
+      <!--</activity>-->
       <activity
         android:name=".MainActivity"
         android:label="@string/app_name"
@@ -31,6 +31,10 @@
         android:windowSoftInputMode="adjustPan"
         android:exported="true"
         android:launchMode="singleTop">
+        <intent-filter>
+          <action android:name="android.intent.action.MAIN" />
+          <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
         <intent-filter android:label="Quiz Me">
           <action android:name="android.intent.action.VIEW" />
           <category android:name="android.intent.category.DEFAULT" />

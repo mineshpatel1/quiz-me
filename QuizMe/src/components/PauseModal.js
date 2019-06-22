@@ -4,7 +4,7 @@ import { View } from 'react-native';
 import HandleBack from './HandleBack';
 import NavigationService from '../nav/NavigationService';
 import { Modal, Button } from './Core';
-import { styles } from '../styles';
+import { styles, colours } from '../styles';
 
 export default class PauseModal extends Component {
   static defaultProps = {
@@ -60,13 +60,13 @@ export default class PauseModal extends Component {
           <View>
             <Button
               width={220} label={props.resumeLabel} icon={props.resumeIcon} 
-              borderWidth={0} onPress={() => {
+              borderColour={colours.primaryDark} onPress={() => {
                 this.unpause();
               }}
             />
             <Button
               style={styles.mt15} width={220} label={props.navLabel} icon={props.navIcon}
-              borderWidth={0} onPress={() => {
+              borderColour={colours.primaryDark} onPress={() => {
                 this.unpause();
                 this.navigate();
               }}

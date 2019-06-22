@@ -62,7 +62,7 @@ class Home extends Component {
     let requestCount = props.session.requests ? props.session.requests.length : null;
     let bottomLinks = [
       { icon: 'cog', nav: 'Settings' },
-    ]
+    ];
 
     if (props.session.online) {
       if (props.session.user) {
@@ -85,12 +85,12 @@ class Home extends Component {
           </View>
           <View style={[styles.f1, styles.center]}>
             <Button
-              label="Single Player" icon="user" borderColour={colours.primaryShadow}
+              label="Single Player" icon="user" borderColour={colours.primaryDark}
               onPress={() => { props.navigation.navigate('NewGame', { mode: 'single' }) }}
             />
             <Button
               label="Head to Head" icon="user-friends" style={styles.mt15} disabled={!props.session.online}
-              borderColour={colours.primaryShadow} onPress={() => {
+              borderColour={colours.primaryDark} onPress={() => {
                 if (props.session.user) {
                   props.navigation.navigate('NewGame', { mode: 'multi' });
                 } else if (props.session.unconfirmed) {
@@ -101,7 +101,7 @@ class Home extends Component {
               }}
             />
             <Button 
-              label="Test" icon="ankh" style={styles.mt15} borderColour={colours.primaryShadow}
+              label="Test" icon="ankh" style={styles.mt15} borderColour={colours.primaryDark}
               onPress={() => {
                 utils.getPushToken()
                   .then(val => {
@@ -113,7 +113,7 @@ class Home extends Component {
               }}
             />
           </View>
-          <IconSet colour={colours.white} borderColour={colours.primaryLight} links={bottomLinks} />
+          <IconSet borderColour={colours.primaryLight} links={bottomLinks} />
         </Animated.View>
       </Container>
     );
