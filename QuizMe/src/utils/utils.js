@@ -405,7 +405,25 @@ class utils {
 
   /** Gets the user's Firebase Cloud Messaging push token. */
   static getPushToken = () => {
-    return firebase.messaging().getToken();
+    return new Promise((resolve, reject) => {
+      firebase.messaging().hasPermission()
+        .then(enabled => {
+          if (enabled) {
+            firebase.messaging().getToken()
+              .then(resolve)
+              .catch(reject);
+          } else {
+            firebase.messaging().requestPermission()
+              .then(() => {
+                firebase.messaging().getToken()
+                  .then(resolve)
+                  .catch(reject);
+              })
+              .catch(reject);
+          }
+        })
+        .catch(reject);
+    });
   }
 }
 
