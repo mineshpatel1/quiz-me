@@ -44,6 +44,13 @@ class Container extends Component {
         console.log('notificationOpened');
         console.log(notificationOpen);
     });
+    // Inconsistent whether or not this is the place to get the notif or if
+    // the opened listener fires.
+    firebase.notifications().getInitialNotification()
+      .then((notificationOpen) => {
+        console.log('initialNotif');
+        console.log(notificationOpen);
+      });
   }
 
   componentWillUnmount = () => {
