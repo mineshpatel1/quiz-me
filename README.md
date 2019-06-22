@@ -54,6 +54,15 @@ add the followingto `gradle.properties`:
 org.gradle.jvmargs=-Xmx2048M -XX\:MaxHeapSize\=10g`
 ```
 
+## Configure Firebase for Android/iOS
+
+Use the [Firebase Console](https://console.firebase.google.com) to set up two apps, one for Android, the other for iOS. During this process you will create the following files, which are not source controlled:
+
+* `GoogleService-Info.plist` (iOS)
+* `google-services.json` (Android)
+
+Note that most of the rest of the setup required for FCM should already be configured in the repository.
+
 ## Build App
 
 Once the configuration in the previous section is done, navigate to `QuizMe/android` and

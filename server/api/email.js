@@ -19,7 +19,7 @@ loadTemplate = (template, params={}) => {
 }
 
 exports.send = async (to, subject, template, params) => {
-  console.log('Sending mail to ' + to + '...');
+  utils.log('Sending mail to ' + to + '...');
 
   return new Promise((resolve, reject) => {
     loadTemplate(template, params)
@@ -47,7 +47,7 @@ exports.activate = async (user, token) => {
   return exports.send(
     user.email, 'Activate QuizMe account', 'activate',
     { user: name, token: token, url: utils.serverUrl() + '/appRedirect/activate/' }
-  ).then(() => console.log('Sent activation mail to ' + user.email));
+  ).then(() => utils.log('Sent activation mail to ' + user.email));
 }
 
 exports.resetPassword = async (user, token) => {
@@ -55,5 +55,5 @@ exports.resetPassword = async (user, token) => {
   return exports.send(
     user.email, 'QuizMe: Forgotten Password', 'resetPassword',
     { user: name, token: token, url: utils.serverUrl() + '/appRedirect/resetPassword/' }
-  ).then(() => console.log('Sent reset password mail to ' + user.email));
+  ).then(() => utils.log('Sent reset password mail to ' + user.email));
 }

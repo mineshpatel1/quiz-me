@@ -8,16 +8,15 @@ const https = require('https');
 const express = require('express');
 const session = require('express-session');
 const bodyParser = require('body-parser');
-
 const utils = require(__dirname + '/api/utils.js');
 
 // Certificate
 var credentials;
 try {
   credentials = {
-    key: fs.readFileSync(global.config.server.certPath + '/privkey.pem', 'utf8'),
-    cert: fs.readFileSync(global.config.server.certPath + '/cert.pem', 'utf8'),
-    ca: fs.readFileSync(global.config.server.certPath + '/chain.pem', 'utf8')
+    key: fs.readFileSync(global.config.server.cert_path + '/privkey.pem', 'utf8'),
+    cert: fs.readFileSync(global.config.server.cert_path + '/cert.pem', 'utf8'),
+    ca: fs.readFileSync(global.config.server.cert_path + '/chain.pem', 'utf8')
   };
   global.secure = true;
 } catch {

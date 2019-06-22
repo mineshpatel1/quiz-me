@@ -77,7 +77,7 @@ sudo yum install postgresql
     "server": {
         "host": "10.0.2.2",  // Android Development Loopback
         "port": 3000,
-        "certPath": "path/to/certificates"
+        "cert_path": "path/to/certificates"
     },
     "pg": {
         "host": "quizme.region.rds",
@@ -85,6 +85,9 @@ sudo yum install postgresql
         "port": 5432,
         "user": "quizme_admin",
         "password": "pg_password"
+    },
+    "fcm": {
+        "db_url": "https://app-id.firebaseio.com"
     },
     "session_secret": "random_string"
 }
@@ -99,6 +102,10 @@ sudo yum install postgresql
   "region": "eu-west-1"
 }
 ```
+
+## Set up `.config/fcm.json`
+
+Download the key file from Firebase [Service Accounts](https://console.firebase.google.com/project/_/settings/serviceaccounts/adminsdk). Move and rename it to `.config/fcm.json`. The wizard will also give you a database URL that you should put in `config.json`.
 
 ## Create tables in PostgreSQL
 

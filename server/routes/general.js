@@ -1,10 +1,11 @@
 const express = require('express');
 const router = express.Router();
 
+const notif = require(__dirname + '/../api/notif.js');
 const utils = require(__dirname + '/../api/utils.js');
 
 router.get('/', (_req, res, next) => {
-  res.send(utils.serverUrl())
+  res.send(utils.serverUrl());
 });
 
 router.get('/appRedirect/:path/:token', (req, res, _next) => {
