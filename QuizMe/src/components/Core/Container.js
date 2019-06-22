@@ -71,7 +71,6 @@ class Container extends Component {
 
   render() {
     let { props } = this;
-    let statusColour = props.bgColour == colours.white ? colours.primary : props.bgColour;
     let iosAdjust = Platform.OS == 'ios' && !props.header ? 25 : 0;
 
     let header = props.header;
@@ -79,15 +78,9 @@ class Container extends Component {
       header = { title: props.header };
     }
 
-    if (utils.isDark(statusColour)) {
-      statusColour = utils.alterBrightness(statusColour, +50);
-    } else {
-      statusColour = utils.alterBrightness(statusColour, -50);
-    }
-
     return (
       <View style={[styles.f1, { backgroundColor: props.bgColour, paddingTop: iosAdjust }, props.style]}>
-        <StatusBar colour={statusColour} />
+        <StatusBar colour={colours.black} />
         <Spinner visible={props.spinner} color={colours.white} animation='fade' />
         {
           props.header &&

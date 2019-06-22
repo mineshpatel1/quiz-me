@@ -20,6 +20,8 @@ export default class Form extends Component {
     inputWidth: 300,
     btnWidth: 120,
     divider: true,
+    iosAdjust: true,
+    roundBtns: false,
   }
 
   constructor(props) {
@@ -48,7 +50,6 @@ export default class Form extends Component {
   render() {
     let { props, state } = this;
     let fields = [];
-    let iosAdjust = Platform.OS == 'ios' ? 15 : 0;
 
     textInput = (i, field) => {
       return (
@@ -122,6 +123,8 @@ export default class Form extends Component {
             successIcon={props.successIcon}
             cancelIcon={props.cancelIcon}
             width={props.btnWidth}
+            iosAdjust={props.iosAdjust}
+            roundEdge={props.roundBtns}
           />
         </View>
       </View>

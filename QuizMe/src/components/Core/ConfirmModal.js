@@ -47,6 +47,8 @@ export default class ConfirmModal extends Component {
                 onCancel();
               }}
               width={props.btnWidth}
+              iosAdjust={false}
+              roundEdge={true}
             />
           </View>
         </View>

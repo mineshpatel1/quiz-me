@@ -22,7 +22,6 @@ class Friends extends Component {
       requests: [],
       emails: [],
       contactModal: false,
-      addFriend: false,
       confirmFriend: false,
       unfriend: false,
 
@@ -62,14 +61,6 @@ class Friends extends Component {
     this.refs.success.show(msg, 2000);
   }
 
-  addFriend = email => {
-    this.setState({ addFriend: false, loading: true }, () => {
-      api.friendRequests([email])
-        .then(() => this.showSuccess("Sent friend request to " + email))
-        .catch(this.showError);
-    });
-  }
-
   requestFriends = emails => {
     this.setState({ contactModal: false, loading: true }, () => {
       api.friendRequests(emails)
@@ -96,14 +87,6 @@ class Friends extends Component {
         .then(() => this.fetchFriends())
         .catch(this.showError);
     });
-  }
-
-  openAddFriend = () => {
-    this.setState({ addFriend: true });
-  }
-
-  cancel = () => {
-    this.setState({ addFriend: false });
   }
 
   syncContacts = () => {
@@ -211,22 +194,6 @@ class Friends extends Component {
 
     return (
       <Container header="Friends" spinner={state.loading}>
-        <Modal
-          isVisible={this.state.addFriend} onCancel={this.cancel}
-          style={[styles.center]} height={245} closeBtn={false}
-          animationIn={'fadeInUp'} animationOut={'fadeOutDown'}
-        >
-          <View>
-            <Text align="center" bold={true}>Add Friend</Text>
-            <Form 
-              fields={fields}
-              onCancel={this.cancel}
-              onSuccess={values => this.addFriend(values.email)}
-              disabled={state.loading || (!props.session.online)}
-              width={300} inputWidth={250} btnWidth={100} divider={false}
-            />
-          </View>
-        </Modal>
         <ConfirmModal 
           isVisible={this.state.confirmFriend > 0} closeBtn={false}
           message={"Confirm or reject friend request?"}

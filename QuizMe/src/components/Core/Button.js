@@ -13,6 +13,10 @@ export default class Button extends Component {
     width: 300,
     height: 50,
     borderRadius: 50,
+    borderTopLeftRadius: null,
+    borderTopRightRadius: null,
+    borderBottomLeftRadius: null,
+    borderBottomRightRadius: null,
     padding: 25,
     btnColour: colours.light,
     fontColour: colours.grey,
@@ -24,6 +28,7 @@ export default class Button extends Component {
     borderWidth: 1,
     borderColour: colours.softGrey,
     flex: false,
+    iosAdjust: false,  // Required for iOS if the button is at the bottom of the screen
   }
 
   render() {
@@ -32,6 +37,7 @@ export default class Button extends Component {
     let fontColour = props.fontColour;
     let onPress = props.onPress;
     let activeOpacity = props.activeOpacity;
+    let iosAdjust = props.iosAdjust && Platform.OS == 'ios' ? 15: 0;
 
     if (props.disabled) {
       btnColour = colours.disabled;
@@ -48,9 +54,7 @@ export default class Button extends Component {
 
       let rippleColour = utils.alterBrightness(btnColour, props.rippleHighlight);
       let touchableProps = {
-        style: [styles.f1, styles.row, {
-          borderRadius: props.borderRadius,
-        }],
+        style: [styles.f1, styles.row],
         activeOpacity: activeOpacity, onPress: onPress,
       }
       
@@ -61,7 +65,6 @@ export default class Button extends Component {
             background={TouchableNativeFeedback.Ripple(rippleColour)}
           >
             <View style={[styles.f1, styles.row, {
-              borderRadius: props.borderRadius,
               paddingLeft: props.padding - 15, backgroundColor: btnColour,
             }]}>
               <View style={[styles.f2, {
@@ -86,7 +89,7 @@ export default class Button extends Component {
             background={TouchableNativeFeedback.Ripple(rippleColour)}
           >
             <View style={[styles.f1, styles.center, { 
-              borderRadius: props.borderRadius, backgroundColor: btnColour 
+              backgroundColor: btnColour 
             }]}>
               <Icon icon={props.icon} size={props.iconSize} colour={fontColour} />
             </View>
@@ -96,7 +99,6 @@ export default class Button extends Component {
     } else if (props.disabled || Platform.OS == 'ios') {
       let touchableProps = {
         style: [styles.f1, styles.row, {
-          borderRadius: props.borderRadius,
           paddingLeft: props.padding,
           backgroundColor: btnColour,
         }],
@@ -125,6 +127,7 @@ export default class Button extends Component {
           <View style={[
             styles.center, {
               width: props.width - (props.padding * 2),
+              paddingBottom: iosAdjust,
             }, props.style,
           ]}>
             <Icon icon={props.icon} size={props.iconSize} colour={fontColour} />
@@ -136,9 +139,14 @@ export default class Button extends Component {
     return (
       <View style={[
         {
-          width: props.width, height: props.height, borderRadius: props.borderRadius,
+          width: props.width, height: props.height + iosAdjust,
+          borderRadius: props.borderRadius,
+          borderTopLeftRadius: props.borderTopLeftRadius,
+          borderTopRightRadius: props.borderTopRightRadius,
+          borderBottomLeftRadius: props.borderBottomLeftRadius,
+          borderBottomRightRadius: props.borderBottomRightRadius,
           backgroundColor: colours.white, borderColor: props.borderColour, 
-          borderWidth: borderWidth,
+          borderWidth: borderWidth, overflow: 'hidden',
         }, props.style
       ]}>
         {
