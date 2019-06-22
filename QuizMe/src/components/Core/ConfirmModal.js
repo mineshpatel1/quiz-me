@@ -16,6 +16,8 @@ export default class ConfirmModal extends Component {
     fontSize: 24,
     btnWidth: 120,
     width: 350,
+    animationIn: 'fadeInUp',
+    animationOut: 'fadeOutDown',
   }
 
   render() {
@@ -28,6 +30,8 @@ export default class ConfirmModal extends Component {
     return (
       <Modal
         isVisible={isVisible} onCancel={() => onCancel()}
+        animationIn={props.animationIn}
+        animationOut={props.animationOut}
         style={[styles.center]} {...otherProps}
       >
         <View style={[styles.col]}>

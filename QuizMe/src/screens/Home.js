@@ -85,12 +85,12 @@ class Home extends Component {
           </View>
           <View style={[styles.f1, styles.center]}>
             <Button
-              label="Single Player" icon="user" borderWidth={0}
+              label="Single Player" icon="user" borderColour={colours.primaryShadow}
               onPress={() => { props.navigation.navigate('NewGame', { mode: 'single' }) }}
             />
             <Button
               label="Head to Head" icon="user-friends" style={styles.mt15} disabled={!props.session.online}
-              borderWidth={0} onPress={() => {
+              borderColour={colours.primaryShadow} onPress={() => {
                 if (props.session.user) {
                   props.navigation.navigate('NewGame', { mode: 'multi' });
                 } else if (props.session.unconfirmed) {
@@ -101,7 +101,7 @@ class Home extends Component {
               }}
             />
             <Button 
-              label="Test" icon="ankh" style={styles.mt15} borderWidth={0}
+              label="Test" icon="ankh" style={styles.mt15} borderColour={colours.primaryShadow}
               onPress={() => {
                 utils.getPushToken()
                   .then(val => {

@@ -16,17 +16,16 @@ export default class MultiPickerModal extends Component {
     isVisible: false,
     width: 350,
     height: 350,
-    borderRadius: 50,
-    colour: colours.primary,
-    textColour: colours.white,
     fontSize: 20,
     bold: true,
-    activeOpacity: 0.85,
     padding: 20,
     onSuccess: null,
     onReject: null,
     onCancel: null,
-    btnWidth: 80,
+    btnWidth: 100,
+    theme: true,
+    animationIn: 'fadeInUp',
+    animationOut: 'fadeOutDown',
   }
 
   constructor(props) {
@@ -54,10 +53,17 @@ export default class MultiPickerModal extends Component {
       })
     });
 
+    let textColour = colours.grey;
+    let borderColour = colours.softGrey;
+    if (props.theme) {
+      textColour = colours.white;
+      borderColour = colours.primaryLight;
+    }
+
     return (
       <Modal
-        theme={true} isVisible={this.props.isVisible} onCancel={() => { props.onCancel() }}
-        style={[styles.center]} animationIn={'fadeInUp'} animationOut={'fadeOutDown'}
+        theme={props.theme} isVisible={this.props.isVisible} onCancel={() => { props.onCancel() }}
+        style={[styles.center]} animationIn={props.animationIn} animationOut={props.animationOut}
         width={props.width} height={props.height} paddingBottom={0} sidePadding={0} closeBtn={false}
       >
         <ScrollView>
@@ -66,7 +72,7 @@ export default class MultiPickerModal extends Component {
             <View key={i} style={[
               styles.center,
               {
-                width: props.width, borderColor: colours.primaryLight, borderBottomWidth: opt.bbw,
+                width: props.width, borderColor: borderColour, borderBottomWidth: opt.bbw,
               }
             ]}>
               <TouchableWithoutFeedback onPress={() => {
@@ -79,7 +85,7 @@ export default class MultiPickerModal extends Component {
                   }]}
                 >
                   <Text 
-                    align="left" colour={colours.white} bold={props.bold} size={props.fontSize}
+                    align="left" colour={textColour} bold={props.bold} size={props.fontSize}
                     style={{width: props.width - 50}}
                   >{opt.value}</Text>
                   <Checkbox
@@ -100,7 +106,7 @@ export default class MultiPickerModal extends Component {
           ))
         }
         </ScrollView>
-        <View style={{width: '100%', padding: 15, borderTopWidth: 1, borderColor: colours.primaryLight}}>
+        <View style={{width: '100%', padding: 15, borderTopWidth: 1, borderColor: borderColour}}>
           <ConfirmButtons
             justify="space-evenly"
             onSuccess={() => {

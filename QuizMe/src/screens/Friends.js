@@ -119,6 +119,7 @@ class Friends extends Component {
             let emails = [];
             contacts.forEach(contact => {
               contact.emailAddresses.forEach(email => {
+                console.log('I have an email: ', email)
                 emails.push(email.email);
               });
             });
@@ -213,6 +214,7 @@ class Friends extends Component {
         <Modal
           isVisible={this.state.addFriend} onCancel={this.cancel}
           style={[styles.center]} height={245}
+          animationIn={'fadeInUp'} animationOut={'fadeOutDown'}
         >
           <View>
             <Text align="center" bold={true}>Add Friend</Text>
@@ -242,7 +244,7 @@ class Friends extends Component {
           isVisible={this.state.contactModal} options={state.emails}
           onSuccess={values => { this.requestFriends(values) }}
           onCancel={() => this.setState({ contactModal: false })}
-          fontSize={14} bold={false} padding={5}
+          fontSize={14} bold={false} padding={5} theme={false}
           ref="contactList"
         />
         <TabView

@@ -10,11 +10,11 @@ export default class Checkbox extends Component {
     value: false,
     selectedColour: colours.primary,
     unselectedColour: colours.white,
-    selectedBorderColour: colours.white,
+    selectedBorderColour: colours.softGrey,
     unselectedBorderColour: colours.softGrey,
     icon: 'check',
     iconColour: colours.white,
-    borderWidth: 0,
+    borderWidth: 1,
     borderRadius: 5,
     size: 30,
     onToggle: null,
@@ -43,13 +43,12 @@ export default class Checkbox extends Component {
   render() {
     let { props, state } = this;
     let borderColour = state.value ? props.selectedBorderColour : props.unselectedBorderColour;
-    let colour = state.value ? props.selectedColour : props.unselectedColour;
     return (
       <TouchableWithoutFeedback onPress={this.toggle}>
         <View 
           style={[styles.center, { 
             width: props.size, height: props.size, 
-            borderRadius: props.borderRadius, 
+            borderRadius: props.borderRadius,
             borderWidth: props.borderWidth, 
             borderColor: borderColour,
             backgroundColor: props.unselectedColour,
@@ -57,8 +56,9 @@ export default class Checkbox extends Component {
         >
           {
             <Animated.View style={[styles.center, {
-              width: props.size -8, height: props.size -8,
+              width: props.size, height: props.size,
               backgroundColor: props.selectedColour,
+              borderRadius: props.borderRadius,
               opacity: state.opacity,
             }]}>
               <Icon size={18} icon={props.icon} colour={props.iconColour} />
