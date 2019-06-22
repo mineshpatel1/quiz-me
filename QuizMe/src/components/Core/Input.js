@@ -19,6 +19,8 @@ export default class Input extends Component {
     format: null,
     validator: null,
     secure: false,
+    borderWidth: 1,
+    borderColour: colours.softGrey,
   }
 
   constructor(props) {
@@ -104,7 +106,7 @@ export default class Input extends Component {
     let bg = valid ? props.colour: colours.error;
 
     return (
-      <View style={[styles.shadow, styles.row, styles.aCenter,
+      <View style={[styles.row, styles.aCenter,
         {
           width: props.width, height: props.height, borderRadius: props.borderRadius,
           backgroundColor: bg,
@@ -114,6 +116,7 @@ export default class Input extends Component {
           onPress={() => { this.input.focus(); }} activeOpacity={0.85}
           style={[styles.row, {
             flex: labelWidth, borderTopLeftRadius: props.borderRadius, borderBottomLeftRadius: props.borderRadius,
+            borderColor: props.borderColour
           }]}
         >
           <View style={{paddingLeft: 20, width: 55, height: props.height, justifyContent: 'center'}}>
@@ -129,6 +132,7 @@ export default class Input extends Component {
         <View style={[styles.jCenter, {
           flex: inputWidth, backgroundColor: colours.light, height: props.height,
           borderTopRightRadius: props.borderRadius, borderBottomRightRadius: props.borderRadius,
+          borderColor: props.borderColour, borderWidth: props.borderWidth, borderLeftWidth: 0,
         }]}>
           <TextInput
             style={[fonts.normal, {marginLeft: 15, color: inputColour}]}

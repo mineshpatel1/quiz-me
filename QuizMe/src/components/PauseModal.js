@@ -59,13 +59,14 @@ export default class PauseModal extends Component {
         >
           <View>
             <Button
-              width={220} label={props.resumeLabel} icon={props.resumeIcon} onPress={() => {
+              width={220} label={props.resumeLabel} icon={props.resumeIcon} 
+              borderWidth={0} onPress={() => {
                 this.unpause();
               }}
             />
             <Button
               style={styles.mt15} width={220} label={props.navLabel} icon={props.navIcon}
-              onPress={() => {
+              borderWidth={0} onPress={() => {
                 this.unpause();
                 this.navigate();
               }}

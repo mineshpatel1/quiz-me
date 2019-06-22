@@ -21,6 +21,8 @@ export default class Picker extends Component {
     activeOpacity: 0.85,
     padding: 20,
     label: null,
+    borderWidth: 1,
+    borderColour: colours.softGrey,
   }
 
   constructor(props) {
@@ -60,7 +62,7 @@ export default class Picker extends Component {
     });
 
     return (
-      <View style={[styles.shadow, styles.row, styles.aCenter,
+      <View style={[styles.row, styles.aCenter,
         {
           width: props.width, height: props.height, borderRadius: props.borderRadius,
           backgroundColor: props.colour,
@@ -111,6 +113,7 @@ export default class Picker extends Component {
           style={{
             flex: 1, backgroundColor: colours.light, height: props.height,
             borderTopRightRadius: props.borderRadius, borderBottomRightRadius: props.borderRadius,
+            borderColor: props.borderColour, borderWidth: props.borderWidth, borderLeftWidth: 0,
           }}
         >
           <View style={[styles.center, {width: 55, height: props.height}]}>

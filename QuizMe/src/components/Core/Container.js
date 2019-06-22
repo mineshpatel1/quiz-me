@@ -15,7 +15,6 @@ class Container extends Component {
   static defaultProps = {
     bgColour: colours.white,
     spinner: false,
-    onConnectionChange: null,
     header: null,
   }
 
@@ -32,26 +31,22 @@ class Container extends Component {
     ]);
   }
 
-  componentDidMount() {
-    NetInfo.addEventListener('connectionChange', (info) => {
-      this.onConnectionChange(info, this.isOnline(info));
+  componentDidMount = () => {
+    NetInfo.isConnected.addEventListener('connectionChange', isOnline => {
+      this.onConnectionChange(isOnline);
     });
   }
 
-  componentWillUnmount() {
-    NetInfo.removeEventListener('connectionChange', (info) => {
-      this.onConnectionChange(info, this.isOnline(info));
+  componentWillUnmount = () => {
+    NetInfo.isConnected.removeEventListener('connectionChange', isOnline => {
+      this.onConnectionChange(isOnline);
     });
   }
 
-  isOnline(info) {
-    return ['none', 'unknown'].indexOf(info.type) == -1;
-  }
-
-  onConnectionChange(info, online) {
+  onConnectionChange(isOnline) {
     let prevOnline = this.props.session.online;
-    this.props.setConnection(online);
-    if (!prevOnline && online) {
+    this.props.setConnection(isOnline);
+    if (!prevOnline && isOnline) {
       this.props.checkSession()
         .then(session => {
           if (session.user) {
@@ -61,7 +56,6 @@ class Container extends Component {
         })
         .catch(err => console.log('Session check error: ', err));
     }
-    if (this.props.onConnectionChange) this.props.onConnectionChange(info, online);
   }
 
   render() {

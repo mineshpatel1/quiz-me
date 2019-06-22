@@ -17,6 +17,7 @@ class Home extends Component {
       loggedIn: false,
       modal: false,
       requestCount: null,
+      init: false,
     }
   }
 
@@ -63,13 +64,15 @@ class Home extends Component {
       { icon: 'cog', nav: 'Settings' },
     ]
 
-    if (props.session.user) {
-      bottomLinks.push({ icon: 'user-friends', nav: 'Friends', badge: requestCount });
-    } else {
-      bottomLinks.push({ 
-        icon: 'sign-in-alt', 
-        nav: props.session.unconfirmed ? 'Activate': 'SignIn'
-      });
+    if (props.session.online) {
+      if (props.session.user) {
+        bottomLinks.push({ icon: 'user-friends', nav: 'Friends', badge: requestCount });
+      } else {
+        bottomLinks.push({ 
+          icon: 'sign-in-alt', 
+          nav: props.session.unconfirmed ? 'Activate': 'SignIn'
+        });
+      }
     }
 
     return (
@@ -82,12 +85,12 @@ class Home extends Component {
           </View>
           <View style={[styles.f1, styles.center]}>
             <Button
-              label="Single Player" icon="user"
+              label="Single Player" icon="user" borderWidth={0}
               onPress={() => { props.navigation.navigate('NewGame', { mode: 'single' }) }}
             />
             <Button
               label="Head to Head" icon="user-friends" style={styles.mt15} disabled={!props.session.online}
-              onPress={() => {
+              borderWidth={0} onPress={() => {
                 if (props.session.user) {
                   props.navigation.navigate('NewGame', { mode: 'multi' });
                 } else if (props.session.unconfirmed) {
@@ -98,7 +101,7 @@ class Home extends Component {
               }}
             />
             <Button 
-              label="Test" icon="ankh" style={styles.mt15}
+              label="Test" icon="ankh" style={styles.mt15} borderWidth={0}
               onPress={() => {
                 utils.getPushToken()
                   .then(val => {

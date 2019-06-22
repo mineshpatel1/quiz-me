@@ -21,6 +21,8 @@ export default class Button extends Component {
     activeOpacity: 0.7,
     iconSize: 20,
     rippleHighlight: -40,
+    borderWidth: 1,
+    borderColour: colours.softGrey,
   }
 
   render() {
@@ -36,6 +38,9 @@ export default class Button extends Component {
       onPress = null;
       activeOpacity = 1;
     }
+
+    let borderWidth = props.borderWidth;
+    if (props.disabled) borderWidth = 0;
 
     let labelBtn, iconBtn;
     if (!props.disabled && Platform.OS == 'android') {
@@ -122,10 +127,11 @@ export default class Button extends Component {
     }
 
     return (
-      <View style={[styles.shadow,
+      <View style={[
         {
           width: props.width, height: props.height, borderRadius: props.borderRadius,
-          backgroundColor: colours.white,
+          backgroundColor: colours.white, borderColor: props.borderColour, 
+          borderWidth: borderWidth,
         }, props.style
       ]}>
         {
