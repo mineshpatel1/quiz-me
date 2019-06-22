@@ -14,6 +14,9 @@
 
 #import "RNSplashScreen.h"
 
+@import UIKit;
+@import Firebase;
+
 @implementation AppDelegate
 
 //- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
@@ -21,6 +24,12 @@
 //{
 //  return [RCTLinkingManager application:application openURL:url
 //                      sourceApplication:sourceApplication annotation:annotation];
+//}
+
+//- (BOOL)application:(UIApplication *)application
+//    didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+//    [FIRApp configure];
+//  return YES;
 //}
 
 - (BOOL)application:(UIApplication *)application
@@ -55,6 +64,7 @@
   [self.window makeKeyAndVisible];
   
   [RNSplashScreen show];
+  [FIRApp configure];
   return YES;
 }
 

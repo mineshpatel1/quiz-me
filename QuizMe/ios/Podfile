@@ -1,0 +1,20 @@
+# Uncomment the next line to define a global platform for your project
+platform :ios, '9.0'
+pod 'Firebase/Core', '~> 5.20.1'
+pod 'Firebase/Messaging', '~> 5.20.1'
+
+target 'QuizMe' do
+  # Uncomment the next line if you're using Swift or would like to use dynamic frameworks
+  # Pods for QuizMe
+
+  target 'QuizMe-tvOSTests' do
+    inherit! :search_paths
+    # Pods for testing
+  end
+
+  target 'QuizMeTests' do
+    inherit! :search_paths
+    # Pods for testing
+  end
+
+end
