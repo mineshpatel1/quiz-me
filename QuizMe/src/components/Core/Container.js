@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 import { Platform, View, YellowBox } from 'react-native';
 import Spinner from 'react-native-loading-spinner-overlay';
 import NetInfo from "@react-native-community/netinfo";
+import firebase from 'react-native-firebase';
 
 import Header from './Header';
 import StatusBar from './StatusBar';
@@ -15,7 +16,6 @@ class Container extends Component {
   static defaultProps = {
     bgColour: colours.white,
     spinner: false,
-    onConnectionChange: null,
     header: null,
   }
 
@@ -32,34 +32,52 @@ class Container extends Component {
     ]);
   }
 
-  componentDidMount() {
-    NetInfo.addEventListener('connectionChange', (info) => {
-      this.onConnectionChange(info, this.isOnline(info));
+  componentDidMount = () => {
+    NetInfo.isConnected.addEventListener('connectionChange', isOnline => {
+      this.onConnectionChange(isOnline);
     });
-  }
-
-  componentWillUnmount() {
-    NetInfo.removeEventListener('connectionChange', (info) => {
-      this.onConnectionChange(info, this.isOnline(info));
+    this.removeNotificationListener = firebase.notifications().onNotification((notification) => {
+      console.log('notificationReceived');
+      console.log(notification);
     });
+    this.removeNotificationOpenedListener = firebase.notifications().onNotificationOpened((notificationOpen) => {
+        console.log('notificationOpened');
+        console.log(notificationOpen);
+    });
+    // Inconsistent whether or not this is the place to get the notif or if
+    // the opened listener fires.
+    firebase.notifications().getInitialNotification()
+      .then((notificationOpen) => {
+        console.log('initialNotif');
+        console.log(notificationOpen);
+      });
   }
 
-  isOnline(info) {
-    return ['none', 'unknown'].indexOf(info.type) == -1;
+  componentWillUnmount = () => {
+    NetInfo.isConnected.removeEventListener('connectionChange', isOnline => {
+      this.onConnectionChange(isOnline);
+    });
+    this.removeNotificationListener();
+    this.removeNotificationOpenedListener();
   }
 
-  onConnectionChange(info, online) {
+  onConnectionChange(isOnline) {
     let prevOnline = this.props.session.online;
-    this.props.setConnection(online);
-    if (!prevOnline && online) {
-      this.props.checkSession().catch(err => console.log('Session check error: ', err));
+    this.props.setConnection(isOnline);
+    if (!prevOnline && isOnline) {
+      this.props.checkSession()
+        .then(session => {
+          if (session.user) {
+            api.addPushToken(session.user)
+              .catch(err => console.log('Push token error: ', err));
+          }
+        })
+        .catch(err => console.log('Session check error: ', err));
     }
-    if (this.props.onConnectionChange) this.props.onConnectionChange(info, online);
   }
 
   render() {
     let { props } = this;
-    let statusColour = props.bgColour == colours.white ? colours.primary : props.bgColour;
     let iosAdjust = Platform.OS == 'ios' && !props.header ? 25 : 0;
 
     let header = props.header;
@@ -67,15 +85,9 @@ class Container extends Component {
       header = { title: props.header };
     }
 
-    if (utils.isDark(statusColour)) {
-      statusColour = utils.alterBrightness(statusColour, +50);
-    } else {
-      statusColour = utils.alterBrightness(statusColour, -50);
-    }
-
     return (
       <View style={[styles.f1, { backgroundColor: props.bgColour, paddingTop: iosAdjust }, props.style]}>
-        <StatusBar colour={statusColour} />
+        <StatusBar colour={colours.black} />
         <Spinner visible={props.spinner} color={colours.white} animation='fade' />
         {
           props.header &&

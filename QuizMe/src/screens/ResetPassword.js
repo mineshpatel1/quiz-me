@@ -13,7 +13,12 @@ class ResetPassword extends Component {
     super(props);
     this.state = { 
       loading: false,
+      token: '123456789A',
+      valid: false,
     };
+
+    this.state.token = this.props.navigation.getParam('token');
+    this.state.valid = this.validateToken(this.state.token);
   }
 
   showError = err => {
@@ -30,7 +35,7 @@ class ResetPassword extends Component {
     if (this.props.session.resetPassword) {
       api.resetPassword(
         this.props.session.resetPassword.email,
-        this.props.navigation.getParam('token'),
+        values.token,
         values.password,
       )
       .then(res => {
@@ -45,10 +50,22 @@ class ResetPassword extends Component {
     }
   }
 
+  validateToken = (val) => {
+    if (!val) return false;
+    return val.length == 10 && validators.isAlphaNumeric(val);
+  }
+
   render() {
     let { props, state } = this;
 
     let fields = {
+      token: {
+        label: "Token",
+        icon: "hashtag",
+        type: "string",
+        inputType: "text",
+        validator: this.validateToken,
+      },
       password: {
         label: "New Password",
         icon: "lock",
@@ -73,13 +90,17 @@ class ResetPassword extends Component {
       },
     }
 
+    let values = {
+      token: state.token,
+    }
+
     return (
       <Container 
         spinner={state.loading} header="Reset Password"
       >
         <View style={[styles.f1, styles.col, styles.aCenter]}>
           <Form 
-            fields={fields}
+            fields={fields} values={values}
             onCancel={() => { this.props.navigation.navigate('Home') }}
             onSuccess={values => {this.post(values)}}
             disabled={state.loading || (!props.session.online)}

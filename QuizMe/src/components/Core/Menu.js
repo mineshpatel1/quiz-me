@@ -63,7 +63,15 @@ export default class Menu extends Component {
               onPress={onPress}
             >
               <Text colour={colour}>{item.label}</Text>
-              <Icon colour={colour} icon={item.icon} />
+              {
+                item.icon &&
+                <Icon
+                  style={{width: 25}}
+                  size={25}
+                  colour={item.iconColour || colour} 
+                  icon={item.icon} onPress={item.iconAction}
+                />
+              }
             </TouchableOpacity>
           </View>
         )

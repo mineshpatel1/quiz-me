@@ -55,6 +55,8 @@ CREATE TABLE IF NOT EXISTS users (
     name            VARCHAR(255),
     is_activated    BOOLEAN DEFAULT FALSE,
     fingerprint_key VARCHAR(1000),
+    push_tokens     VARCHAR(1000)[],
+    push_enabled    BOOLEAN DEFAULT TRUE,
     created_time    BIGINT
 );
 CREATE INDEX users_id_idx ON users (id);

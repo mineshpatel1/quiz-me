@@ -24,6 +24,10 @@ class Settings extends Component {
 
     if (props.session.user) {
       menu.push({label: 'Sign Out', icon: 'sign-out-alt', onPress: () => props.signOut() });
+    } else if (props.session.resetPassword) {
+      menu.push(
+        { label: 'Reset Password', icon: 'lock', onPress: () => { props.navigation.navigate('ResetPassword'); }}
+      );
     } else {
       menu.push({
         label: 'Sign In',  icon: 'sign-in-alt', 

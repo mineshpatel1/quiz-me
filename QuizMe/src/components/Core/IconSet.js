@@ -8,9 +8,11 @@ import { styles, colours } from '../../styles';
 export default class IconSet extends Component {
   static defaultProps = {
     links: [],
-    colour: colours.midGrey,
-    borderColour: colours.softGrey,
+    colour: colours.white,
+    borderColour: null,
+    backgroundColour: colours.primary,
     bottom: true,
+    iconSize : 26,
   }
   
   action(linkProps) {
@@ -24,18 +26,20 @@ export default class IconSet extends Component {
   render() {
     let { props } = this;
     let iosAdjust = Platform.OS == 'ios' ? 15: 0;
+    let border = props.borderColour ? 1: 0;
 
     return (
       <View style={[styles.row, styles.center, { 
         width: '100%', height: 50 + iosAdjust, paddingBottom: iosAdjust,
-        borderTopWidth: 1, borderColor: props.borderColour,
+        backgroundColor: props.backgroundColour, borderTopWidth: border,
+        borderColor: props.borderColour,
       }]}>
         {
           props.links.map((link, i) => (
             <Icon
               key={i} onPress={() => this.action(link)}
-              size={26} icon={link.icon} colour={props.colour}
-              style={{ marginLeft: i == 0 ? 0 : 15 }}
+              size={props.iconSize} icon={link.icon} colour={props.colour}
+              style={{ marginLeft: i == 0 ? 0 : 25 }}
               badge={link.badge}
             />
           ))

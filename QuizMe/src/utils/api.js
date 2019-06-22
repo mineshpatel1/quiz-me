@@ -1,4 +1,5 @@
 import { server } from '../config';
+import utils from './utils';
 
 const UNEXPECTED_ERROR_MSG = "Unexpected error occurred.";
 
@@ -77,8 +78,8 @@ class api {
     return _get('session/logout');
   }
 
-  static async verifyFingerprint(payload, signature) {
-    return _post('session/login/fingerprint', { payload, signature });
+  static async verifyFingerprint(payload, signature, pushToken) {
+    return _post('session/login/fingerprint', { payload, signature, pushToken });
   }
 
   /** Creates a new QuizMe user. */
@@ -96,13 +97,28 @@ class api {
   }
 
   /** Activates a user account. */
-  static async activate(email, token) {
-    return _post('user/activate', { email, token });
+  static async activate(email, token, pushToken) {
+    return _post('user/activate', { email, token, pushToken });
   }
 
   /** Reset the activation token for the user and prompt an email. */
   static async resetToken(email) {
-    return _post('user/resetToken', { email })
+    return _post('user/resetToken', { email });
+  }
+
+  /** Adds a push token for a given user. */
+  static async addPushToken(user) {
+    return new Promise((resolve, reject) => {
+      utils.getPushToken()
+        .then(pushToken => {
+          if (user.push_tokens.indexOf(pushToken) == -1) {
+            _post('user/pushToken', { pushToken })
+              .then(resolve)
+              .catch(reject);
+          }
+        })
+        .catch(reject);
+    });
   }
 
   /** Sends a password reset token to the user. */

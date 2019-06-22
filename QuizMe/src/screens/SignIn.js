@@ -28,11 +28,16 @@ class SignIn extends Component {
 
   signIn(values) {
     this.setState({ loading: true }, () => {
-      api.signIn(values)
-        .then(res => {
-          this.props.setSession(res);
-          this.setState({ loading: false });
-          this.props.navigation.navigate('Home');
+      utils.getPushToken()
+        .then(pushToken => {
+          values.pushToken = pushToken;
+          api.signIn(values)
+            .then(res => {
+              this.props.setSession(res);
+              this.setState({ loading: false });
+              this.props.navigation.navigate('Home');
+            })
+            .catch(this.showError);
         })
         .catch(this.showError);
     });
@@ -56,13 +61,16 @@ class SignIn extends Component {
     Biometrics.createSignature('Verify fingerprint', JSON.stringify(payload))
         .then(signature => {
           this.setState({ loading: true }, () => {
-            api.verifyFingerprint(payload, signature)
-              .then(res => {
-                this.props.setSession(res);
-                this.setState({ loading: false });
-                this.props.navigation.navigate('Home');
-              })
-              .catch(this.showError);
+            utils.getPushToken()
+              .then(token => {
+                api.verifyFingerprint(payload, signature)
+                  .then(res => {
+                    this.props.setSession(res);
+                    this.setState({ loading: false });
+                    this.props.navigation.navigate('Home');
+                  })
+                  .catch(this.showError);
+              });
           });
         })
         .catch(this.showError);

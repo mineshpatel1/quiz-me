@@ -6,14 +6,16 @@ import { colours } from '../../styles';
 export default class _StatusBar extends Component {
   static defaultProps = {
     colour: colours.primary,
-    barStyle: 'light-content',
+    lightContent: true,
   }
 
   render() {
     let { props } = this;
+    let barStyle = 'light-content';
+    if (!props.lightContent) barStyle = 'dark-content';
 
     return (
-      <StatusBar animated={true} backgroundColor={props.colour} barStyle={props.barStyle} />
+      <StatusBar animated={true} backgroundColor={props.colour} barStyle={barStyle} />
     )
   }
 }

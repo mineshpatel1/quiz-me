@@ -23,10 +23,13 @@ export default class CustomModal extends Component {
 
     let bgColour = colours.white;
     let crossColour = colours.error;
+    let borderColour, borderWidth;
 
     if (props.theme) {
       bgColour = colours.primary;
       crossColour = colours.white;
+      borderColour = colours.white;
+      borderWidth = 1;
     }
 
     let mainHeight = props.height;

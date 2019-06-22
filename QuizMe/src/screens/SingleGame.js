@@ -147,7 +147,7 @@ class SingleGame extends Component {
         </View>
         <View style={[styles.center, {marginBottom: 15}]}>
           <Button
-            icon="play" btnColour={colours.success}
+            icon="play" btnColour={colours.success} borderWidth={0}
             fontColour={colours.white} onPress={this.startGame}
           />
         </View>
@@ -228,7 +228,7 @@ class SingleGame extends Component {
         </View>
         <View style={[styles.center, styles.mt15]}>
           <Button
-            label="Play Again" icon="redo"
+            label="Play Again" icon="redo" borderWidth={0}
             onPress={() => {
               props.newGame(props.game.settings);
               props.navigation.navigate({
@@ -238,11 +238,11 @@ class SingleGame extends Component {
             }}
           />
           <Button
-            label="Review" icon="book-open" style={styles.mt15}
+            label="Review" icon="book-open" style={styles.mt15} borderWidth={0}
             onPress={() => { props.navigation.navigate('GameSummary') }}
           />
           <Button
-            label="Home" icon="home" style={styles.mt15}
+            label="Home" icon="home" style={styles.mt15} borderWidth={0}
             onPress={() => { props.navigation.navigate('Home') }}
           />
         </View>

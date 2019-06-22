@@ -18,7 +18,7 @@ public class MainActivity extends ReactActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // Sets navigation bar colour and theme on Android
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
           Window window = getWindow();
           int flags = window.getDecorView().getSystemUiVisibility();
           int colourInt = Color.parseColor("#000000");
@@ -26,6 +26,7 @@ public class MainActivity extends ReactActivity {
           window.getDecorView().setSystemUiVisibility(flags);
           window.setNavigationBarColor(colourInt);
         }
+        setTheme(R.style.AppTheme);
         SplashScreen.show(this, R.style.SplashScreenTheme);
         super.onCreate(savedInstanceState);
     }

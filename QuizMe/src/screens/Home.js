@@ -17,6 +17,7 @@ class Home extends Component {
       loggedIn: false,
       modal: false,
       requestCount: null,
+      init: false,
     }
   }
 
@@ -58,15 +59,21 @@ class Home extends Component {
   render() {
     let { props, state } = this;
 
-    friendLink = 'Friends';
-    if (!props.session.user) friendLink = 'SignIn';
-    if (props.session.unconfirmed) friendLink = 'Activate';
-
     let requestCount = props.session.requests ? props.session.requests.length : null;
     let bottomLinks = [
       { icon: 'cog', nav: 'Settings' },
-      { icon: 'user-friends', nav: friendLink, badge: requestCount },
-    ]
+    ];
+
+    if (props.session.online) {
+      if (props.session.user) {
+        bottomLinks.push({ icon: 'user-friends', nav: 'Friends', badge: requestCount });
+      } else {
+        bottomLinks.push({ 
+          icon: 'sign-in-alt', 
+          nav: props.session.unconfirmed ? 'Activate': 'SignIn'
+        });
+      }
+    }
 
     return (
       <Container
@@ -78,12 +85,12 @@ class Home extends Component {
           </View>
           <View style={[styles.f1, styles.center]}>
             <Button
-              label="Single Player" icon="user"
+              label="Single Player" icon="user" borderColour={colours.primaryDark}
               onPress={() => { props.navigation.navigate('NewGame', { mode: 'single' }) }}
             />
             <Button
               label="Head to Head" icon="user-friends" style={styles.mt15} disabled={!props.session.online}
-              onPress={() => {
+              borderColour={colours.primaryDark} onPress={() => {
                 if (props.session.user) {
                   props.navigation.navigate('NewGame', { mode: 'multi' });
                 } else if (props.session.unconfirmed) {
@@ -93,8 +100,20 @@ class Home extends Component {
                 }
               }}
             />
+            <Button 
+              label="Test" icon="ankh" style={styles.mt15} borderColour={colours.primaryDark}
+              onPress={() => {
+                utils.getPushToken()
+                  .then(val => {
+                    console.log('my token', val);
+                  })
+                  .catch(err => {
+                    console.log('Error', err);
+                  })
+              }}
+            />
           </View>
-          <IconSet colour={colours.white} borderColour={colours.primaryLight} links={bottomLinks} />
+          <IconSet borderColour={colours.primaryLight} links={bottomLinks} />
         </Animated.View>
       </Container>
     );

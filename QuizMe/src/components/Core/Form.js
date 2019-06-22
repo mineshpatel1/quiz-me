@@ -1,5 +1,5 @@
 import React, { Component } from 'react';;
-import { Platform, View, ScrollView } from 'react-native';
+import { Platform, View, ScrollView, TouchableNativeFeedback } from 'react-native';
 
 import ConfirmButtons from './ConfirmButtons';
 import Input from './Input';
@@ -20,6 +20,8 @@ export default class Form extends Component {
     inputWidth: 300,
     btnWidth: 120,
     divider: true,
+    iosAdjust: true,
+    roundBtns: false,
   }
 
   constructor(props) {
@@ -48,9 +50,6 @@ export default class Form extends Component {
   render() {
     let { props, state } = this;
     let fields = [];
-
-    let iosAdjust = 0;
-    if (Platform.OS == 'ios') iosAdjust = 15;
 
     textInput = (i, field) => {
       return (
@@ -113,7 +112,7 @@ export default class Form extends Component {
           </ScrollView>
         </View>
         <View style={[{
-          justifyContent: 'flex-end', paddingTop: 15, paddingBottom: 15 + iosAdjust,
+          justifyContent: 'flex-end',
         }]}>
           <ConfirmButtons
             onSuccess={() => {
@@ -124,6 +123,8 @@ export default class Form extends Component {
             successIcon={props.successIcon}
             cancelIcon={props.cancelIcon}
             width={props.btnWidth}
+            iosAdjust={props.iosAdjust}
+            roundEdge={props.roundBtns}
           />
         </View>
       </View>

@@ -61,6 +61,7 @@ gradle.properties
 # QuizMe
 .config
 server/assets/cert
+QuizMe/ios/Pods
 
 # Push Notifications
 google-services.json

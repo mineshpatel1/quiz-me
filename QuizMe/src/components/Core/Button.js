@@ -13,6 +13,10 @@ export default class Button extends Component {
     width: 300,
     height: 50,
     borderRadius: 50,
+    borderTopLeftRadius: null,
+    borderTopRightRadius: null,
+    borderBottomLeftRadius: null,
+    borderBottomRightRadius: null,
     padding: 25,
     btnColour: colours.light,
     fontColour: colours.grey,
@@ -21,6 +25,10 @@ export default class Button extends Component {
     activeOpacity: 0.7,
     iconSize: 20,
     rippleHighlight: -40,
+    borderWidth: 1,
+    borderColour: colours.softGrey,
+    flex: false,
+    iosAdjust: false,  // Required for iOS if the button is at the bottom of the screen
   }
 
   render() {
@@ -29,6 +37,7 @@ export default class Button extends Component {
     let fontColour = props.fontColour;
     let onPress = props.onPress;
     let activeOpacity = props.activeOpacity;
+    let iosAdjust = props.iosAdjust && Platform.OS == 'ios' ? 15: 0;
 
     if (props.disabled) {
       btnColour = colours.disabled;
@@ -37,14 +46,15 @@ export default class Button extends Component {
       activeOpacity = 1;
     }
 
+    let borderWidth = props.borderWidth;
+    if (props.disabled) borderWidth = 0;
+
     let labelBtn, iconBtn;
     if (!props.disabled && Platform.OS == 'android') {
 
       let rippleColour = utils.alterBrightness(btnColour, props.rippleHighlight);
       let touchableProps = {
-        style: [styles.f1, styles.row, {
-          borderRadius: props.borderRadius,
-        }],
+        style: [styles.f1, styles.row],
         activeOpacity: activeOpacity, onPress: onPress,
       }
       
@@ -55,7 +65,6 @@ export default class Button extends Component {
             background={TouchableNativeFeedback.Ripple(rippleColour)}
           >
             <View style={[styles.f1, styles.row, {
-              borderRadius: props.borderRadius,
               paddingLeft: props.padding - 15, backgroundColor: btnColour,
             }]}>
               <View style={[styles.f2, {
@@ -79,7 +88,9 @@ export default class Button extends Component {
             activeOpacity={activeOpacity} onPress={onPress}
             background={TouchableNativeFeedback.Ripple(rippleColour)}
           >
-            <View style={[styles.f1, styles.center, { borderRadius: props.borderRadius, backgroundColor: btnColour }]}>
+            <View style={[styles.f1, styles.center, { 
+              backgroundColor: btnColour 
+            }]}>
               <Icon icon={props.icon} size={props.iconSize} colour={fontColour} />
             </View>
           </TouchableNativeFeedback>
@@ -88,7 +99,6 @@ export default class Button extends Component {
     } else if (props.disabled || Platform.OS == 'ios') {
       let touchableProps = {
         style: [styles.f1, styles.row, {
-          borderRadius: props.borderRadius,
           paddingLeft: props.padding,
           backgroundColor: btnColour,
         }],
@@ -114,7 +124,12 @@ export default class Button extends Component {
 
       iconBtn = (
         <TouchableOpacity {...touchableProps}>
-          <View style={[styles.center, {width: props.width - (props.padding * 2)}]}>
+          <View style={[
+            styles.center, {
+              width: props.width - (props.padding * 2),
+              paddingBottom: iosAdjust,
+            }, props.style,
+          ]}>
             <Icon icon={props.icon} size={props.iconSize} colour={fontColour} />
           </View>
         </TouchableOpacity>
@@ -122,17 +137,23 @@ export default class Button extends Component {
     }
 
     return (
-      <View style={[styles.shadow,
+      <View style={[
         {
-          width: props.width, height: props.height, borderRadius: props.borderRadius,
-          backgroundColor: colours.white,
+          width: props.width, height: props.height + iosAdjust,
+          borderRadius: props.borderRadius,
+          borderTopLeftRadius: props.borderTopLeftRadius,
+          borderTopRightRadius: props.borderTopRightRadius,
+          borderBottomLeftRadius: props.borderBottomLeftRadius,
+          borderBottomRightRadius: props.borderBottomRightRadius,
+          backgroundColor: colours.white, borderColor: props.borderColour, 
+          borderWidth: borderWidth, overflow: 'hidden',
         }, props.style
       ]}>
         {
-          props.label && props.icon && labelBtn
+          props.label && labelBtn
         }
         {
-          !props.label && props.icon && iconBtn
+          !props.label && iconBtn
         }
       </View>
     )

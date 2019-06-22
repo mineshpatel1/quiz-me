@@ -6,7 +6,7 @@ import { ScrollView, View, } from 'react-native';
 import { Container, Text, Button, Input, SnackBar } from '../components/Core';
 import { setSession } from '../actions/SessionActions';
 import { styles, colours } from '../styles';
-import { validators, api } from '../utils';
+import { api, utils, validators } from '../utils';
 
 class Activate extends Component {
   constructor(props) {
@@ -45,12 +45,17 @@ class Activate extends Component {
       return this.showError("User is no longer in an unconfirmed state.");
     }
 
-    api.activate(this.props.session.unconfirmed.email, token)
-        .then(res => {
-          this.props.setSession(res);
-          this.showSuccess("Activated account successfully.")
-        })
-        .catch(err => this.showError(err));
+    utils.getPushToken()
+      .then(pushToken => {
+        api.activate(
+          this.props.session.unconfirmed.email, token, pushToken
+        ).then(res => {
+            this.props.setSession(res);
+            this.showSuccess("Activated account successfully.")
+          })
+          .catch(err => this.showError(err));
+      })
+      .catch(err => this.showError(err));
   }
 
   validateToken(val) {

@@ -1,6 +1,7 @@
 import AsyncStorage from '@react-native-community/async-storage';
 import NetInfo from "@react-native-community/netinfo";
 import { Animated, Easing, Platform, PermissionsAndroid } from 'react-native';
+import firebase from 'react-native-firebase';
 import { animationDuration } from '../config';
 
 const _typeOf = value => {
@@ -399,6 +400,29 @@ class utils {
         console.log('IOS Permission!');
         return resolve();
       }
+    });
+  }
+
+  /** Gets the user's Firebase Cloud Messaging push token. */
+  static getPushToken = () => {
+    return new Promise((resolve, reject) => {
+      firebase.messaging().hasPermission()
+        .then(enabled => {
+          if (enabled) {
+            firebase.messaging().getToken()
+              .then(resolve)
+              .catch(reject);
+          } else {
+            firebase.messaging().requestPermission()
+              .then(() => {
+                firebase.messaging().getToken()
+                  .then(resolve)
+                  .catch(reject);
+              })
+              .catch(reject);
+          }
+        })
+        .catch(reject);
     });
   }
 }
