@@ -78,6 +78,18 @@ router.post('/user/changePassword', (req, res, next) => {
     .catch(next)
 });
 
+router.post('/user/setPassword', (req, res, next) => {
+  let data = req.body;
+  if (!req.session.user) return next(new Error("Session is not active."));
+  if (!data.password) return next(new Error("Password is required."));
+  users.setPassword(req.session.user.email, data.password)
+    .then(() => {
+      req.session.user.has_password = true;
+      utils.response(res, session.getSession(req));
+    })
+    .catch(next);
+});
+
 router.post('/user/forgottenPassword', (req, res, next) => {
   let data = req.body;
   if (!data.email) return next(new Error("Email is required."));

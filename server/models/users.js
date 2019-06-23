@@ -14,6 +14,7 @@ class User {
     this.fingerprint_enabled = row.fingerprint_key ? true: false;
     this.push_tokens = row.push_tokens;
     this.push_enabled = row.push_enabled;
+    this.has_password = row.has_password;
   }
 }
 
@@ -143,10 +144,24 @@ exports.forgottenPassword = email => {
 
 exports.changePassword = (email, password) => {
   return pg.query(
-    `UPDATE user_auth SET password = crypt($1::text, gen_salt('bf'))
+    `UPDATE user_auth 
+    SET password = crypt($1::text, gen_salt('bf'))
     WHERE email = $2::text`,
     [password, email]
   );
+}
+
+exports.setPassword = (email, password) => {
+  return pg.query(
+    `INSERT INTO user_auth (email, password)
+    VALUES ($1::text, crypt($2::text, gen_salt('bf')))`,
+    [email, password]
+  ).then(() => {
+    return pg.query(
+      `UPDATE users SET has_password = TRUE
+      WHERE email = $1::text`, [email]
+    )
+  });
 }
 
 exports.resetPassword = (email, token, password) => {
@@ -173,6 +188,11 @@ exports.resetPassword = (email, token, password) => {
   });
 }
 
+/**
+ * Standard registration flow, using an email and password.
+ * Creates an inactive record for the user and sets up confirmation
+ * tokens so they may validate their email address.
+ */
 exports.new = (user, password) => {
   utils.log('Creating new user ' + user.email + '...');
   return new Promise((resolve, reject) => {
@@ -181,26 +201,42 @@ exports.new = (user, password) => {
       VALUES ($1::text, $2::text, EXTRACT(epoch FROM now()))`, 
       [user.email, user.name],
     ).then(() => {
-      pg.query(
-        `INSERT INTO user_auth (email, password) 
-        VALUES ($1::text, crypt($2::text, gen_salt('bf')))`,
-        [user.email, password],
-      ).then(() => {
-          utils.getToken()
-            .then(token => {
-              // Insert token with a 48 hour expiry time
-              let expiry_time = utils.now() + ACTIVATION_TOKEN_LIFE;
-              pg.query(
-                `INSERT INTO confirm_tokens (token, email, expiry_time) 
-                VALUES ($1::text, $2::text, $3::bigint)`,
-                [token, user.email, expiry_time],
-              ).then(() => {
-                utils.log('Successfully created user: ' + user.email);
-                return resolve([token, expiry_time]);
-              }).catch(reject);
+      exports.setPassword(user.email, password).then(() => {
+        utils.getToken()
+          .then(token => {
+            // Insert token with a 48 hour expiry time
+            let expiry_time = utils.now() + ACTIVATION_TOKEN_LIFE;
+            pg.query(
+              `INSERT INTO confirm_tokens (token, email, expiry_time) 
+              VALUES ($1::text, $2::text, $3::bigint)`,
+              [token, user.email, expiry_time],
+            ).then(() => {
+              utils.log('Successfully created user: ' + user.email);
+              return resolve([token, expiry_time]);
             }).catch(reject);
+          }).catch(reject);
         }).catch(reject);
       }).catch(reject);
+  });
+}
+
+/**
+ * This differs from new in that it does not require the user to confirm
+ * their email and some data is automatically taken from their OAuth profile.
+ */
+exports.newFromOAuth = user => {
+  utils.log('Creating new user from OAuth ' + user.email + '...');
+  return new Promise((resolve, reject) => {
+    pg.query(
+      `INSERT INTO users(email, name, created_time, is_activated, has_password) 
+      VALUES ($1::text, $2::text, EXTRACT(epoch FROM now()), TRUE, FALSE)`, 
+      [user.email, user.name],
+    ).then(() => {
+      exports.getFromEmail(user.email)
+        .then(resolve)
+        .catch(reject);
+    })
+    .catch(reject);
   });
 }
 

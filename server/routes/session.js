@@ -81,21 +81,33 @@ router.get('/session/logout', (req, res, next) => {
 
 router.post('/session/login/google', (req, res, next) => {
   let data = req.body;
-  if (!data.email) return next(new Error("Enauk is required;"));
+  if (!data.user) return next(new Error("User is required;"));
   if (!data.token) return next(new Error("Token is required."));
 
-  users.getFromEmail(data.email)
-    .then(user => {
-      if (!user) return next(new Error("No user with email " + email));
-      sessionApi.verifyGoogleToken(user.email, data.token)
-        .then(payload => {
-          req.session.user = user;  // Activate session
-          req.session.googleId = payload.sub;
-          sessionApi.sessionWithData(req, data.pushToken)
-            .then(payload => {
-              return utils.response(res, payload);
-            }).catch(next);
-        }).catch(next);
+  let inputUser = data.user;
+  sessionApi.verifyGoogleToken(inputUser.email, data.token)
+    .then(googleRes => {
+      users.getFromEmail(inputUser.email)
+        .then(user => {
+          if (user) {  // Sign in Flow
+            req.session.user = user;  // Activate session
+            req.session.googleId = googleRes.sub;
+            sessionApi.sessionWithData(req, data.pushToken)
+              .then(payload => utils.response(res, payload))
+              .catch(next);
+          } else {  // Registration Flow
+            users.newFromOAuth(inputUser)
+              .then(user => {
+                req.session.user = user;  // Activate session
+                req.session.googleId = googleRes.sub;
+                sessionApi.sessionWithData(req, data.pushToken)
+                  .then(payload => utils.response(res, payload))
+                  .catch(next);
+              })
+              .catch(next);
+          }
+        })
+        .catch(next);
     }).catch(next);
 });
 

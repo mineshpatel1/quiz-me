@@ -38,7 +38,10 @@ exports.sessionWithData = (req, pushToken) => {
         payload.friends = _friends;
         payload.requests = _requests;
 
-        if (pushToken && _user.push_tokens.indexOf(pushToken) == -1) {
+        if (
+          pushToken &&
+          _user.push_tokens.indexOf(pushToken) == -1
+        ) {
           users.addPushToken(_user.id, pushToken)
             .then(() => { return resolve(payload) })
             .catch(reject);
