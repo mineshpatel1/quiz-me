@@ -1,3 +1,6 @@
+const { OAuth2Client } = require('google-auth-library');
+const client = new OAuth2Client(global.config.fcm.client_id);
+
 const utils = require(__dirname + '/utils.js');
 const users = require(__dirname + '/../models/users.js');
 const friends = require(__dirname + '/../models/friends.js');
@@ -17,6 +20,7 @@ exports.getSession = req => {
     resetPassword: req.session.resetPassword,
     friends: req.session.friends,
     requests: req.session.requests,
+    googleId: req.session.googleId,
   };
 }
 
@@ -30,7 +34,6 @@ exports.sessionWithData = (req, pushToken) => {
         friends.get(id),
         friends.getRequests(id),
       ]).then(([_user, _friends, _requests]) => {
-        req.session.user = _user;
         payload.user = _user;
         payload.friends = _friends;
         payload.requests = _requests;
@@ -60,5 +63,17 @@ exports.endSession = req => {
       if (err) return reject(err);
       return resolve();
     });
+  });
+}
+
+exports.verifyGoogleToken = (email, token) => {
+  return new Promise((resolve, reject) => {
+    client.verifyIdToken({
+      idToken: token,
+      audience: global.config.fcm.client_id,
+    }).then(ticket => {
+      let payload = ticket.getPayload();
+      return resolve(payload);
+    }).catch(reject);
   });
 }

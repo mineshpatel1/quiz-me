@@ -87,7 +87,8 @@ sudo yum install postgresql
         "password": "pg_password"
     },
     "fcm": {
-        "db_url": "https://app-id.firebaseio.com"
+        "db_url": "https://app-id.firebaseio.com",
+        "client_id": "project_id-client_id.apps.googleusercontent.com",
     },
     "session_secret": "random_string"
 }
