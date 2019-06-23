@@ -17,16 +17,22 @@ export default class Icon extends Component {
   render() {
     let { props } = this;
     let showBadge = props.badge > 0;
+    let icon = props.icon;
+
+    if (['google'].indexOf(icon) > -1) {
+      icon = ['fab', icon];
+    }
+
     return (
       <View style={props.style}>
         {
           !props.onPress &&
-          <FontAwesomeIcon icon={props.icon} size={props.size} color={props.colour} />
+          <FontAwesomeIcon icon={icon} size={props.size} color={props.colour} />
         }
         {
           props.onPress &&
           <TouchableOpacity onPress={props.onPress} activeOpacity={0.75} >
-            <FontAwesomeIcon icon={props.icon} size={props.size} color={props.colour} />
+            <FontAwesomeIcon icon={icon} size={props.size} color={props.colour} />
           </TouchableOpacity>
         }
         {

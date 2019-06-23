@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { View } from 'react-native';
 import Biometrics from 'react-native-biometrics';
+import { GoogleSignin } from 'react-native-google-signin';
 
 import { Container, Text, Button, Form, SnackBar } from '../components/Core';
 import { setSession } from '../actions/SessionActions';
@@ -121,6 +122,12 @@ class SignIn extends Component {
               <Text display={true} style={styles.mt15}> Or </Text>
             </View>
           }
+          <View style={[styles.center, styles.mt15]}>
+            <Button label="Sign in with Google" icon="google" onPress={() => { 
+              console.log('GOOGLE!');
+            }} />
+            <Text display={true} style={styles.mt15}> Or </Text>
+          </View>
           <Form
             fields={fields} successIcon={'sign-in-alt'}
             onSuccess={values => {this.signIn(values)}} ref={'form'}

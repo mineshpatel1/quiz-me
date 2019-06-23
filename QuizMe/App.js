@@ -4,7 +4,6 @@ import SplashScreen from 'react-native-splash-screen';
 import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
-import firebase from 'react-native-firebase';
 import { createAppContainer } from 'react-navigation';
 import AsyncStorage from '@react-native-community/async-storage';
 import { library } from '@fortawesome/fontawesome-svg-core';
@@ -15,6 +14,7 @@ import {
   faLink, faLock, faMonument, faMusic,  faPalette, faPaw, faPlay, faRedo, faQuestion, faQuoteRight, 
   faSignInAlt, faSignOutAlt, faSyncAlt, faTh, faTimes, faTv, faUser, faUserFriends, faUserPlus,
 } from '@fortawesome/free-solid-svg-icons';
+import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 
 import AppNavigator from './src/nav/AppNavigator';
 import NavigationService from './src/nav/NavigationService';
@@ -26,7 +26,7 @@ import { initGameSettings, initUserSettings } from './src/actions/SettingActions
 library.add(
   faAddressBook, faAnkh, faArrowLeft, faAtom, faBook, faBookOpen, faBrain, faCar, faCaretDown, 
   faChartPie, faCheck, faChevronLeft, faChevronRight, faClock, faCog, faEnvelope, faFilm, 
-  faFingerprint, faFutbol, faGlobeAmericas, faHome, faHashtag, faHourglassHalf, faLandmark, 
+  faFingerprint, faFutbol, faGlobeAmericas, faGoogle, faHome, faHashtag, faHourglassHalf, faLandmark, 
   faLink, faLock, faMonument, faMusic,  faPalette, faPaw, faPlay, faRedo, faQuestion, faQuoteRight, 
   faSignInAlt, faSignOutAlt, faSyncAlt, faTh, faTimes, faTv, faUser, faUserFriends, faUserPlus,
 );
