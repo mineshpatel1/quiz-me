@@ -140,20 +140,12 @@ class Friends extends Component {
       props.session.friends.forEach((friend) => {
         friends.push({
           label: friend.name || friend.email, subLabel: friend.name ? friend.email : null,
+          onPress: () => { 
+            props.navigation.navigate('NewGame', { mode: 'multi', opponent: friend });
+          },
           iconColour: colours.error, icon: 'times', iconAction: () => { this.setState({ unfriend: friend.id }) },
         });
       });
-    }
-
-    let fields = {
-      email: {
-        label: "Email",
-        icon: "envelope",
-        type: "string",
-        inputType: "text",
-        validator: (val) => {return val && validators.isEmail(val)},
-        format: (val) => { return val.toLowerCase() },
-      },
     }
 
     let Friends = () => {

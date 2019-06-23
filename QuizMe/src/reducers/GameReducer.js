@@ -39,7 +39,7 @@ const gameReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case NEW_GAME:
       _newQ = getQuestion(previous, question, action.settings.category);
-      _newGame = new Game(action.settings, action.opponent);
+      _newGame = new Game(action.settings, action.player1, action.player2);
       return { currentGame: _newGame, question: _newQ.question, previous: _newQ.previous };
     case NEXT_TURN:
       currentGame.nextTurn();

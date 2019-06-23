@@ -167,6 +167,10 @@ class api {
   static async getPossibleFriends(emails) {
     return _post('friends/possible', { emails });
   }
+
+  static async gameRequest(settings, opponent) {
+    return _post('game/request', { settings, opponent });
+  }
 }
 
 export default api;

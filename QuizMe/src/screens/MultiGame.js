@@ -32,6 +32,7 @@ class MultiGame extends Component {
   }
 
   render() {
+    let { props, state } = this;
     let preGame = (
       <Animated.View style={[styles.f1, {opacity: state.opacity}]}>
         <View style={[styles.f1, styles.center]}>
@@ -41,15 +42,16 @@ class MultiGame extends Component {
         </View>
         <View style={[styles.center, {marginBottom: 15}]}>
           <Button
-            icon="play" btnColour={colours.success}
+            icon="play" btnColour={colours.success} borderWidth={0}
             fontColour={colours.white} onPress={this.startGame}
           />
         </View>
       </Animated.View>
     )
+
     return (
       <Container bgColour={colours.black} style={{padding: 30}}>
-        <PauseModal />
+        <PauseModal route="Home" />
         {state.preGame && preGame}
       </Container>
     )

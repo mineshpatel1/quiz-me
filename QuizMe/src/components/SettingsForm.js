@@ -13,15 +13,18 @@ class SettingsForm extends Component {
     onCancel: null,
     save: true,
     extraSettings: [],
+    extraValues: [],
   }
 
   render() {
-    let { props, state } = this;
+    let { props } = this;
     let settings = defaultSettings;
+    let values = props.settings;
     if (props.extraSettings) settings = utils.update(props.extraSettings, settings);
+    if (props.extraValues) values = utils.update(props.settings, props.extraValues);
     return (
       <Form 
-        fields={settings} values={props.settings} 
+        fields={settings} values={values} 
         onCancel={props.onCancel}
         onSuccess={(values) => {
           if (props.save) props.saveGameSettings(values);

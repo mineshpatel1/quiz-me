@@ -60,13 +60,13 @@ export default class PauseModal extends Component {
           <View>
             <Button
               width={220} label={props.resumeLabel} icon={props.resumeIcon} 
-              borderColour={colours.primaryDark} onPress={() => {
+              borderColour={colours.white} onPress={() => {
                 this.unpause();
               }}
             />
             <Button
               style={styles.mt15} width={220} label={props.navLabel} icon={props.navIcon}
-              borderColour={colours.primaryDark} onPress={() => {
+              borderColour={colours.white} onPress={() => {
                 this.unpause();
                 this.navigate();
               }}

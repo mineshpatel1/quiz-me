@@ -85,12 +85,12 @@ class Home extends Component {
           </View>
           <View style={[styles.f1, styles.center]}>
             <Button
-              label="Single Player" icon="user" borderColour={colours.primaryDark}
+              label="Single Player" icon="user" borderColour={colours.white}
               onPress={() => { props.navigation.navigate('NewGame', { mode: 'single' }) }}
             />
             <Button
               label="Head to Head" icon="user-friends" style={styles.mt15} disabled={!props.session.online}
-              borderColour={colours.primaryDark} onPress={() => {
+              borderColour={colours.white} onPress={() => {
                 if (props.session.user) {
                   props.navigation.navigate('NewGame', { mode: 'multi' });
                 } else if (props.session.unconfirmed) {
@@ -98,18 +98,6 @@ class Home extends Component {
                 } else {
                   props.navigation.navigate('SignIn');
                 }
-              }}
-            />
-            <Button 
-              label="Test" icon="ankh" style={styles.mt15} borderColour={colours.primaryDark}
-              onPress={() => {
-                utils.getPushToken()
-                  .then(val => {
-                    console.log('my token', val);
-                  })
-                  .catch(err => {
-                    console.log('Error', err);
-                  })
               }}
             />
           </View>

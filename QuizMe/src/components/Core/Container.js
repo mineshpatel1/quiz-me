@@ -38,19 +38,19 @@ class Container extends Component {
     });
     this.removeNotificationListener = firebase.notifications().onNotification((notification) => {
       console.log('notificationReceived');
-      console.log(notification);
+      // console.log(notification);
     });
     this.removeNotificationOpenedListener = firebase.notifications().onNotificationOpened((notificationOpen) => {
         console.log('notificationOpened');
-        console.log(notificationOpen);
+        // console.log(notificationOpen);
     });
     // Inconsistent whether or not this is the place to get the notif or if
     // the opened listener fires.
-    firebase.notifications().getInitialNotification()
-      .then((notificationOpen) => {
-        console.log('initialNotif');
-        console.log(notificationOpen);
-      });
+    // firebase.notifications().getInitialNotification()
+    //   .then((notificationOpen) => {
+    //     console.log('initialNotif');
+    //     console.log(notificationOpen);
+    //   });
   }
 
   componentWillUnmount = () => {

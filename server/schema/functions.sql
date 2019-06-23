@@ -9,6 +9,14 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+-- Converts a UnixTime into a TIMESTAMPTZ
+CREATE OR REPLACE FUNCTION from_unixtime(unix_time BIGINT, OUT ts TIMESTAMPTZ) AS
+$$
+BEGIN
+	SELECT TIMESTAMPTZ 'epoch' + unix_time * INTERVAL '1 second' INTO ts;
+END;
+$$ LANGUAGE plpgsql;
+
 -- Deletes inactive users that have not been activated 
 CREATE OR REPLACE FUNCTION cleanup_inactive(
     age INTEGER DEFAULT 172800,  -- 48 hours
