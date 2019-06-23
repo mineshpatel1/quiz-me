@@ -53,6 +53,16 @@ class ResetPassword extends Component {
       api.changePassword(values.currentPassword, values.newPassword)
         .then(() => this.showSuccess('Changed password successfully.'))
         .catch(err => this.showError(err));
+    } else if (
+      this.props.session.user &&
+      this.props.navigation.getParam('mode') == 'set'
+    ) {
+      api.setPassword(values.newPassword)
+        .then(session => {
+          this.props.setSession(session);
+          this.showSuccess('Set password successfully.')
+        })
+        .catch(err => this.showError(err));
     }
   }
 

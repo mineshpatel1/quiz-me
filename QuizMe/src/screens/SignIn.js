@@ -51,7 +51,7 @@ class SignIn extends Component {
       .then(info => {
         this.setState({ loading: true }, () => {
           api.verifyGoogleToken(
-            info.user.email, info.idToken, this.state.pushToken
+            info.user, info.idToken, this.state.pushToken
           ).then(res => {
             this.props.setSession(res);
             this.setState({ loading: false });

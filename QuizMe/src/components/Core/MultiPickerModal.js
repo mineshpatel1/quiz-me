@@ -108,7 +108,7 @@ export default class MultiPickerModal extends Component {
         </ScrollView>
         <View style={{width: '100%', padding: 15, borderTopWidth: 1, borderColor: borderColour}}>
           <ConfirmButtons
-            justify="space-evenly"
+            justify="space-evenly" roundEdge={true}
             onSuccess={() => {
               if (props.onSuccess) props.onSuccess(state.values);
             }}

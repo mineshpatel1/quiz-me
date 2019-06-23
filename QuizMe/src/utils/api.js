@@ -136,6 +136,10 @@ class api {
     return _post('user/changePassword', { currentPassword, newPassword });
   }
 
+  static async setPassword(password) {
+    return _post('user/setPassword', { password });
+  }
+
   static async enableFingerprint(publicKey) {
     return _post('user/enableFingerprint', { publicKey });
   }
@@ -172,8 +176,8 @@ class api {
     return _post('game/request', { settings, opponent });
   }
 
-  static async verifyGoogleToken(email, token, pushToken) {
-    return _post('session/login/google', { email, token, pushToken });
+  static async verifyGoogleToken(user, token, pushToken) {
+    return _post('session/login/google', { user, token, pushToken });
   }
 }
 

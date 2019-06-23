@@ -6,7 +6,7 @@ import Biometrics from 'react-native-biometrics';
 import { setSession, deleteAccount } from '../actions/SessionActions';
 import { saveUserSettings } from '../actions/SettingActions';
 import { Container, Menu, ConfirmModal, SnackBar } from '../components/Core';
-import { api } from '../utils';
+import { utils, api } from '../utils';
 
 class Settings extends Component {
   constructor(props) {
@@ -38,9 +38,9 @@ class Settings extends Component {
   }
 
   enableFingerprint() {
-    this.setState({ loading: true }, () => {
-      Biometrics.createKeys('Confirm fingerprint')
-        .then(publicKey => {
+    Biometrics.createKeys('Confirm fingerprint')
+      .then(publicKey => {
+        this.setState({ loading: true }, () => {
           api.enableFingerprint(publicKey)
             .then(res => { 
               this.props.setSession(res);
@@ -49,14 +49,14 @@ class Settings extends Component {
             })
             .catch(err => this.showError(err));
         });
-    });
+      });
   }
 
   disableFingerprint() {
-    this.setState({ loading: true }, () => {
-      Biometrics.deleteKeys()
-        .then(success => {
-          if (!success) return this.showError("Could not delete fingerprint keys.");
+    Biometrics.deleteKeys()
+      .then(success => {
+        if (!success) return this.showError("Could not delete fingerprint keys.");
+        this.setState({ loading: true }, () => {
           api.disableFingerprint()
             .then(res => {
               this.props.setSession(res);
@@ -64,9 +64,9 @@ class Settings extends Component {
               this.showSuccess("Disabled fingerprint.");
             })
             .catch(err => this.showError(err));
-        })
-        .catch(err => this.showError(err));
-    });
+        });
+      })
+      .catch(err => this.showError(err));
   }
 
   cancelDelete() {
@@ -74,12 +74,22 @@ class Settings extends Component {
   }
 
   deleteAccount() {
+    if (this.props.session.googleId) {
+      utils.googleSignOut()
+        .then(() => this._deleteAccount())
+        .catch(this.showError);
+    } else {
+      this._deleteAccount();
+    }
+  }
+
+  _deleteAccount = () => {
     this.props.deleteAccount()
       .then(() => {
         this.setState({deleteModal: false});
         this.props.navigation.navigate('Home');
       })
-      .catch(err => this.showError(err));
+      .catch(this.showError);
   }
 
   render() {
@@ -87,8 +97,13 @@ class Settings extends Component {
 
     let menu = [
       { label: 'Edit Profile', icon: 'user', onPress: () => props.navigation.navigate('EditProfile') },
-      { label: 'Change Password', icon: 'lock', onPress: () => props.navigation.navigate('ResetPassword', { mode: 'change' }) },
     ];
+
+    if (props.session.user && props.session.user.has_password) {
+      menu.push({ label: 'Change Password', icon: 'lock', onPress: () => props.navigation.navigate('ResetPassword', { mode: 'change' }) });
+    } else {
+      menu.push({ label: 'Set Password', icon: 'lock', onPress: () => props.navigation.navigate('ResetPassword', { mode: 'set' }) });
+    }
 
     if (state.supportsFingerprint) {
       if (props.session.user && !props.session.user.fingerprint_enabled) {
