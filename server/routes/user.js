@@ -66,11 +66,16 @@ router.post('/user/resetToken', (req, res, next) => {
 router.post('/user/changePassword', (req, res, next) => {
   let data = req.body;
   if (!req.session.user) return next(new Error("Session is not active."));
-  if (!data.password) return next(new Error("Password is required."));
+  if (!data.currentPassword) return next(new Error("Current Password is required."));
+  if (!data.newPassword) return next(new Error("New Password is required."));
 
-  users.changePassword(req.session.user.email, data.password)
-    .then(() => utils.response(res))
-    .catch(next);
+  users.auth(req.session.user.email, data.currentPassword)
+    .then(() => {
+      users.changePassword(req.session.user.email, data.newPassword)
+        .then(() => utils.response(res))
+        .catch(next);
+    })
+    .catch(next)
 });
 
 router.post('/user/forgottenPassword', (req, res, next) => {

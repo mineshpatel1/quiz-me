@@ -22,17 +22,5 @@ exports.send = (title, body, data, tokens, ttl=300) => {
     timeToLive: ttl,
   };
 
-  utils.log("TEST NOTIF", title, data);
-  utils.log(body);
-  utils.log(data.random);
-
-  fcm.messaging().sendToDevice(tokens, payload, options)
-    .then(function(response) {
-      utils.log("Successfully sent message:", response);
-      console.log(response);
-    })
-    .catch(function(error) {
-      utils.log("Error sending message:", error);
-      console.log(error);
-    });
+  return fcm.messaging().sendToDevice(tokens, payload, options);
 }
