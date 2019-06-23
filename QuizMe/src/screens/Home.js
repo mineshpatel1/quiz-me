@@ -50,7 +50,9 @@ class Home extends Component {
         });
       } else if (url.startsWith('resetPassword')) { 
         this.checkSession('resetPassword', () => {
-          this.props.navigation.navigate('ResetPassword', { token: url.replace('resetPassword/', '') });
+          this.props.navigation.navigate('ResetPassword', { 
+            mode: 'reset', token: url.replace('resetPassword/', '')
+          });
         });        
       }
     }

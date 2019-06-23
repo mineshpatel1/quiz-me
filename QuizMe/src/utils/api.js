@@ -132,8 +132,8 @@ class api {
   }
 
   /** Changes a user's password. */
-  static async changePassword(password) {
-    return _post('user/changePassword', { password });
+  static async changePassword(currentPassword, newPassword) {
+    return _post('user/changePassword', { currentPassword, newPassword });
   }
 
   static async enableFingerprint(publicKey) {

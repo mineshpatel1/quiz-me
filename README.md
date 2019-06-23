@@ -7,6 +7,16 @@ npm install
 react-native link
 ```
 
+## Configure Firebase for Android/iOS
+
+Use the [Firebase Console](https://console.firebase.google.com) to set up two apps, one for Android, the other for iOS. During this process you will create the following files, which are not source controlled:
+
+* `GoogleService-Info.plist` (iOS)
+* `google-services.json` (Android)
+
+Note that most of the rest of the setup required for FCM should already be configured in the repository.
+
+
 # Build for Android
 
 ## Configure Build
@@ -33,7 +43,7 @@ RELEASE_STORE_PASSWORD=password
 RELEASE_KEY_PASSWORD=password
 ```
 
-## Mac Keychain Password
+### Mac Keychain Password
 
 The more secure way (when using a Mac) is to use the Keychain Access app. Configure a password in a new
 keychain called `quizme_keystore`, specifying your Mac username.
@@ -45,6 +55,17 @@ RELEASE_MAC_KEYCHAIN=quizme_keystore
 MAC_ADMIN_USER=Nesh Patel
 ```
 
+## Add SHA Fingerprints to Firebase
+
+In order to use Google Sign In features with Firebase, add the SHA keys from your keystore to the Project 
+Settings in the [Firebase Console](https://console.firebase.google.com). To get your SHA fingerprints,
+run the following for your release keystore. Add both SHA-1 and SHA-256 fingerprints.
+
+```
+keytool -exportcert -list -v -alias quiz-me-key -keystore android/keystores/quiz-me.keystore
+```
+
+
 ## Increase Memory for Build
 
 If you experience the error `Expiring Daemon because JVM Tenured space is exhausted` when building the app, 
@@ -54,14 +75,6 @@ add the followingto `gradle.properties`:
 org.gradle.jvmargs=-Xmx2048M -XX\:MaxHeapSize\=10g`
 ```
 
-## Configure Firebase for Android/iOS
-
-Use the [Firebase Console](https://console.firebase.google.com) to set up two apps, one for Android, the other for iOS. During this process you will create the following files, which are not source controlled:
-
-* `GoogleService-Info.plist` (iOS)
-* `google-services.json` (Android)
-
-Note that most of the rest of the setup required for FCM should already be configured in the repository.
 
 ## Build App
 
@@ -73,3 +86,4 @@ run the following to build the app:
 ```
 
 The release APK will be created at `QuizMe/android/app/build/outputs/apk/release/app-release.apk`.
+

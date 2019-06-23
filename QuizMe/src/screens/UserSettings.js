@@ -87,7 +87,7 @@ class Settings extends Component {
 
     let menu = [
       { label: 'Edit Profile', icon: 'user', onPress: () => props.navigation.navigate('EditProfile') },
-      { label: 'Change Password', icon: 'lock', onPress: () => props.navigation.navigate('ResetPassword') },
+      { label: 'Change Password', icon: 'lock', onPress: () => props.navigation.navigate('ResetPassword', { mode: 'change' }) },
     ];
 
     if (state.supportsFingerprint) {

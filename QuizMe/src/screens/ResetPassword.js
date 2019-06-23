@@ -32,62 +32,83 @@ class ResetPassword extends Component {
   }
 
   post = values => {
-    if (this.props.session.resetPassword) {
+    if (
+      this.props.session.resetPassword && 
+      this.props.navigation.getParam('mode') == 'reset'
+    ) {
       api.resetPassword(
         this.props.session.resetPassword.email,
         values.token,
-        values.password,
+        values.newPassword,
       )
       .then(res => {
         this.props.setSession(res);
         this.showSuccess('Reset password successfully.');
       })
       .catch(err => this.showError(err));
-    } else if (this.props.session.user) {
-      api.changePassword(values.password)
+    } else if (
+      this.props.session.user &&
+      this.props.navigation.getParam('mode') == 'change'
+    ) {
+      api.changePassword(values.currentPassword, values.newPassword)
         .then(() => this.showSuccess('Changed password successfully.'))
         .catch(err => this.showError(err));
     }
   }
 
-  validateToken = (val) => {
+  validateToken = val => {
     if (!val) return false;
     return val.length == 10 && validators.isAlphaNumeric(val);
+  }
+
+  validatePassword = val => {
+    if (!val) return false;
+    return (
+      validators.hasLower(val) && validators.hasUpper(val) &&
+      validators.hasNumeric(val) && !validators.hasSpace(val)
+    )
   }
 
   render() {
     let { props, state } = this;
 
-    let fields = {
-      token: {
+    let fields = {};
+
+    if (props.navigation.getParam('mode') == 'reset') {
+      fields.token = {
         label: "Token",
         icon: "hashtag",
         type: "string",
         inputType: "text",
         validator: this.validateToken,
-      },
-      password: {
-        label: "New Password",
+      }
+    } else if (props.navigation.getParam('mode') == 'change') {
+      fields.currentPassword = {
+        label: "Current Password",
         icon: "lock",
         type: "string",
         inputType: "text",
         secure: true,
-        validator: (val) => {
-          if (!val) return false;
-          return (
-            validators.hasLower(val) && validators.hasUpper(val) &&
-            validators.hasNumeric(val) && !validators.hasSpace(val)
-          )
-        },
-      },
-      confirmPassword: {
-        label: "Confirm Password",
-        icon: "lock",
-        type: "string",
-        inputType: "text",
-        secure: true,
-        validator: (val, formVals) => {return val && val == formVals.password},
-      },
+        validator: this.validatePassword,
+      }
+    }
+
+    fields.newPassword = {
+      label: "New Password",
+      icon: "lock",
+      type: "string",
+      inputType: "text",
+      secure: true,
+      validator: this.validatePassword,
+    }
+
+    fields.confirmPassword = {
+      label: "Confirm Password",
+      icon: "lock",
+      type: "string",
+      inputType: "text",
+      secure: true,
+      validator: (val, formVals) => {return val && val == formVals.newPassword},
     }
 
     let values = {
