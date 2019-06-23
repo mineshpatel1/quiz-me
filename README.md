@@ -62,9 +62,18 @@ Settings in the [Firebase Console](https://console.firebase.google.com). To get 
 run the following for your release keystore. Add both SHA-1 and SHA-256 fingerprints.
 
 ```
+# For Prod
 keytool -exportcert -list -v -alias quiz-me-key -keystore android/keystores/quiz-me.keystore
+
+# For Dev  (password: android)
+keytool -exportcert -keystore ~/.android/debug.keystore -list -v
 ```
 
+After doing this, on the [Google API console](https://console.developers.google.com/apis/credentials) you
+should have 4 OAuth Client IDs: Web, iOS and two for Android. Download `google-services.json` from Firebase
+project settings and put it on your repository. Ensure that the `oauth_client` array has 3 client IDs in order:
+Dev Android, Prod Android, Web. That is the expected order for the app, otherwise there will be failures with
+either the development or release versions when signing into Google.
 
 ## Increase Memory for Build
 
