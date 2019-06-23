@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import { Animated, View, Image, Linking } from 'react-native';
 
 import { Container, Button, IconSet } from '../components/Core';
-import { checkSession, signOut } from '../actions/SessionActions';
+import { checkSession } from '../actions/SessionActions';
 import { colours, styles } from '../styles';
 import { utils } from '../utils';
 
@@ -53,7 +53,7 @@ class Home extends Component {
           this.props.navigation.navigate('ResetPassword', { 
             mode: 'reset', token: url.replace('resetPassword/', '')
           });
-        });        
+        });
       }
     }
   }
@@ -117,9 +117,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = dispatch => (
-  bindActionCreators({
-    checkSession, signOut,
-  }, dispatch)
+  bindActionCreators({ checkSession }, dispatch)
 );
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

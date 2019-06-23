@@ -1,8 +1,19 @@
 import AsyncStorage from '@react-native-community/async-storage';
 import NetInfo from "@react-native-community/netinfo";
 import { Animated, Easing, Platform, PermissionsAndroid } from 'react-native';
+import { GoogleSignin, statusCodes } from 'react-native-google-signin';
 import firebase from 'react-native-firebase';
 import { animationDuration } from '../config';
+
+const googleIds = require('../../android/app/google-services.json');  // Private, not source controlled
+
+// Dev version uses the Debug keystore
+let clients = googleIds.client[0].oauth_client;
+let androidClientId = __DEV__ ? clients[0].client_id : clients[1].client_id
+GoogleSignin.configure({
+  androidClientId: androidClientId,
+  webClientId:  clients[2].client_id,  // Web client
+});
 
 const _typeOf = value => {
   var s = typeof value;
@@ -424,6 +435,36 @@ class utils {
         })
         .catch(reject);
     });
+  }
+
+  static googleSignIn = () => {
+    return new Promise((resolve, reject) => {
+      GoogleSignin.hasPlayServices()
+        .then(() => {
+          GoogleSignin.signIn()
+            .then(info => resolve(info))
+            .catch(err => {
+              if (error.code != statusCodes.SIGN_IN_CANCELLED) {
+                return reject(err);
+              }
+            })
+        })
+        .catch(reject);
+    });
+  }
+
+  static googleSignOut = (revoke=true) => {
+    if (revoke) {
+      return new Promise((resolve, reject) => {
+        GoogleSignin.revokeAccess()
+        .then(() => {
+          GoogleSignin.signOut().then(resolve).catch(reject);
+        })
+        .catch(reject);
+      });
+    } else {
+      return GoogleSignin.signOut();
+    }
   }
 }
 

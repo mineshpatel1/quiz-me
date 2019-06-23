@@ -171,6 +171,10 @@ class api {
   static async gameRequest(settings, opponent) {
     return _post('game/request', { settings, opponent });
   }
+
+  static async verifyGoogleToken(email, token, pushToken) {
+    return _post('session/login/google', { email, token, pushToken });
+  }
 }
 
 export default api;

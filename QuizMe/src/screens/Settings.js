@@ -3,13 +3,28 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { View } from 'react-native';
 
+import { Container, Menu, Text, SnackBar } from '../components/Core';
 import { signOut } from '../actions/SessionActions';
-import { Container, Menu, Text } from '../components/Core';
-import { colours, styles } from '../styles';
+import { styles } from '../styles';
+import utils from '../utils/utils';
 
 class Settings extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      loading: false,
+    }
+  }
+
+  showError = err => {
+    this.setState({ loading: false });
+    this.refs.error.show(err, 0);
+  }
+
+  signOut = () => {
+    this.props.signOut()
+      .then(() => this.setState({ loading: false }))
+      .catch(this.showError);
   }
 
   render() {
@@ -23,7 +38,19 @@ class Settings extends Component {
     ]
 
     if (props.session.user) {
-      menu.push({label: 'Sign Out', icon: 'sign-out-alt', onPress: () => props.signOut() });
+      menu.push({label: 'Sign Out', icon: 'sign-out-alt', 
+        onPress: () => {
+          this.setState({ loading: true }, () => {
+            if (props.session.googleId) {
+              utils.googleSignOut()
+                .then(() => this.signOut())
+                .catch(this.showError);
+            } else {
+              this.signOut();
+            }
+          });
+        }
+      });
     } else if (props.session.resetPassword) {
       menu.push(
         { label: 'Reset Password', icon: 'lock', onPress: () => { props.navigation.navigate('ResetPassword', { mode: 'reset' }); }}
@@ -44,7 +71,7 @@ class Settings extends Component {
     }
 
     return (
-      <Container header="Settings">
+      <Container header="Settings" spinner={state.loading} >
         {
           user &&
           <View style={[styles.mt15, styles.pb15, styles.borderBottom]}>
@@ -52,6 +79,7 @@ class Settings extends Component {
           </View>
         }
         <Menu menu={menu} />
+        <SnackBar ref="error" error={true} />
       </Container>
     );
   }
@@ -62,9 +90,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = dispatch => (
-  bindActionCreators({
-    signOut,
-  }, dispatch)
+  bindActionCreators({ signOut }, dispatch)
 );
 
 export default connect(mapStateToProps, mapDispatchToProps)(Settings);

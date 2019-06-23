@@ -3,33 +3,29 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { View } from 'react-native';
 import Biometrics from 'react-native-biometrics';
-import { GoogleSignin, statusCodes } from 'react-native-google-signin';
 
 import { Container, Text, Button, Form, SnackBar } from '../components/Core';
 import { setSession } from '../actions/SessionActions';
 import { styles } from '../styles';
 import { utils, api, validators } from '../utils';
 
-const googleIds = require('../../android/app/google-services.json');  // Private, not source controlled
-
 class SignIn extends Component {
   constructor(props) {
     super(props);
     this.state = { 
       loading: false,
+      pushToken: null,
       email: {
         value: null,
         valid: false,
       },
     };
+  }
 
-    // Dev version uses the Debug keystore
-    let clients = googleIds.client[0].oauth_client;
-    let androidClientId = __DEV__ ? clients[0].client_id : clients[1].client_id
-    GoogleSignin.configure({
-      androidClientId: androidClientId,
-      webClientId:  clients[2].client_id,  // Web client
-    });
+  componentDidMount() {
+    utils.getPushToken()
+      .then(pushToken => this.setState({ pushToken: pushToken }))
+      .catch(err => console.error(err));
   }
 
   showError = err => {
@@ -39,40 +35,31 @@ class SignIn extends Component {
 
   signIn = values => {
     this.setState({ loading: true }, () => {
-      utils.getPushToken()
-        .then(pushToken => {
-          values.pushToken = pushToken;
-          api.signIn(values)
-            .then(res => {
-              this.props.setSession(res);
-              this.setState({ loading: false });
-              this.props.navigation.navigate('Home');
-            })
-            .catch(this.showError);
+      values.pushToken = this.state.pushToken;
+      api.signIn(values)
+        .then(res => {
+          this.props.setSession(res);
+          this.setState({ loading: false });
+          this.props.navigation.navigate('Home');
         })
         .catch(this.showError);
     });
   }
 
   googleSignIn = () => {
-    GoogleSignin.hasPlayServices()
-      .then(() => {
-        GoogleSignin.signIn()
-          .then(userInfo => {
-            console.log(userInfo);
-          })
-          .catch(error => {
-            if (error.code != statusCodes.SIGN_IN_CANCELLED) {
-              this.showError(error);
-            }
-          });
-        // GoogleSignin.signOut()
-        //   .then(x => {
-        //     console.log('Signed Out', x);
-        //   })
-        //   .catch(this.showError);
+    utils.googleSignIn()
+      .then(info => {
+        this.setState({ loading: true }, () => {
+          api.verifyGoogleToken(
+            info.user.email, info.idToken, this.state.pushToken
+          ).then(res => {
+            this.props.setSession(res);
+            this.setState({ loading: false });
+            this.props.navigation.navigate('Home');
+          }).catch(this.showError);
+        });
       })
-      .catch(this.showError)
+      .catch(this.showError);
   }
 
   forgottenPassword = () => {
@@ -91,21 +78,18 @@ class SignIn extends Component {
   verifyFingerprint = () => {
     let payload = { id: this.props.fingerprint, timestamp: utils.now(), random: Math.random() };
     Biometrics.createSignature('Verify fingerprint', JSON.stringify(payload))
-        .then(signature => {
-          this.setState({ loading: true }, () => {
-            utils.getPushToken()
-              .then(token => {
-                api.verifyFingerprint(payload, signature)
-                  .then(res => {
-                    this.props.setSession(res);
-                    this.setState({ loading: false });
-                    this.props.navigation.navigate('Home');
-                  })
-                  .catch(this.showError);
-              });
-          });
-        })
-        .catch(this.showError);
+      .then(signature => {
+        this.setState({ loading: true }, () => {
+          api.verifyFingerprint(payload, signature, this.state.pushToken)
+            .then(res => {
+              this.props.setSession(res);
+              this.setState({ loading: false });
+              this.props.navigation.navigate('Home');
+            })
+            .catch(this.showError);
+        });
+      })
+      .catch(this.showError);
   }
 
   render() {

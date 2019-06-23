@@ -8,6 +8,7 @@ export const setSession = session => ({
   resetPassword: session && session.resetPassword,
   friends: session && session.friends,
   requests: session && session.requests,
+  googleId: session && session.googleId,
 });
 
 export const setConnection = online => ({
@@ -33,12 +34,17 @@ export const checkSession = () => {
 
 export const signOut = () => {
   return function(dispatch) {
-    api.signOut()
-      .then(() => dispatch(setSession(null)))
-      .catch(err => {
-        console.error(err);
-        dispatch(setSession(null))
-      });
+    return new Promise((resolve, reject) => {
+      api.signOut()
+        .then(() => {
+          dispatch(setSession(null));
+          return resolve();
+        })
+        .catch(err => {
+          dispatch(setSession(null))
+          reject(err);
+        });
+    });
   }
 }
 
