@@ -3,12 +3,14 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { View } from 'react-native';
 import Biometrics from 'react-native-biometrics';
-import { GoogleSignin } from 'react-native-google-signin';
+import { GoogleSignin, statusCodes } from 'react-native-google-signin';
 
 import { Container, Text, Button, Form, SnackBar } from '../components/Core';
 import { setSession } from '../actions/SessionActions';
 import { styles } from '../styles';
 import { utils, api, validators } from '../utils';
+
+const googleIds = require('../../android/app/google-services.json');  // Private, not source controlled
 
 class SignIn extends Component {
   constructor(props) {
@@ -20,6 +22,14 @@ class SignIn extends Component {
         valid: false,
       },
     };
+
+    // Dev version uses the Debug keystore
+    let clients = googleIds.client[0].oauth_client;
+    let androidClientId = __DEV__ ? clients[0].client_id : clients[1].client_id
+    GoogleSignin.configure({
+      androidClientId: androidClientId,
+      webClientId:  clients[2].client_id,  // Web client
+    });
   }
 
   showError = err => {
@@ -27,7 +37,7 @@ class SignIn extends Component {
     this.refs.error.show(err, 0);
   }
 
-  signIn(values) {
+  signIn = values => {
     this.setState({ loading: true }, () => {
       utils.getPushToken()
         .then(pushToken => {
@@ -44,7 +54,28 @@ class SignIn extends Component {
     });
   }
 
-  forgottenPassword() {
+  googleSignIn = () => {
+    GoogleSignin.hasPlayServices()
+      .then(() => {
+        GoogleSignin.signIn()
+          .then(userInfo => {
+            console.log(userInfo);
+          })
+          .catch(error => {
+            if (error.code != statusCodes.SIGN_IN_CANCELLED) {
+              this.showError(error);
+            }
+          });
+        // GoogleSignin.signOut()
+        //   .then(x => {
+        //     console.log('Signed Out', x);
+        //   })
+        //   .catch(this.showError);
+      })
+      .catch(this.showError)
+  }
+
+  forgottenPassword = () => {
     let email = this.state.email.value;
     this.setState({ loading: true }, () => {
       api.forgottenPassword(email)
@@ -57,7 +88,7 @@ class SignIn extends Component {
     });
   }
 
-  verifyFingerprint() {
+  verifyFingerprint = () => {
     let payload = { id: this.props.fingerprint, timestamp: utils.now(), random: Math.random() };
     Biometrics.createSignature('Verify fingerprint', JSON.stringify(payload))
         .then(signature => {
@@ -124,7 +155,7 @@ class SignIn extends Component {
           }
           <View style={[styles.center, styles.mt15]}>
             <Button label="Sign in with Google" icon="google" onPress={() => { 
-              console.log('GOOGLE!');
+              this.googleSignIn();
             }} />
             <Text display={true} style={styles.mt15}> Or </Text>
           </View>

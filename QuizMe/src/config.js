@@ -1,6 +1,3 @@
-import { Platform } from 'react-native';
-import { validators } from './utils';
-
 export const server = { host: 'quiz-me.co.uk', port: 3000, secure: true };
 export const animationDuration = 300;
 export const waitTime = 0.5;
@@ -14,14 +11,9 @@ export const categories = {
   6:  {id: 6,  name: 'Film', icon: 'film'},
   7:  {id: 7,  name: 'Music', icon: 'music'},
   8:  {id: 8,  name: 'Literature', icon: 'book'},
-  // 9:  {id: 9,  name: 'Quotes', icon: 'quote-right'},
-  // 10: {id: 10, name: 'Mythology', icon: 'ankh'},
   11: {id: 11, name: 'TV', icon: 'tv'},
   12: {id: 12, name: 'Animals', icon: 'paw'},
   13: {id: 13, name: 'Puzzles & Riddles', icon: 'brain'},
-  // 14: {id: 14, name: 'Art', icon: 'palette'},
-  // 15: {id: 15, name: 'Politics', icon: 'landmark'},
-  // 16: {id: 16, name: 'Vehicles', icon: 'car'},
 }
 
 export const defaultSettings = {
