@@ -17,7 +17,7 @@
   },
   "homepage": "https://github.com/mineshpatel1/quiz-me#readme",
   "dependencies": {
-    "aws-sdk": "^2.444.0",
+    "aws-sdk": "^2.814.0",
     "body-parser": "^1.18.3",
     "colors": "^1.3.3",
     "connect-pg-simple": "^6.0.1",
